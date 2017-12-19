@@ -35,8 +35,12 @@ def email_signup_verify(request):
         title_id = form['txtTitle']
         email = form['email']
 
-        User.objects.create(username=username, password=password, email=email, is_active=False)
+        User.objects.create(username=username, email=email, is_active=False)
+
         user_id = User.objects.last().id
+        user_obj = User.objects.get(id = user_id)
+        user_obj.set_password(password)
+        user_obj.save()
         UserSignupDetails.objects.create(user_id=user_id, country_id=country_id, dr_licence=dr_licence,
                                          ph_licence=ph_licence_number, website=website, title=title_id, role=role_id)
 
@@ -84,9 +88,9 @@ def admin_panel_verify(request):
 
         return redirect("/ldn/adminpanel/")
 
-    unverified_users_id = User.objects.filter(is_active=False).values_list('id', 'username').order_by('-date_joined')
+    unverified_users_id = User.objects.filter(is_active=False).values_list('id', 'username','date_joined').order_by('date_joined')
     unverified_users = UserSignupDetails.objects.filter(user_id__in=[i[0] for i in unverified_users_id])
-    c['unverified_users'] = zip([i[1] for i in unverified_users_id], unverified_users)
+    c['unverified_users'] = zip([[i[1],i[2]] for i in unverified_users_id], unverified_users)
 
     return render_to_response('admin_panel.html', c)
 

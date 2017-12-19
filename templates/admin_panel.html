@@ -37,6 +37,14 @@
                                     </a>
                                 </div>
                             </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <form class="form-inline">
+                                    <ul class="nav navbar-nav navbar-right bdr">
+                                        <li><a href="{% url 'logout' %}" class="btn-blu mrgn-top">LOGOUT</a>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
                         </div>
                     </nav>
                 </header>
@@ -61,13 +69,15 @@
                         <table class="table table-bordered table-hover table-responsive">
                             <tr style="background-color: #22211f; color: white">
                                 <th>Name</th>
+                                <th>Date</th>
                                 <th>dr_licence</th>
                                 <th>ph_licence</th>
                                 <th>Action</th>
                             </tr>
                             {% for name,data in unverified_users %}
                                 <tr style="color: black">
-                                    <th> {{ name }}</th>
+                                    <th> {{ name.0 }}</th>
+                                    <th> {{ name.1|date:'d/m/Y H:i' }}</th>
                                     <th> {{ data.dr_licence }}</th>
                                     <th> {{ data.ph_licence }}</th>
                                     <th>

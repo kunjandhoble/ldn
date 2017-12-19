@@ -40,8 +40,6 @@
                             <div id="navbar" class="navbar-collapse collapse">
                                 <form class="form-inline">
                                     <ul class="nav navbar-nav navbar-right bdr">
-                                        <li><a href="{% url 'adminpanel' %}" class="btn-blu mrgn-top">ADMIN PANEL</a>
-                                        </li>
                                         <li><a href="{% url 'logout' %}" class="btn-blu mrgn-top">LOGOUT</a>
                                         </li>
                                     </ul>
@@ -70,11 +68,13 @@
                     <div class="group" style="margin-left: 30px">
                         <table class="table table-bordered table-hover table-responsive">
                             <tr style="background-color: #22211f; color: white">
+                                <th>Patient ID</th>
                                 <th>Name</th>
                                 <th>Contact Number</th>
                             </tr>
                             {% for data in patient_data %}
                                 <tr style="color: black">
+                                    <th>{{ data.id }}</th>
                                     <th> {{ data.name }}</th>
                                     <th> {{ data.contact_number }}</th>
                                 </tr>

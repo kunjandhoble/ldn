@@ -21,4 +21,4 @@ urlpatterns= [
     # url(r'^confirm/(?P<activation_key>\w+)/', views.register_confirm),
 
 
-]#+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
