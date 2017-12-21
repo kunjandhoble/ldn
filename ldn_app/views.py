@@ -2,8 +2,9 @@
 from __future__ import unicode_literals
 
 import random
-import string
-
+import string, json
+#
+# import json as json
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
@@ -13,6 +14,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.template.context_processors import csrf
 from django.core.mail import send_mail
 from .models import *
+from .dashboard_data import *
 
 
 def login_view(request):
@@ -38,7 +40,7 @@ def email_signup_verify(request):
         User.objects.create(username=username, email=email, is_active=False)
 
         user_id = User.objects.last().id
-        user_obj = User.objects.get(id = user_id)
+        user_obj = User.objects.get(id=user_id)
         user_obj.set_password(password)
         user_obj.save()
         UserSignupDetails.objects.create(user_id=user_id, country_id=country_id, dr_licence=dr_licence,
@@ -88,9 +90,10 @@ def admin_panel_verify(request):
 
         return redirect("/ldn/adminpanel/")
 
-    unverified_users_id = User.objects.filter(is_active=False).values_list('id', 'username','date_joined').order_by('date_joined')
+    unverified_users_id = User.objects.filter(is_active=False).values_list('id', 'username', 'date_joined').order_by(
+        'date_joined')
     unverified_users = UserSignupDetails.objects.filter(user_id__in=[i[0] for i in unverified_users_id])
-    c['unverified_users'] = zip([[i[1],i[2]] for i in unverified_users_id], unverified_users)
+    c['unverified_users'] = zip([[i[1], i[2]] for i in unverified_users_id], unverified_users)
 
     return render_to_response('admin_panel.html', c)
 
@@ -159,7 +162,7 @@ def user_logout(request):
 def send_password(request):
     if request.method == 'POST':
         try:
-            user_obj = User.objects.get(username__exact= request.POST.get('username',''))
+            user_obj = User.objects.get(username__exact=request.POST.get('username', ''))
         except:
             # try:
             #     user_obj = UserSignupDetails.objects.get(dr_licence__exact=request.POST.get('username', ''))
@@ -174,12 +177,12 @@ def send_password(request):
             new_pass = ''.join(random.choice(chars) for _ in range(6))
             user_obj.set_password(new_pass)
             user_obj.save()
-            email_body = 'Hello '+user_obj.username.upper()+',\n\n Your password is reset to '+new_pass+'.\nPlease login to continue.'
+            email_body = 'Hello ' + user_obj.username.upper() + ',\n\n Your password is reset to ' + new_pass + '.\nPlease login to continue.'
             send_mail(
                 'Password Reset',
                 email_body,
                 'gvoicecall31@gmail.com',
-                ['gvoicecall31@gmail.com'], #user_obj.email
+                ['gvoicecall31@gmail.com'],  # user_obj.email
                 fail_silently=False,
             )
 
@@ -194,3 +197,39 @@ def user_patients(request):
     c = {}
     c['patient_data'] = patient_data
     return render_to_response('patient_data.html', c)
+
+
+def dashboard(request, tablename):
+    if tablename == 'oswestry':
+        dc = oswestry_data(tablename)
+        return render_to_response('dashboard/oswestry.html', dc)
+    elif tablename == 'cdc':
+        dc = cdc_data(tablename)
+        return render_to_response('dashboard/cdc.html', dc)
+    elif tablename == 'weight':
+        dc = weight_data(tablename)
+        return render_to_response('dashboard/weight.html', dc)
+    elif tablename == 'prescriptionmeds':
+        dc = prescriptionmeds_data('prescription_meds')
+        return render_to_response('dashboard/prescriptionmeds.html', dc)
+    elif tablename == 'pain':
+        dc = pain_data('pain_tracker')
+        return render_to_response('dashboard/pain_tracker.html', dc)
+    elif tablename == 'dosehistory':
+        dc = dosehistory_data('research_dose_history')
+        return render_to_response('dashboard/dose_history.html', dc)
+    elif tablename == 'sleep':
+        dc = sleep_data(tablename)
+        return render_to_response('dashboard/sleep.html', dc)
+    elif tablename == 'cfsfibrotracker':
+        # dc = cfsfibrotracker(tablename)
+        return render_to_response('dashboard/cfs_fibrotracker.html')  # , dc)
+    elif tablename == 'myday':
+        # dc = myday_data(tablename)
+        return render_to_response('dashboard/myday.html')  # , dc)
+    elif tablename == 'currentdose':
+        # dc = currentdose_data(tablename)
+        return render_to_response('dashboard/currentdose.html')  # , dc)
+    else:
+        dc = {}
+    return render_to_response('dashboard/oswestry.html', dc)

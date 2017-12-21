@@ -33,6 +33,25 @@ class PatientData(models.Model):
     contact_number = models.BigIntegerField(null=False)
 
 
+class PaypalTransaction(models.Model):
+    SUBSCRIPTION_CHOICES = (
+        ('1-20', '1-20'),
+        ('21-50', '21-50'),
+        ('51-100', '51-100')
+    )
+    TRANSACTION_STATUS = (
+        ('NONE', 'NONE'),
+        ('SUCCESS', 'SUCCESS'),
+        ('PENDING', 'PENDING'),
+        ('REFUND', 'REFUND'),
+        ('CANCELLED', 'CANCELLED')
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    subscription_type = models.CharField(choices=SUBSCRIPTION_CHOICES, default='1-20', max_length=10)
+    amount = models.IntegerField()
+    transaction_no=models.CharField(default='none', max_length=30)
+    transaction_date = models.DateTimeField(default=datetime.now())
+    transaction_status = models.CharField(choices=TRANSACTION_STATUS, default='NONE', max_length=15)
 
 # @receiver(post_save, sender=User)
 # def create_user_profile(sender, instance, created, **kwargs):

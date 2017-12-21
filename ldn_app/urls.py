@@ -17,6 +17,7 @@ urlpatterns= [
     url(r'^logout/$', user_logout, name='logout'),
     url(r'^userpatients/$', user_patients),
     url(r'^sendpass/$', send_password, name='sendpass'),
+    url(r'^dashboard/(?P<tablename>[a-zA-Z]+)/$', dashboard, name='dashboard'),
 
     # url(r'^confirm/(?P<activation_key>\w+)/', views.register_confirm),
 

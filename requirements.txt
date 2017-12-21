@@ -1,4 +1,5 @@
 Django==1.11.7
 mysql-python==1.2.5
 pytz==2017.3
+simplejson==3.13.2
 wheel==0.24.0
