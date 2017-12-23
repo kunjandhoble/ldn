@@ -71,17 +71,18 @@
                                             <ul class="dropdown-menu">
                                                 <li>
                                                     <div class="navbar-content">
-                                                        <span>JS Krishna</span>
+                                                        <span>{{ request.user.firstname }} {{ request.user.lastname }}</span>
                                                         <p class="text-muted small">
-                                                            me@jskrishna.com
+                                                            {{ request.user.email }}
                                                         </p>
                                                         <div class="divider">
                                                         </div>
                                                         <ul class="view btn-sm active">
                                                             <li><a href="#"><i class="fa fa-credit-card"></i>
-                                                                Payment</a></li>
-                                                            <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
-                                                            <li><a href="#" class="">
+                                                                Payment</a>
+                                                            </li>
+                                                            {#																<li><a href="#"><i class="fa fa-user"></i> Account</a></li>#}
+                                                            <li><a href="/ldn/logout/" class="">
                                                                 <i class="fa fa-fw fa-power-off"></i> Logout
                                                             </a></li>
                                                             <li class="divider"></li>

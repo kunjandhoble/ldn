@@ -26,9 +26,9 @@ def oswestry_data(tablename, patientid):
     print(tablename, patientid)
     osw1, osw2, osw3, osw4, osw5, osw6, osw7, osw8, osw9, osw10, osw_score, fordate = [], [], [], [], [], [], [], [], [], [], [], []
     sqlquery = """
-                select * from ldn_local.user_{0} where user_id in
+                select * from user_{0} where user_id in
                 (
-                SELECT user_id FROM ldn_local.monthly_questionnaire where user_id <> 309 and user_id ={1} and
+                SELECT user_id FROM monthly_questionnaire where user_id <> 309 and user_id ={1} and
                 cdc_id is not null and oswestry_id is not null and weight_id is not null and
                 meds_count_id is not null and ldn_type_id is not null order by user_id
                 )
