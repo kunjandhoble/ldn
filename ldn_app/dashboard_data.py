@@ -7,7 +7,6 @@ from decimal import Decimal
 
 import simplejson
 
-
 def fetch_data_from_db(sqlquery):
     config = cp.ConfigParser()
     config.read("db_creds")
