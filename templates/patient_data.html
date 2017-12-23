@@ -80,6 +80,15 @@
                                 </tr>
                             {% endfor %}
                         </table>
+                    {% if NA %}
+                        <div>{{ NA }}</div>
+                    {% endif %}
+                                <form method="post" action="/ldn/dash/">{% csrf_token %}
+                <input id="patient_id_field" name="patient_id" type="text">
+                <input type="submit" value="ANALYZE">
+            </form>
+
+
                     </div>
                 </div>
             </div>

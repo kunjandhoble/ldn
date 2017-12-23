@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+    <link href={% static "css/bootstrap.min.css" %} rel="stylesheet">
+    <link href={% static  "css/style.css" %} type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript" src={% static "js/jquery-2.1.4.min.js" %}></script>
+    <script type="text/javascript" src={% static "js/bootstrap.min.js" %}></script>
+    <script src={% static "js/highcharts.js" %}></script>
+    <script src={% static "js/exporting.js" %}></script>
+    {#    <script type="text/javascript" src={% static "js/Dashboardjs.js" %}></script>#}
+
+</head>
+<body>
+<div class="blue-bg-nav">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <header class="header-tp">
+                    <nav class="navbar navbar-default navbar-static-top">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                    data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <div class="LogoN">
+                                <a href="#" class="btn-blu mrgn-top" data-toggle="modal" data-target="#at-helping">
+                                    <img src={% static "Images/ldn-research-trust-logo.png" %} alt="logoImage0"/>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <div id="custom-search-input">
+                                <div class="input-group col-md-12">
+                                    <form method="POST" action="/ldn/dashboard/">{% csrf_token %}
+                                    <input type="text" class="form-control input-lg" name="patient_id" placeholder="Search"/>
+                                    <span class="input-group-btn">
+												<button class="btn btn-info btn-lg" type="submit">
+													<i class="glyphicon glyphicon-search"></i>
+												</button>
+											</span>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="header-rightside">
+                                <ul class="list-inline header-top pull-right">
+                                    <li class=""><a href="#" class="add-project">Dashboard</a></li>
+                                    <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+                                    <li>
+                                        <a href="#" class="icon-info">
+                                            <i class="fa fa-bell" aria-hidden="true"></i>
+                                            <span class="label label-primary">3</span>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span><i
+                                                class="fa fa-fw fa-user"></i></span>Profile
+                                            <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <div class="navbar-content">
+                                                    <span>{{ request.user.firstname}} {{ request.user.lastname }}</span>
+                                                    <p class="text-muted small">
+                                                        {{ request.user.email }}
+                                                    </p>
+                                                    <div class="divider">
+                                                    </div>
+                                                    <ul class="view btn-sm active">
+                                                        <li><a href="#"><i class="fa fa-credit-card"></i> Payment</a>
+                                                        </li>
+                                                        {#																<li><a href="#"><i class="fa fa-user"></i> Account</a></li>#}
+                                                        <li><a href="/ldn/logout/" class="">
+                                                            <i class="fa fa-fw fa-power-off"></i> Logout
+                                                        </a></li>
+                                                        <li class="divider"></li>
+                                                    </ul>
+
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="band">
+    <div class="bandleft"></div>
+    <div class="bandright"></div>
+</div>
+<div class="container-fluid CustomCont">
+    <div class="row display-table-row">
+        <div class="col-md-12 col-sm-12 display-table-cell v-align">
+            <div class="user-dashboard">
+                <h1>Hello {{ request.user }}</h1>
+                <div class="row sales">
+                    <div class="col-md-3 col-sm-3 col-xs-12 gutter">
+                        <div class=" report">
+                            <div class="form-group">
+                                <label for="country" class="PaientCMS  control-label">Patient ID </label>
+                                <div class="PatintSec">
+                                    <select id="" class="form-control">
+                                        {% for data in patient_data %}
+                                            <option>{{ data.id }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div> <!-- /.form-group -->
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-12 gutter">
+                        <div class=" report">
+                            <div class="form-group">
+                                <label for="country" class="PaientCMS control-label">Patient Name</label>
+                                <div class="PatintSec">
+                                    <select id="country" class="form-control">
+                                     {% for data in patient_data %}
+                                            <option>{{ data.name }}</option>
+                                        {% endfor %}
+                               </select>
+                                </div>
+                            </div> <!-- /.form-group -->
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-12 gutter">
+                        <div class=" report">
+                            <div class="form-group">
+                                <label for="country" class="PaientCMS control-label">Report Date</label>
+                                <div class="PatintSec">
+                                    <select id="country" class="form-control">
+                                        <option>25.29.2017</option>
+                                        <option>25.29.2015</option>
+                                        <option>25.29.2014</option>
+                                        <option>25.29.2013</option>
+                                    </select>
+                                </div>
+                            </div> <!-- /.form-group -->
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-12 gutter">
+                        <div class=" report">
+                            <div class="form-group">
+                                <label for="country" class="PaientCMS control-label">Date Added</label>
+                                <div class="PatintSec">
+                                    <select id="country" class="form-control">
+                                        <option>25.29.2017</option>
+                                        <option>25.29.2015</option>
+                                        <option>25.29.2014</option>
+                                        <option>25.29.2013</option>
+                                    </select>
+                                </div>
+                            </div> <!-- /.form-group -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="panel panel-primary filterable">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Record</h3>
+                        </div>
+                        <table class="table">
+                            <thead>
+                            <tr class="filters">
+                                {#                                <th>#</th>#}
+                                <th>Patient ID</th>
+                                <th>Patient Name</th>
+                                <th>Contact</th>
+                                {#                                <th>Date Added</th>#}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for data in patient_data %}
+                                <tr style="color: black">
+{#                                    <th><li><a href={% url 'graphs' patientid=data.id %} class="">{{ data.id }}#}
+{#                                    </a></li></th>#}
+                                    <th><li><a href={% url 'graphs' patientid=1712 %} class="">{{ data.id }}
+                                    </a></li></th>
+                                    <th> {{ data.name }}</th>
+                                    <th> {{ data.contact_number }}</th>
+                                </tr>
+                            {% endfor %}
+                            {#												<tr>#}
+                            {#													<td>1</td>#}
+                            {#													<td>Mark</td>#}
+                            {#													<td>Otto</td>#}
+                            {#													<td>Otto</td>#}
+                            {#													<td>Otto</td>#}
+                            {#												</tr>#}
+                            {#												<tr>#}
+                            {#													<td>2</td>#}
+                            {#													<td>Jacob</td>#}
+                            {#													<td>Jacob</td>#}
+                            {#													<td>Thornton</td>#}
+                            {#													<td>Thornton</td>#}
+                            {#												</tr>#}
+                            {#												<tr>#}
+                            {#													<td>3</td>#}
+                            {#													<td>Larry</td>#}
+                            {#													<td>Larry</td>#}
+                            {#													<td>the Bird</td>#}
+                            {#													<td>the Bird</td>#}
+                            {#												</tr>#}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

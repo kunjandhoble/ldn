@@ -75,6 +75,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ldn.wsgi.application'
 
+import braintree
+import ConfigParser as cp
+config = cp.ConfigParser()
+config.read("db_creds")
+mid = config.get("paypal", "mid")
+pub = config.get("paypal", "pub")
+priv = config.get("paypal", "priv")
+
+braintree.Configuration.configure(braintree.Environment.Sandbox,
+                                  merchant_id=mid,
+                                  public_key=pub,
+                                  private_key=priv)
+# mid :h55xynft827s9wpn
+# pub :3cfbk7kck9mb3h7t
+# priv :15dc2aafb78bc39ab51bfaa741840b8b
+
+
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

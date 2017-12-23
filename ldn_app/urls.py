@@ -17,7 +17,11 @@ urlpatterns= [
     url(r'^logout/$', user_logout, name='logout'),
     url(r'^userpatients/$', user_patients),
     url(r'^sendpass/$', send_password, name='sendpass'),
-    url(r'^dashboard/(?P<tablename>[a-zA-Z]+)/$', dashboard, name='dashboard'),
+    url(r'^graphs/(?P<patientid>[0-9]+)$', graphs, name='graphs'),
+    url(r'^dashboard/$', dashboard, name='dashboard'),
+    # url(r'^dash/$', db_analyze, name='dash'),
+    url(r'^client_token/$', client_token, name='client_token'),
+    url(r'^checkout/$', create_purchase, name='checkout'),
 
     # url(r'^confirm/(?P<activation_key>\w+)/', views.register_confirm),
 

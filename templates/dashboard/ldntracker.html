@@ -22,13 +22,15 @@
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
 </div>
 <script>
+
+
     $(function () {
         var chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'container'
             },
             title: {
-                text: 'CFS FIBRO TRACKER',
+                text: 'LDN TRACKER QUESTIONNAIRE RESPONSE',
                 x: -20 //center
             },
             {#            subtitle: {#}
@@ -41,13 +43,13 @@
             {#                max: 9#}
             {#            },#}
             xAxis: [{
-                categories: {{ date_added|safe }},
+                categories: {{ date_record|safe }},
                 crosshair: true
             }],
 
             yAxis: {
                 title: {
-                    text: 'RATING'
+                    text: 'DOSE SIZE'
                 },
                 plotLines: [{
                     value: 0,
@@ -65,8 +67,19 @@
                 borderWidth: 0
             },
             series: [{
-                name: 'RATING',
-                data:{{ rating|safe }}
+                name: 'DOSE SIZE',
+                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+
+{#                data:data#}
+                data:(function () {
+                            // generate an array of random data
+                            var data_arr = {{ dose_size|safe }};
+                            var data=[];
+                            for (i=0;i<data_arr.length;i++){
+                                data.push(Number(data_arr[i]));
+                            }
+                            return data;
+                        }())
             }]
         });
 

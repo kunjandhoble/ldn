@@ -1,0 +1,1672 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GRAPH</title>
+    <link href={% static "css/bootstrap.min.css" %} rel="stylesheet">
+    <link href={% static  "css/style.css" %} type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript" src={% static "js/jquery-2.1.4.min.js" %}></script>
+    <script type="text/javascript" src={% static "js/bootstrap.min.js" %}></script>
+    <script src={% static "js/highcharts.js" %}></script>
+    <script src={% static "js/exporting.js" %}></script>
+{#    <script type="text/javascript" src="js/Dashboardjs.js"></script>#}
+
+</head>
+<body>
+   <div class="blue-bg-nav">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <header class="header-tp">
+                        <nav class="navbar navbar-default navbar-static-top">
+                            <div class="">
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+										<div  class="LogoN">
+											<a href="#" class="btn-blu mrgn-top" data-toggle="modal" data-target="#at-helping">
+												<img src={% static "Images/ldn-research-trust-logo.png"%} alt="logoImage0" />
+											</a>
+										</div>
+                                </div>
+                                <div id="navbar" class="navbar-collapse collapse">
+										 <div id="custom-search-input">
+											<div class="input-group col-md-12">
+												<input type="text" class="form-control input-lg" placeholder="Search" />
+												<span class="input-group-btn">
+													<button class="btn btn-info btn-lg" type="button">
+														<i class="glyphicon glyphicon-search"></i>
+													</button>
+												</span>
+											</div>
+										</div>
+											<div class="header-rightside">
+												<ul class="list-inline header-top pull-right">
+													<li class=""><a href="#" class="add-project" >Dashboard</a></li>
+													<li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+													<li>
+														<a href="#" class="icon-info">
+															<i class="fa fa-bell" aria-hidden="true"></i>
+															<span class="label label-primary">3</span>
+														</a>
+													</li>
+													<li class="dropdown">
+														<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span><i class="fa fa-fw fa-user"></i></span>Profile
+															<b class="caret"></b></a>
+														<ul class="dropdown-menu">
+															<li>
+																<div class="navbar-content">
+																	<span>JS Krishna</span>
+																	<p class="text-muted small">
+																		me@jskrishna.com
+																	</p>
+																	<div class="divider">
+																	</div>
+																	<ul class="view btn-sm active">
+																		<li><a href="#"><i class="fa fa-credit-card"></i> Payment</a></li>
+																		<li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+																		<li><a href="#" class="">
+																		<i class="fa fa-fw fa-power-off"></i> Logout
+																	</a></li>
+																		<li class="divider"></li>
+																	</ul>
+																	
+																</div>
+															</li>
+														</ul>
+													</li>
+												</ul>
+											</div>
+
+                                </div>
+                                <!--/.nav-collapse -->
+                            </div>
+                        </nav>
+                    </header>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="band">
+        <div class="bandleft"></div>
+        <div class="bandright"></div>
+    </div>
+    <div class="container-fluid CustomCont">
+        <div class="row display-table-row">
+            <div class="col-md-12 col-sm-12 display-table-cell v-align">
+                <div class="user-dashboard">
+                    <h1>Hello, JS</h1>
+                   
+                </div>
+            </div>
+        </div>
+    <div class="page-header">
+    <div class="page-M">
+      <div class="PatientN">  <h5>Patient Name:-</h5></div>
+	  <div class="PatientNText"> <h5>John <h5></div>
+	  </div>
+	   <div class="page-M">
+        <div class="PatientN">  <h5>Patient ID:-</h5></div>
+	  <div class="PatientNText">  <h5>J012513 <h5></div>
+    </div>
+    </div>
+   
+<div class="">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel with-nav-tabs panel-info">
+                <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab1info" data-toggle="tab">CDC Data</a></li>
+                            <li><a href="#tab2info" data-toggle="tab">Oswestry Data</a></li>
+                            <li><a href="#tab3info" data-toggle="tab">Prescription Meds</a></li>
+                            <li><a href="#tab4info" data-toggle="tab">Weight</a></li>                            
+                            <li><a href="#tab5info" data-toggle="tab">Pain</a></li>                            
+                            <li><a href="#tab6info" data-toggle="tab">Sleep</a></li>                            
+                            <li><a href="#tab7info" data-toggle="tab">Does History</a></li>                            
+                            <li><a href="#tab8info" data-toggle="tab">LDN Taken Traker</a></li>                            
+                            <li><a href="#tab9info" data-toggle="tab">Current Does</a></li>                            
+                            <li><a href="#tab10info" data-toggle="tab">Exercise</a></li>                            
+                            <li><a href="#tab11info" data-toggle="tab">Diet</a></li>                            
+                            <li><a href="#tab12info" data-toggle="tab">My day</a></li>                            
+                            <li><a href="#tab13info" data-toggle="tab">CFS Fibro Traker</a></li>                            
+                        </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab1info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>Date for</th>
+															<th>q1</th>
+															<th class="numeric">q2</th>
+															<th class="numeric">q3</th>
+															<th class="numeric">q4</th>
+															<th class="numeric">q5</th>
+															<th class="numeric">q6</th>
+															<th class="numeric">q7</th>
+															<th class="numeric">q8</th>
+															<th class="numeric">q9	</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>2</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>3</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>4</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>5</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>6</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>7</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>8</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>9</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>10</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>11</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>12</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+														<tr>
+															<td>13</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td >5</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+                        <div class="tab-pane fade" id="tab2info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>Date for</th>
+															<th>osw1</th>
+															<th>osw2</th>
+															<th>osw3</th>
+															<th>osw4</th>
+															<th>osw5</th>
+															<th>osw6</th>
+															<th>osw7</th>
+															<th>osw8</th>
+															<th>osw9</th>
+															<th>osw10</th>
+															<th>oswSocre</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															<td >9</td>
+															<td >59</td>
+															<td >89</td>
+															<td >39</td>
+															<td >3</td>
+															<td>38</td>
+															<td>99</td>
+															<td>50</td>
+															<td>57</td>
+															<td>45</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+                        <div class="tab-pane fade" id="tab3info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>for Date </th>
+															<th>meds_count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>99</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>10</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>															
+															<td>57</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td >9</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+                        <div class="tab-pane fade" id="tab4info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>for Date </th>
+															<th>meds_count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>99</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>10</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>															
+															<td>57</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td >9</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+                        <div class="tab-pane fade" id="tab5info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>for Date </th>
+															<th>meds_count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>99</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>10</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>															
+															<td>57</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td >9</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+{#                        pain ^^^^#}
+                        <div class="tab-pane fade" id="tab6info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>for Date </th>
+															<th>meds_count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>99</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>10</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>															
+															<td>57</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td >9</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>				
+						</div>
+                        <div class="tab-pane fade" id="tab7info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>for Date </th>
+															<th>meds_count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>99</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>10</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>															
+															<td>57</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td >9</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+                        <div class="tab-pane fade" id="tab8info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>for Date </th>
+															<th>meds_count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>99</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>10</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>															
+															<td>57</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td >9</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+                        <div class="tab-pane fade" id="tab9info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>for Date </th>
+															<th>meds_count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>99</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>10</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>															
+															<td>57</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td >9</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+                        <div class="tab-pane fade" id="tab10info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>for Date </th>
+															<th>meds_count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>99</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>10</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>															
+															<td>57</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td >9</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+                        <div class="tab-pane fade" id="tab11info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>for Date </th>
+															<th>meds_count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>99</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>10</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>															
+															<td>57</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td >9</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+                        <div class="tab-pane fade" id="tab12info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>for Date </th>
+															<th>meds_count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>99</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>10</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>															
+															<td>57</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td >9</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+                        <div class="tab-pane fade" id="tab13info">
+							<div class="col-md-4">
+								<div class="">
+								<h5>Date Chart</h5>
+										<div class="row">
+											<div id="no-more-tables">
+												<table class="col-md-12 table-bordered table-striped table-condensed cf">
+													<thead class="cf">
+														<tr>
+															<th>Sr No</th>
+															<th>for Date </th>
+															<th>meds_count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>99</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>50</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>10</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>															
+															<td>57</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															
+															<td>45</td>
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td >9</td>
+															
+														</tr>
+														<tr>
+															<td>1</td>
+															<td>25-07-16</td>
+															<td>1</td>
+															
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								Graph
+								<div class="grapg">
+									<img src="Images/Graph.png"  alt="Graph"/>
+								</div>
+							</div>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+<br/>
+    </div>
+    </div>
+	<script>
+$(document).ready(function(){
+   $('[data-toggle="offcanvas"]').click(function(){
+       $("#navigation").toggleClass("hidden-xs");
+   });
+});
+
+</script>
+
+</body>
+</html>

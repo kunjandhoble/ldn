@@ -5,6 +5,8 @@ import random
 import string, json
 #
 # import json as json
+import app as app
+import braintree
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
@@ -195,41 +197,134 @@ def send_password(request):
 def user_patients(request):
     patient_data = PatientData.objects.filter(user_id=request.user.id)
     c = {}
+    c.update(csrf(request))
+    c.update({'request':request})
     c['patient_data'] = patient_data
-    return render_to_response('patient_data.html', c)
+    return render_to_response('patientdata.html', c)
 
 
-def dashboard(request, tablename):
-    if tablename == 'oswestry':
-        dc = oswestry_data(tablename)
-        return render_to_response('dashboard/oswestry.html', dc)
-    elif tablename == 'cdc':
-        dc = cdc_data(tablename)
-        return render_to_response('dashboard/cdc.html', dc)
-    elif tablename == 'weight':
-        dc = weight_data(tablename)
-        return render_to_response('dashboard/weight.html', dc)
-    elif tablename == 'prescriptionmeds':
-        dc = prescriptionmeds_data('prescription_meds')
-        return render_to_response('dashboard/prescriptionmeds.html', dc)
-    elif tablename == 'pain':
-        dc = pain_data('pain_tracker')
-        return render_to_response('dashboard/pain_tracker.html', dc)
-    elif tablename == 'dosehistory':
-        dc = dosehistory_data('research_dose_history')
-        return render_to_response('dashboard/dose_history.html', dc)
-    elif tablename == 'sleep':
-        dc = sleep_data(tablename)
-        return render_to_response('dashboard/sleep.html', dc)
-    elif tablename == 'cfsfibrotracker':
-        # dc = cfsfibrotracker(tablename)
-        return render_to_response('dashboard/cfs_fibrotracker.html')  # , dc)
-    elif tablename == 'myday':
-        # dc = myday_data(tablename)
-        return render_to_response('dashboard/myday.html')  # , dc)
-    elif tablename == 'currentdose':
-        # dc = currentdose_data(tablename)
-        return render_to_response('dashboard/currentdose.html')  # , dc)
+# @login_required(login_url='/ldn/login/')
+# def graphs(request, tablename, userid):
+#     if tablename == 'oswestry':
+#         dc = oswestry_data(tablename, userid)
+#         return render_to_response('dashboard/oswestry.html', dc)
+#     elif tablename == 'cdc':
+#         dc = cdc_data(tablename, userid)
+#         return render_to_response('dashboard/cdc.html', dc)
+#     elif tablename == 'weight':
+#         dc = weight_data(tablename, userid)
+#         return render_to_response('dashboard/weight.html', dc)
+#     elif tablename == 'prescriptionmeds':
+#         dc = prescriptionmeds_data('prescription_meds',userid)
+#         return render_to_response('dashboard/prescriptionmeds.html', dc)
+#     elif tablename == 'pain':
+#         dc = pain_data('pain_tracker', userid)
+#         return render_to_response('dashboard/pain_tracker.html', dc)
+#     elif tablename == 'dosehistory':
+#         dc = dosehistory_data('research_dose_history', userid)
+#         return render_to_response('dashboard/dose_history.html', dc)
+#     elif tablename == 'sleep':
+#         dc = sleep_data(tablename, userid)
+#         return render_to_response('dashboard/sleep.html', dc)
+#     elif tablename == 'cfsfibrotracker':
+#         dc = cfsfibrotracker_data('cfs_fibro_tracker', userid)
+#         return render_to_response('dashboard/cfs_fibrotracker.html', dc)
+#     elif tablename == 'myday':
+#         dc = myday_data(tablename, userid)
+#         return render_to_response('dashboard/myday.html', dc)
+#     elif tablename == 'currentdose':
+#         dc = currentdose_data(tablename, userid)
+#         return render_to_response('dashboard/currentdose.html', dc)
+#     elif tablename == 'ldntracker':
+#         dc = ldntracker_data(tablename, userid)
+#         return render_to_response('dashboard/ldntracker.html', dc)
+#     else:
+#         dc = {}
+#     return render_to_response('dashboard/DashSecond.html', dc)
+
+@login_required(login_url='/ldn/login/')
+def graphs(request, patientid):
+    dc={}
+    if patientid=='1712':
+        patient_data = PatientData.objects.get(id=7)
+        dc={'patient_data':patient_data}
+    dc.update({'request':request})
+    dc.update(csrf(request))
+    dc.update(oswestry_data('oswestry', patientid))
+    dc.update(cdc_data('cdc', patientid))
+    dc.update(weight_data('weight', patientid))
+    dc.update(prescriptionmeds_data('prescription_meds',patientid))
+    # dc.update(pain_data('pain_tracker', patientid))
+    # dc.update(dosehistory_data('research_dose_history', patientid))
+    dc.update(sleep_data('sleep', patientid))
+    dc.update(cfsfibrotracker_data('cfs_fibro_tracker', patientid))
+    dc.update(myday_data('myday', patientid))
+    # dc.update(currentdose_data('currentdose', patientid))
+    dc.update(ldntracker_data('ldntracker', patientid))
+    return render_to_response('dashboard.html', dc)
+
+@login_required(login_url='/ldn/login/')
+def dashboard(request):
+    if request.method == "POST":
+        patient_id = request.POST.get('patient_id')
+        try:
+            doctor = PatientData.objects.get(id=int(patient_id)).user
+            # doctor_id = '1712' #doctor.id
+            if doctor.is_active:
+                return HttpResponseRedirect('/ldn/graphs/'+str(1712))
+            else:
+                patient_data = PatientData.objects.filter(user_id=request.user.id)
+                c = {}
+                c.update(csrf(request))
+                c['patient_data'] = patient_data
+                c.update({'NA': 'no record found'})
+                c.update({'request': request})
+                return render_to_response('patientdata.html',c)
+        except:
+            patient_data = PatientData.objects.filter(user_id=request.user.id)
+            c = {}
+            c.update(csrf(request))
+            c['patient_data'] = patient_data
+            c.update({'NA': 'Invalid patient id. Please try again.'})
+            c.update({'request': request})
+            return render_to_response('patientdata.html', c)
+
+def client_token():
+  return braintree.ClientToken.generate()
+
+
+def create_purchase(request):
+    if request.method == "GET":
+        c={}
+        c.update(csrf(request))
+        c['client_token'] = json.dumps(client_token())
+        return render_to_response('paypalform.html',c)
     else:
-        dc = {}
-    return render_to_response('dashboard/oswestry.html', dc)
+        # print(request.POST)
+        nonce_from_the_client = request.POST.get("payment_method_nonce")
+        # print(nonce_from_the_client)
+        result = braintree.Transaction.sale({
+            "amount": "10.00",
+            "payment_method_nonce": nonce_from_the_client,
+            "options": {
+                "submit_for_settlement": True
+            }
+        })
+        settled_transaction=''
+        if result.is_success:
+            print(result.transaction)
+            settled_transaction = result.transaction
+
+        else:
+            print(result.errors.errors.data)
+        # Use payment method nonce here...
+        tr_id = settled_transaction.id
+        print(tr_id)
+        result = braintree.Transaction.submit_for_settlement(tr_id)
+
+        if result.is_success:
+            settled_transaction = result.transaction
+            print(settled_transaction)
+        else:
+            print(result.errors)
+        return HttpResponseRedirect('/ldn/checkout/')

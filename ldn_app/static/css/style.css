@@ -1,0 +1,216 @@
+
+a:focus, a:hover, a {
+    outline: none;
+    text-decoration: none;
+	    font-size: 14px;
+    font-weight: 600;
+}
+.header-top i {
+    font-size: 18px;
+	 color: #0e1a35;
+}
+#custom-search-input{
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+	    margin: 20px 0 0 50px;
+		width: 40%;
+    float: left;
+}
+
+#custom-search-input input{
+    border: 0;
+	    height: 30px;
+    box-shadow: none;
+}
+
+#custom-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #666666;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input .glyphicon-search{
+    font-size: 16px;
+}
+.LogoN{
+	padding-left:30px;
+}
+.blue-bg-nav{
+	    border-top: 2px solid #000;
+	background-color: #f7f7f7;
+	    padding: 10px 0;
+}
+.navbar-default {
+    background-color: transparent;
+    border: none;
+	    margin-bottom: 0;
+}
+.header-rightside{
+	margin-top:23px;
+}
+.dropdown-menu {
+	left: -78px;
+}
+.navbar-content{
+	    padding: 5px 25px;
+}
+.view  li{
+	list-style-type:none;
+}
+.label.label-primary {
+    border-radius: 50%;
+    font-size: 9px;
+    left: 91.5%;
+    position: absolute;
+    top: 14px;
+}
+.bandleft {
+    float: left;
+    width: 50%;
+    height: 6px;
+    background-color: #e98b26;
+}
+.bandright {
+    float: left;
+    width: 50%;
+    height: 6px;
+    background-color: #3de44a;
+}
+.icon-info .label {
+    border: 2px solid #ffffff;
+    font-weight: 500;
+    padding: 3px 5px;
+    text-align: center;
+}
+.PaientCMS {
+	float: left;
+    width: 40%;
+}
+.PatintSec{
+	float: left;
+    width: 60%;
+}
+.fa-fw {
+    text-align: left !important;
+}
+.control-label{
+	padding-top:7px;
+}
+.CustomCont{
+	    padding-left: 50px;
+    padding-right: 50px;
+}
+/* CSS Second Page */
+.page-header{
+	border-bottom:none;
+}
+.page-M{
+		float:left;
+	width:100%;
+}
+.PatientN{	
+	float:left;
+	width:10%;
+}
+.PatientNText{
+	float:left;
+	width:90%;
+}
+.panel-info {
+    border-color: #bce8f1;
+    margin-top: 25px;
+}
+.panel.with-nav-tabs .panel-heading{
+    padding: 5px 5px 0 5px;
+}
+.panel.with-nav-tabs .nav-tabs{
+	border-bottom: none;
+}
+.panel.with-nav-tabs .nav-justified{
+	margin-bottom: -1px;
+}
+
+/********************************************************************/
+/*** PANEL INFO ***/
+.with-nav-tabs.panel-info .nav-tabs > li > a,
+.with-nav-tabs.panel-info .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-info .nav-tabs > li > a:focus {
+	color: #31708f;
+}
+.with-nav-tabs.panel-info .nav-tabs > .open > a,
+.with-nav-tabs.panel-info .nav-tabs > .open > a:hover,
+.with-nav-tabs.panel-info .nav-tabs > .open > a:focus,
+.with-nav-tabs.panel-info .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-info .nav-tabs > li > a:focus {
+	color: #31708f;
+	background-color: #bce8f1;
+	border-color: transparent;
+}
+.with-nav-tabs.panel-info .nav-tabs > li.active > a,
+.with-nav-tabs.panel-info .nav-tabs > li.active > a:hover,
+.with-nav-tabs.panel-info .nav-tabs > li.active > a:focus {
+	color: #31708f;
+	background-color: #fff;
+	border-color: #bce8f1;
+	border-bottom-color: transparent;
+}
+.with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+.with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > li > a {
+    color: #31708f;   
+}
+.with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+.with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+    background-color: #bce8f1;
+}
+.with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+.with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+.with-nav-tabs.panel-info .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+    color: #fff;
+    background-color: #31708f;
+}
+/* Tabel CSS  */
+.filterable {
+    margin-top: 15px;
+}
+.filterable .panel-heading .pull-right {
+    margin-top: -20px;
+}
+.filterable .filters input[disabled] {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+}
+.filterable .filters input[disabled]::-webkit-input-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]::-moz-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]:-ms-input-placeholder {
+    color: #333;
+}
+.grapg img{
+	width:800px;
+}
+#no-more-tables{
+    height: 400px;
+    overflow-y: auto;
+}
