@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DASHBOARD</title>
     <link href={% static "css/bootstrap.min.css" %} rel="stylesheet">
-    <link href={% static  "css/custom.css" %} type="text/css" rel="stylesheet">
+    <link href={% static  "css/style.css" %} type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src={% static "js/jquery-2.1.4.min.js" %}></script>
     <script type="text/javascript" src={% static "js/bootstrap.min.js" %}></script>
@@ -56,18 +56,18 @@
                                 </div>
                                 <div class="header-rightside">
                                     <ul class="list-inline header-top pull-right">
-                                        <li class=""><a href="#" class="add-project">Dashboard</a></li>
-                                        <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
-                                        <li>
-                                            <a href="#" class="icon-info">
-                                                <i class="fa fa-bell" aria-hidden="true"></i>
-                                                <span class="label label-primary">3</span>
-                                            </a>
-                                        </li>
+                                        <li class=""><a href="/ldn/dashboard/" class="add-project">Dashboard</a></li>
+                                        <!-- <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li> -->
+                                        <!-- <li> -->
+                                            <!-- <a href="#" class="icon-info"> -->
+                                                <!-- <i class="fa fa-bell" aria-hidden="true"></i> -->
+                                                <!-- <span class="label label-primary">3</span> -->
+                                            <!-- </a> -->
+                                        <!-- </li> -->
                                         <li class="dropdown">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span><i
                                                     class="fa fa-fw fa-user"></i></span>Profile
-                                                <b class="caret"></b></a>
+                                                </a>
                                             <ul class="dropdown-menu">
                                                 <li>
                                                     <div class="navbar-content">
@@ -112,7 +112,7 @@
     <div class="row display-table-row">
         <div class="col-md-12 col-sm-12 display-table-cell v-align">
             <div class="user-dashboard">
-                <h1>Hello {{ request.user }}</h1>
+                <h4>Hello {{ request.user }}</h4>
 
             </div>
         </div>
@@ -136,20 +136,20 @@
             <div class="col-md-12">
                 <div class="panel with-nav-tabs panel-info">
                     <div class="panel-heading">
-                        <ul class="nav nav-tabs">
+                        <ul class="nav nav-tabs TabHeadm">
                             <li class="active"><a href="#tab1info" data-toggle="tab">CDC Data</a></li>
                             <li><a href="#tab2info" data-toggle="tab">Oswestry Data</a></li>
                             <li><a href="#tab3info" data-toggle="tab">Prescription Meds</a></li>
                             <li><a href="#tab4info" data-toggle="tab">Weight</a></li>
                             <li><a href="#tab5info" data-toggle="tab">Pain</a></li>
                             <li><a href="#tab6info" data-toggle="tab">Sleep</a></li>
-                            <li><a href="#tab7info" data-toggle="tab">Dose History</a></li>
-                            <li><a href="#tab8info" data-toggle="tab">LDN Taken Traker</a></li>
-                            <li><a href="#tab9info" data-toggle="tab">Current Dose</a></li>
+                            <li><a href="#tab7info" data-toggle="tab">Current Dose & Dose History</a></li>
+                            <li><a href="#tab8info" data-toggle="tab">LDN Taken Tracker</a></li>
+                            {#                            <li><a href="#tab9info" data-toggle="tab">Current Dose</a></li>#}
                             {#                            <li><a href="#tab10info" data-toggle="tab">Exercise</a></li>#}
                             {#                            <li><a href="#tab11info" data-toggle="tab">Diet</a></li>#}
                             <li><a href="#tab12info" data-toggle="tab">My day</a></li>
-                            <li><a href="#tab13info" data-toggle="tab">CFS Fibro Traker</a></li>
+                            <li><a href="#tab13info" data-toggle="tab">CFS Fibro Tracker</a></li>
                         </ul>
                     </div>
                     <div class="panel-body">
@@ -198,7 +198,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="cdc" style="min-width: 310px; height: 400px; margin: 0 auto">
+                                    <div id="cdc" class="graphg" class="graphg">
                                     </div>
 
 
@@ -224,7 +224,7 @@
                                                         <th>osw8</th>
                                                         <th>osw9</th>
                                                         <th>osw10</th>
-                                                        <th>oswSocre</th>
+                                                        <th>oswScore</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -251,7 +251,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="oswestry" style="min-width: 310px; height: 400px; margin: 0 auto">
+                                    <div id="oswestry" class="graphg"> class=graphg
+                                        >
                                     </div>
 
 
@@ -284,7 +285,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="prescriptionmeds" style="min-width: 310px; height: 400px; margin: 0 auto">
+                                    <div id="prescriptionmeds" class="graphg">
                                     </div>
 
 
@@ -319,9 +320,51 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="weight" style="min-width: 310px; height: 400px; margin: 0 auto">
+                                    <div id="weight" class="graphg">
                                     </div>
 
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab5info">
+                                <div class="col-md-4">
+                                    <div class="">
+                                        <h5><b>PATIENT DATA</b></h5>
+                                        <div class="row">
+                                            <div id="no-more-tables">
+                                                <table class="col-md-12 table-bordered table-striped table-condensed cf">
+                                                    <thead class="cf">
+                                                    <tr>
+                                                        <th>Date Added</th>
+                                                        <th>Pain Value</th>
+                                                        <th>Mood Value</th>
+                                                        <th>Fatigue Value</th>
+                                                        <th>Notes</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for row in pain_table_zipped %}
+                                                        <tr>
+                                                            <td>{{ row.0 }}</td>
+                                                            <td>{{ row.1 }}</td>
+                                                            <td>{{ row.2 }}</td>
+                                                            <td>{{ row.3 }}</td>
+                                                            <td>{{ row.4 }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div id="pain" class="painTabGraph">
+                                    </div>
+                                    <div id="painSec" class="painTabGraphSec">
+                                    </div>
+                                    <div id="painThird" class="painTabGraphThird">
+                                    </div>
 
                                 </div>
                             </div>
@@ -359,9 +402,71 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="sleep" style="min-width: 310px; height: 400px; margin: 0 auto">
+                                    <div id="sleep" class="graphg">
                                     </div>
 
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab7info">
+                                <div class="col-md-4">
+                                    <div class="">
+                                        <h5><b>CURRENT DOSE</b></h5>
+                                        <div class="row">
+                                            <div id="no-more-tables">
+                                                <table class="col-md-12 table-bordered table-striped table-condensed cf">
+                                                    <thead class="cf">
+                                                    <tr>
+                                                        <th>Date For</th>
+                                                        <th>Dose Size</th>
+                                                        <th>LDN Dosing</th>
+                                                        <th>Medication Type</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for row in cdose_table_zipped %}
+                                                        <tr>
+                                                            <td>{{ row.0 }}</td>
+                                                            <td>{{ row.1 }}</td>
+                                                            <td>{{ row.2 }}</td>
+                                                            <td>{{ row.3 }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <h5><b>Dose History</b></h5>
+                                        <div class="row">
+                                            <div id="no-more-tables">
+                                                <table class="col-md-12 table-bordered table-striped table-condensed cf">
+                                                    <thead class="cf">
+                                                    <tr>
+                                                        <th>Date For</th>
+                                                        <th>Dose Size</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for row in dosehistory_table_zipped %}
+                                                        <tr>
+                                                            <td>{{ row.0 }}</td>
+                                                            <td>{{ row.1 }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div id="currentdose" class="doseGraphTab">
+                                    </div>
+
+                                    <div id="dosehistory" class="doseGraphTabSec">
+                                    </div>
 
                                 </div>
                             </div>
@@ -392,7 +497,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="ldntracker" style="min-width: 310px; height: 400px; margin: 0 auto">
+                                    <div id="ldntracker" class="graphg">
                                     </div>
 
 
@@ -425,7 +530,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="myday" style="min-width: 310px; height: 400px; margin: 0 auto">
+                                    <div id="myday" class="graphg">
                                     </div>
 
 
@@ -458,7 +563,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="cfsfibro" style="min-width: 310px; height: 400px; margin: 0 auto">
+                                    <div id="cfsfibro" class="graphg">
                                     </div>
 
 
@@ -750,6 +855,147 @@
             }]
         });
 
+        var pain = new Highcharts.Chart({
+            chart: {
+                renderTo: 'pain'
+            },
+            title: {
+                text: 'PAIN VALUE',
+                x: -20 //center
+            },
+            {#            subtitle: {#}
+            {#                text: 'Source: WorldClimate.com',#}
+            {#                x: -20#}
+            {#            },#}
+            {#            xAxis: {#}
+            {#                type: 'datetime',#}
+            {#                min: 0,#}
+            {#                max: 9#}
+            {#            },#}
+            xAxis: [{
+                categories: {{ pain_date_added|safe }},
+                crosshair: true
+            }],
+
+            yAxis: {
+                title: {
+                    text: 'PAIN SCORE'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                {#                valueSuffix: '°C'#}
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'right',
+                horizontalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: [{
+                name: 'PAIN SCORE',
+                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                data:{{ pain_value|safe }}
+            }]
+        });
+        var painSec = new Highcharts.Chart({
+            chart: {
+                renderTo: 'painSec'
+            },
+            title: {
+                text: 'MOOD VALUE',
+                x: -20 //center
+            },
+            {#            subtitle: {#}
+            {#                text: 'Source: WorldClimate.com',#}
+            {#                x: -20#}
+            {#            },#}
+            {#            xAxis: {#}
+            {#                type: 'datetime',#}
+            {#                min: 0,#}
+            {#                max: 9#}
+            {#            },#}
+            xAxis: [{
+                categories: {{ pain_date_added|safe }},
+                crosshair: true
+            }],
+            yAxis: {
+                title: {
+                    text: 'MOOD SCORE'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                {#                valueSuffix: '°C'#}
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'right',
+                horizontalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: [{
+                name: 'mood_value',
+                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                data:{{ mood_value|safe }}
+            }]
+        });
+        var painThird = new Highcharts.Chart({
+            chart: {
+                renderTo: 'painThird'
+            },
+            title: {
+                text: 'FATIGUE VALUE',
+                x: -20 //center
+            },
+            {#            subtitle: {#}
+            {#                text: 'Source: WorldClimate.com',#}
+            {#                x: -20#}
+            {#            },#}
+            {#            xAxis: {#}
+            {#                type: 'datetime',#}
+            {#                min: 0,#}
+            {#                max: 9#}
+            {#            },#}
+            xAxis: [{
+                categories: {{ pain_date_added|safe }},
+                crosshair: true
+            }],
+            yAxis: {
+                title: {
+                    text: 'FATIGUE SCORE'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                {#                valueSuffix: '°C'#}
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'right',
+                horizontalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: [{
+                name: 'fatigue_value',
+                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                data:{{fatigue_value|safe}}
+            }]
+        });
+
+
         Highcharts.chart('sleep', {
             chart: {
                 zoomType: 'xy'
@@ -994,6 +1240,121 @@
                 data: (function () {
                     // generate an array of random data
                     var data_arr = {{ ldntracker_dose_size|safe }};
+                    var data = [];
+                    for (i = 0; i < data_arr.length; i++) {
+                        data.push(Number(data_arr[i]));
+                    }
+                    return data;
+                }())
+            }]
+        });
+
+        var currentdose = new Highcharts.Chart({
+            chart: {
+                renderTo: 'currentdose'
+            },
+            title: {
+                text: 'CURRENT DOSE QUESTIONNAIRE RESPONSE',
+                x: -20 //center
+            },
+            {#            subtitle: {#}
+            {#                text: 'Source: WorldClimate.com',#}
+            {#                x: -20#}
+            {#            },#}
+            {#            xAxis: {#}
+            {#                type: 'datetime',#}
+            {#                min: 0,#}
+            {#                max: 9#}
+            {#            },#}
+            xAxis: [{
+                categories: {{ cdose_entry_date|safe }},
+                crosshair: true
+            }],
+
+            yAxis: {
+                title: {
+                    text: 'DOSE SIZE'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                {#                valueSuffix: '°C'#}
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'right',
+                horizontalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: [{
+                name: 'DOSE SIZE',
+                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+
+                {#                data:data#}
+                data: (function () {
+                    // generate an array of random data
+                    var data_arr = {{ cdose_dosesize|safe }};
+                    var data = [];
+                    for (i = 0; i < data_arr.length; i++) {
+                        data.push(Number(data_arr[i]));
+                    }
+                    return data;
+                }())
+            }]
+        });
+        var dosehistory = new Highcharts.Chart({
+            chart: {
+                renderTo: 'dosehistory'
+            },
+            title: {
+                text: 'DOSE HISTORY QUESTIONNAIRE RESPONSE',
+                x: -20 //center
+            },
+            {#            subtitle: {#}
+            {#                text: 'Source: WorldClimate.com',#}
+            {#                x: -20#}
+            {#            },#}
+            {#            xAxis: {#}
+            {#                type: 'datetime',#}
+            {#                min: 0,#}
+            {#                max: 9#}
+            {#            },#}
+            xAxis: [{
+                categories: {{ dosehistory_fordate|safe }},
+                crosshair: true
+            }],
+
+            yAxis: {
+                title: {
+                    text: 'DOSE SIZE'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                {#                valueSuffix: '°C'#}
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'right',
+                horizontalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: [{
+                name: 'DOSE SIZE',
+                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+
+                {#                data:data#}
+                data: (function () {
+                    // generate an array of random data
+                    var data_arr = {{ dosehistory_dosesize|safe }};
                     var data = [];
                     for (i = 0; i < data_arr.length; i++) {
                         data.push(Number(data_arr[i]));

@@ -54,18 +54,18 @@
                             </div>
                             <div class="header-rightside">
                                 <ul class="list-inline header-top pull-right">
-                                    <li class=""><a href="#" class="add-project">Dashboard</a></li>
-                                    <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
-                                    <li>
-                                        <a href="#" class="icon-info">
-                                            <i class="fa fa-bell" aria-hidden="true"></i>
-                                            <span class="label label-primary">3</span>
-                                        </a>
-                                    </li>
+                                    <!--<li class=""><a href="#" class="add-project">Dashboard</a></li>-->
+                                    <!-- <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li> -->
+                                    <!-- <li> -->
+                                        <!-- <a href="#" class="icon-info"> -->
+                                            <!-- <i class="fa fa-bell" aria-hidden="true"></i> -->
+                                            <!-- <span class="label label-primary">3</span> -->
+                                        <!-- </a> -->
+                                    <!-- </li> -->
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span><i
-                                                class="fa fa-fw fa-user"></i></span>Profile
-                                            <b class="caret"></b></a>
+                                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span>
+									   <i class="fa fa-fw fa-user"></i></span>Profile
+                                            </a>
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <div class="navbar-content">
@@ -106,8 +106,12 @@
     <div class="row display-table-row">
         <div class="col-md-12 col-sm-12 display-table-cell v-align">
             <div class="user-dashboard">
-                <h1>Hello {{ request.user }}</h1>
-                <div class="row sales">
+                <h4>Hello {{ request.user }}</h4>
+               
+                <div class="row">
+                    <div class="panel panel-primary filterable">
+                        <div class="panel-heading">
+                             <div class="row sales">
                     <div class="col-md-3 col-sm-3 col-xs-12 gutter">
                         <div class=" report">
                             <div class="form-group">
@@ -167,10 +171,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="panel panel-primary filterable">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Record</h3>
                         </div>
                         <table class="table">
                             <thead>

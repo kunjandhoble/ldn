@@ -1,4 +1,58 @@
+@font-face {
+    font-family: 'bitterbold';
+    src: url('../fonts/bitter-bold-webfont.eot');
+    src: url('../fonts/bitter-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/bitter-bold-webfont.woff2') format('woff2'),
+         url('../fonts/bitter-bold-webfont.woff') format('woff'),
+         url('../fonts/bitter-bold-webfont.ttf') format('truetype'),
+         url('../fonts/bitter-bold-webfont.svg#bitterbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
 
+}
+@font-face {
+    font-family: 'bitterbold_italic';
+    src: url('../fonts/bitter-bolditalic-webfont.eot');
+    src: url('../fonts/bitter-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/bitter-bolditalic-webfont.woff2') format('woff2'),
+         url('../fonts/bitter-bolditalic-webfont.woff') format('woff'),
+         url('../fonts/bitter-bolditalic-webfont.ttf') format('truetype'),
+         url('../fonts/bitter-bolditalic-webfont.svg#bitterbold_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'bitteritalic';
+    src: url('../fonts/bitter-italic-webfont.eot');
+    src: url('../fonts/bitter-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/bitter-italic-webfont.woff2') format('woff2'),
+         url('../fonts/bitter-italic-webfont.woff') format('woff'),
+         url('../fonts/bitter-italic-webfont.ttf') format('truetype'),
+         url('../fonts/bitter-italic-webfont.svg#bitteritalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'bitterregular';
+    src: url('../fonts/bitter-regular-webfont.eot');
+    src: url('../fonts/bitter-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/bitter-regular-webfont.woff2') format('woff2'),
+         url('../fonts/bitter-regular-webfont.woff') format('woff'),
+         url('../fonts/bitter-regular-webfont.ttf') format('truetype'),
+         url('../fonts/bitter-regular-webfont.svg#bitterregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+body{
+		margin:0;
+		font-family: 'bitterregular';
+}
+h1,h2,p,label,th,td{
+	font-family: 'bitterregular';
+	font-weight:100;
+}
 a:focus, a:hover, a {
     outline: none;
     text-decoration: none;
@@ -14,7 +68,7 @@ a:focus, a:hover, a {
     border: solid 1px #E4E4E4;
     border-radius: 6px;
     background-color: #fff;
-	    margin: 20px 0 0 50px;
+	    margin: 11px 0 0 50px;
 		width: 40%;
     float: left;
 }
@@ -23,6 +77,7 @@ a:focus, a:hover, a {
     border: 0;
 	    height: 30px;
     box-shadow: none;
+	width: 92%;
 }
 
 #custom-search-input button{
@@ -47,8 +102,10 @@ a:focus, a:hover, a {
 .LogoN{
 	padding-left:30px;
 }
+.LogoN img{
+	height:60px;
+}
 .blue-bg-nav{
-	    border-top: 2px solid #000;
 	background-color: #f7f7f7;
 	    padding: 10px 0;
 }
@@ -115,6 +172,7 @@ a:focus, a:hover, a {
 /* CSS Second Page */
 .page-header{
 	border-bottom:none;
+	margin:0;
 }
 .page-M{
 		float:left;
@@ -124,13 +182,21 @@ a:focus, a:hover, a {
 	float:left;
 	width:10%;
 }
+.PatientN h5{	
+	padding:0;
+	margin:5px 0;
+}
+.PatientNText h5{
+	padding:0;
+	margin:5px 0;
+}
 .PatientNText{
 	float:left;
 	width:90%;
 }
 .panel-info {
     border-color: #bce8f1;
-    margin-top: 25px;
+    margin-top: 10px;
 }
 .panel.with-nav-tabs .panel-heading{
     padding: 5px 5px 0 5px;
@@ -213,4 +279,35 @@ a:focus, a:hover, a {
 #no-more-tables{
     height: 400px;
     overflow-y: auto;
+}
+.painTabGraph{
+	    margin-bottom: 45px;
+		    height: 250px;
+    overflow: auto;
+}
+.painTabGraphSec{
+	    height: 250px;
+    overflow: auto;
+}
+.painTabGraphThird{
+	    height: 250px;
+    overflow: auto;
+}
+.doseGraphTab{
+	    margin-bottom: 45px;
+		    height: 350px;
+    overflow: auto;
+}
+.doseTabGraphSec{
+	    height: 350px;
+    overflow: auto;
+}
+table th,td{
+	font-size:12px;
+}
+.TabHeadm li a:focus, a:hover, a {
+    font-size: 14px;	
+}
+.nav>li>a {
+    padding: 10px 9px;
 }

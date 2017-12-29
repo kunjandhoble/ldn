@@ -254,12 +254,12 @@ def graphs(request, patientid):
     dc.update(cdc_data('cdc', patientid))
     dc.update(weight_data('weight', patientid))
     dc.update(prescriptionmeds_data('prescription_meds',patientid))
-    # dc.update(pain_data('pain_tracker', patientid))
-    # dc.update(dosehistory_data('research_dose_history', patientid))
+    dc.update(pain_data('pain_tracker', patientid))
+    dc.update(dosehistory_data('research_dose_history', patientid))
     dc.update(sleep_data('sleep', patientid))
     dc.update(cfsfibrotracker_data('cfs_fibro_tracker', patientid))
     dc.update(myday_data('myday', patientid))
-    # dc.update(currentdose_data('currentdose', patientid))
+    dc.update(currentdose_data('currentdose', patientid))
     dc.update(ldntracker_data('ldntracker', patientid))
     return render_to_response('dashboard.html', dc)
 
@@ -290,6 +290,15 @@ def dashboard(request):
             c.update({'NA': 'Invalid patient id. Please try again.'})
             c.update({'request': request})
             return render_to_response('patientdata.html', c)
+    else:
+        patient_data = PatientData.objects.filter(user_id=request.user.id)
+        c = {}
+        c.update(csrf(request))
+        c['patient_data'] = patient_data
+        c.update({'NA': 'Invalid patient id. Please try again.'})
+        c.update({'request': request})
+        return render_to_response('patientdata.html', c)
+
 
 def client_token():
   return braintree.ClientToken.generate()

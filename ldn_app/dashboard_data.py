@@ -1,4 +1,5 @@
 import ConfigParser as cp  # >>>> for python 2
+
 # import configparser as cp #>>>> for python 3
 import MySQLdb as mysqldb
 import json
@@ -7,9 +8,10 @@ from decimal import Decimal
 
 import simplejson
 
+
 def fetch_data_from_db(sqlquery):
     config = cp.ConfigParser()
-    config.read("db_creds")
+    config.read("/home/ubuntu/ldn_project/ldn/db_creds")
     name = config.get("ldnlocal", "NAME")
     user = config.get("ldnlocal", "USER")
     pwd = config.get("ldnlocal", "PASSWORD")
@@ -125,68 +127,26 @@ def prescriptionmeds_data(tablename, patientid):
 
 
 def pain_data(tablename, patientid):
-    sqlquery = """SELECT user_id, date_added, pain_value, mood_value, fatigue_value,notes FROM user_{0} where user_id in (
+    sqlquery = """SELECT user_id, date_added, pain_value, mood_value, fatigue_value, notes FROM user_{0} where user_id in (
                     SELECT user_id
                     FROM monthly_questionnaire where user_id <> 309 and user_id ={1} and
                     (cdc_id is not null and oswestry_id is not null and weight_id is not null and
                     meds_count_id is not null and ldn_type_id is not null) order by user_id
                     ) order by user_id, date_added ASC;""".format(tablename, patientid)
     data = fetch_data_from_db(sqlquery)
-    date_added, pain_value, mood_value, fatigue_value = [], [], [], []
+    date_added, pain_value, mood_value, fatigue_value, notes = [], [], [], [], []
     for row in data:
         date_added.append(str(row[1]))
         pain_value.append(row[2])
         mood_value.append(row[3])
         fatigue_value.append(row[4])
+        notes.append(row[5])
 
+    pain_table_zippped = list(zip(date_added, pain_value, mood_value, fatigue_value, notes))
     dc = {'pain_date_added': json.dumps(date_added), 'pain_value': json.dumps(pain_value),
           'mood_value': json.dumps(mood_value),
-          'fatigue_value': json.dumps(fatigue_value)}
-    return dc
+          'fatigue_value': json.dumps(fatigue_value), 'pain_table_zipped': pain_table_zippped}
 
-
-def dosehistory_data(tablename, patientid):
-    sqlquery = """
-        SELECT
-          user_research_dose_history.id,
-          user_research_dose_history.user_id,
-          master_ldn_type.medication_type,
-          master_ldn_dose_size.dose_size,
-          master_ldn_dosing.ldn_dosing,
-          user_research_dose_history.other_dose_size,
-          user_research_dose_history.on_prescription,
-          user_research_dose_history.dateFor
-        FROM
-          user_research_dose_history,
-          master_ldn_type,
-          master_ldn_dose_size,
-          master_ldn_dosing
-        WHERE
-            user_research_dose_history.user_id in (
-        SELECT user_id
-        FROM monthly_questionnaire where user_id <> 309 and user_id ={1} and
-        (cdc_id is not null and oswestry_id is not null and weight_id is not null and
-        meds_count_id is not null and ldn_type_id is not null) order by user_id
-        ) AND
-          master_ldn_type.medication_type_id = user_research_dose_history.dose_type AND
-          master_ldn_dosing.ldn_dosing_id = user_research_dose_history.dose_timing AND
-          master_ldn_dose_size.ldn_dose_size_id = user_research_dose_history.dose_size
-           order by user_id, dateFor ASC;
-        """.format(tablename, patientid)
-    dosesize, fordate = [], []
-    data = fetch_data_from_db(sqlquery)
-
-    # class DecimalJSONEncoder(simplejson.JSONEncoder):
-    #     def default(self, o):
-    #         if isinstance(o, Decimal):
-    #             return str(o)
-    #         return super(DecimalJSONEncoder, self).default(o)
-
-    for row in data:
-        # dosesize.append(json.dumps(Decimal(row[3]), use_decimal = True))
-        fordate.append(str(row[-1]))
-        dosesize.append(str(row[3]))
-    dc = {'dosehistory_dosesize': simplejson.dumps(dosesize), 'dosehistory_fordate': json.dumps(fordate)}
     return dc
 
 
@@ -242,6 +202,53 @@ def myday_data(tablename, patientid):
     return dc
 
 
+def dosehistory_data(tablename, patientid):
+    sqlquery = """
+        SELECT
+          user_research_dose_history.id,
+          user_research_dose_history.user_id,
+          master_ldn_type.medication_type,
+          master_ldn_dose_size.dose_size,
+          master_ldn_dosing.ldn_dosing,
+          user_research_dose_history.other_dose_size,
+          user_research_dose_history.on_prescription,
+          user_research_dose_history.dateFor
+        FROM
+          user_research_dose_history,
+          master_ldn_type,
+          master_ldn_dose_size,
+          master_ldn_dosing
+        WHERE
+            user_research_dose_history.user_id in (
+        SELECT user_id
+        FROM monthly_questionnaire where user_id <> 309 and user_id ={1} and
+        (cdc_id is not null and oswestry_id is not null and weight_id is not null and
+        meds_count_id is not null and ldn_type_id is not null) order by user_id
+        ) AND
+          master_ldn_type.medication_type_id = user_research_dose_history.dose_type AND
+          master_ldn_dosing.ldn_dosing_id = user_research_dose_history.dose_timing AND
+          master_ldn_dose_size.ldn_dose_size_id = user_research_dose_history.dose_size
+           order by user_id, dateFor ASC;
+        """.format(tablename, patientid)
+    dosesize, fordate = [], []
+    data = fetch_data_from_db(sqlquery)
+
+    # class DecimalJSONEncoder(simplejson.JSONEncoder):
+    #     def default(self, o):
+    #         if isinstance(o, Decimal):
+    #             return str(o)
+    #         return super(DecimalJSONEncoder, self).default(o)
+
+    for row in data:
+        # dosesize.append(json.dumps(Decimal(row[3]), use_decimal = True))
+        fordate.append(str(row[-1]))
+        dosesize.append(str(row[3]))
+    dosehistory_table_zipped = list(zip(fordate,dosesize))
+    dc = {'dosehistory_dosesize': simplejson.dumps(dosesize), 'dosehistory_fordate': json.dumps(fordate),
+          'dosehistory_table_zipped':dosehistory_table_zipped}
+    return dc
+
+
 def currentdose_data(tablename, patientid):
     sqlquery = """select cd.user_id, cd.entry_date, mds.dose_size, d.ldn_dosing, t.medication_type
                     from user_ldn_current_dose cd
@@ -250,18 +257,18 @@ def currentdose_data(tablename, patientid):
                     left join master_ldn_type t on cd.dose_type = t.medication_type_id
                     where cd.user_id={1}
                     order by cd.entry_date asc""".format(tablename, patientid)
-    entry_date, dose_size, ldn_dosing, medication_type = [], [], [], []
+    entry_date, dosesize, ldn_dosing, medication_type = [], [], [], []
     data = fetch_data_from_db(sqlquery)
     for row in data:
         print(row)
         entry_date.append(str(row[1]))
-        dose_size.append(str(row[2]))
+        dosesize.append(str(row[2]))
         ldn_dosing.append(row[3])
         medication_type.append(row[4])
-
-    dc = {'cdose_entry_date': json.dumps(entry_date), 'cdose_dose_size': json.dumps(dose_size),
-          'cdose_ldn_dosing': json.dumps(ldn_dosing),
-          'cdose_medication_type': json.dumps(medication_type)}
+    cdose_table_zipped = list(zip(entry_date,dosesize,ldn_dosing,medication_type))
+    dc = {'cdose_entry_date': json.dumps(entry_date), 'cdose_dosesize': json.dumps(dosesize),
+          'cdose_ldn_dosing': json.dumps(ldn_dosing),'cdose_medication_type': json.dumps(medication_type),
+          'cdose_table_zipped':cdose_table_zipped}
     return dc
 
 
@@ -283,3 +290,4 @@ where tt.user_id={1}""".format(tablename, patientid)
           'ldntracker_table_zipped': ldntracker_table_zippped}
 
     return dc
+
