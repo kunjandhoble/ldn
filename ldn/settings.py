@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'ldn.wsgi.application'
 import braintree
 import ConfigParser as cp
 config = cp.ConfigParser()
-db_credpath = os.path.join(os.path.abspath(os.path.dirname(__name__)), "db_creds")
+db_credpath = os.path.join(BASE_DIR, "db_creds")
 config.read(db_credpath)
 mid = config.get("paypal", "mid")
 pub = config.get("paypal", "pub")
