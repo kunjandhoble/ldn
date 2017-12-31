@@ -15,6 +15,14 @@
     <script type="text/javascript" src={% static "js/bootstrap.min.js" %}></script>
     <script src={% static "js/highcharts.js" %}></script>
     <script src={% static "js/exporting.js" %}></script>
+    <!-- Include Required Prerequisites -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/3/css/bootstrap.css"/>
+
+    <!-- Include Date Range Picker -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
     {#    <script type="text/javascript" src={% static "js/Dashboardjs.js" %}></script>#}
 
 </head>
@@ -43,8 +51,9 @@
                             <div id="custom-search-input">
                                 <div class="input-group col-md-12">
                                     <form method="POST" action="/ldn/dashboard/">{% csrf_token %}
-                                    <input type="text" class="form-control input-lg" name="patient_id" placeholder="Search"/>
-                                    <span class="input-group-btn">
+                                        <input type="text" class="form-control input-lg" name="patient_id"
+                                               placeholder="Search"/>
+                                        <span class="input-group-btn">
 												<button class="btn btn-info btn-lg" type="submit">
 													<i class="glyphicon glyphicon-search"></i>
 												</button>
@@ -57,19 +66,19 @@
                                     <!--<li class=""><a href="#" class="add-project">Dashboard</a></li>-->
                                     <!-- <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li> -->
                                     <!-- <li> -->
-                                        <!-- <a href="#" class="icon-info"> -->
-                                            <!-- <i class="fa fa-bell" aria-hidden="true"></i> -->
-                                            <!-- <span class="label label-primary">3</span> -->
-                                        <!-- </a> -->
+                                    <!-- <a href="#" class="icon-info"> -->
+                                    <!-- <i class="fa fa-bell" aria-hidden="true"></i> -->
+                                    <!-- <span class="label label-primary">3</span> -->
+                                    <!-- </a> -->
                                     <!-- </li> -->
                                     <li class="dropdown">
-                                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span>
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span>
 									   <i class="fa fa-fw fa-user"></i></span>Profile
-                                            </a>
+                                        </a>
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <div class="navbar-content">
-                                                    <span>{{ request.user.firstname}} {{ request.user.lastname }}</span>
+                                                    <span>{{ request.user.firstname }} {{ request.user.lastname }}</span>
                                                     <p class="text-muted small">
                                                         {{ request.user.email }}
                                                     </p>
@@ -107,70 +116,102 @@
         <div class="col-md-12 col-sm-12 display-table-cell v-align">
             <div class="user-dashboard">
                 <h4>Hello {{ request.user }}</h4>
-               
+                {% if NA %}
+                    <h4 style="color: red"><b>{{ NA }}</b></h4>
+                {% endif %}
                 <div class="row">
                     <div class="panel panel-primary filterable">
                         <div class="panel-heading">
-                             <div class="row sales">
-                    <div class="col-md-3 col-sm-3 col-xs-12 gutter">
-                        <div class=" report">
-                            <div class="form-group">
-                                <label for="country" class="PaientCMS  control-label">Patient ID </label>
-                                <div class="PatintSec">
-                                    <select id="" class="form-control">
-                                        {% for data in patient_data %}
-                                            <option>{{ data.id }}</option>
-                                        {% endfor %}
-                                    </select>
+                            <div class="row sales">
+{#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
+{#                                    <div class=" report">#}
+{#                                        <div class="form-group">#}
+{#                                            <label for="country" class="PaientCMS  control-label">Patient ID </label>#}
+{#                                            <div class="PatintSec">#}
+{#                                                <select id="" class="form-control">#}
+{#                                                    {% for data in patient_data %}#}
+{#                                                        <option>{{ data.0 }}</option>#}
+{#                                                    {% endfor %}#}
+{#                                                </select>#}
+{#                                            </div>#}
+{#                                        </div> <!-- /.form-group -->#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
+{#                                    <div class=" report">#}
+{#                                        <div class="form-group">#}
+{#                                            <label for="country" class="PaientCMS control-label">Patient Name</label>#}
+{#                                            <div class="PatintSec">#}
+{#                                                <select id="country" class="form-control">#}
+{#                                                    {% for data in patient_data %}#}
+{#                                                        <option>{{ data.1 }}</option>#}
+{#                                                    {% endfor %}#}
+{#                                                </select>#}
+{#                                            </div>#}
+{#                                        </div> <!-- /.form-group -->#}
+{#                                    </div>#}
+{#                                </div>#}
+                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">
+                                    <div class=" report">
+                                        <div class="form-group">
+                                            <label for="country" class="PaientCMS control-label">Graph Start Date</label>
+                                            <div class="PatintSec">
+                                                <input type="date" id="dateStart" name="dateStart" class="form-control">
+{#                                                <select id="country" class="form-control">#}
+{#                                                    {% for data in patient_data %}#}
+{#                                                        <option>{{ data.1 }}</option>#}
+{#                                                    {% endfor %}#}
+{#                                                </select>#}
+                                            </div>
+                                        </div> <!-- /.form-group -->
+                                    </div>
                                 </div>
-                            </div> <!-- /.form-group -->
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-3 col-xs-12 gutter">
-                        <div class=" report">
-                            <div class="form-group">
-                                <label for="country" class="PaientCMS control-label">Patient Name</label>
-                                <div class="PatintSec">
-                                    <select id="country" class="form-control">
-                                     {% for data in patient_data %}
-                                            <option>{{ data.name }}</option>
-                                        {% endfor %}
-                               </select>
+                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">
+                                    <div class=" report">
+                                        <div class="form-group">
+                                            <label for="country" class="PaientCMS control-label">Graph End Date</label>
+                                            <div class="PatintSec">
+                                                <input type="date" id ="dateEnd" name="dateEnd" class="form-control">
+{#                                                <select id="country" class="form-control">#}
+{#                                                    {% for data in patient_data %}#}
+{#                                                        <option>{{ data.1 }}</option>#}
+{#                                                    {% endfor %}#}
+{#                                                </select>#}
+                                            </div>
+                                        </div> <!-- /.form-group -->
+                                    </div>
                                 </div>
-                            </div> <!-- /.form-group -->
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-3 col-xs-12 gutter">
-                        <div class=" report">
-                            <div class="form-group">
-                                <label for="country" class="PaientCMS control-label">Report Date</label>
-                                <div class="PatintSec">
-                                    <select id="country" class="form-control">
-                                        <option>25.29.2017</option>
-                                        <option>25.29.2015</option>
-                                        <option>25.29.2014</option>
-                                        <option>25.29.2013</option>
-                                    </select>
-                                </div>
-                            </div> <!-- /.form-group -->
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-3 col-xs-12 gutter">
-                        <div class=" report">
-                            <div class="form-group">
-                                <label for="country" class="PaientCMS control-label">Date Added</label>
-                                <div class="PatintSec">
-                                    <select id="country" class="form-control">
-                                        <option>25.29.2017</option>
-                                        <option>25.29.2015</option>
-                                        <option>25.29.2014</option>
-                                        <option>25.29.2013</option>
-                                    </select>
-                                </div>
-                            </div> <!-- /.form-group -->
-                        </div>
-                    </div>
-                </div>
+{#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
+{#                                    <div class=" report">#}
+{#                                        <div class="form-group">#}
+{#                                            <label for="country" class="PaientCMS control-label">Report Date</label>#}
+{#                                            <div class="PatintSec">#}
+{#                                                <select id="country" class="form-control">#}
+{#                                                    <option>25.29.2017</option>#}
+{#                                                    <option>25.29.2015</option>#}
+{#                                                    <option>25.29.2014</option>#}
+{#                                                    <option>25.29.2013</option>#}
+{#                                                </select>#}
+{#                                            </div>#}
+{#                                        </div> <!-- /.form-group -->#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
+{#                                    <div class=" report">#}
+{#                                        <div class="form-group">#}
+{#                                            <label for="country" class="PaientCMS control-label">Date Added</label>#}
+{#                                            <div class="PatintSec">#}
+{#                                                <select id="country" class="form-control">#}
+{#                                                    <option>25.29.2017</option>#}
+{#                                                    <option>25.29.2015</option>#}
+{#                                                    <option>25.29.2014</option>#}
+{#                                                    <option>25.29.2013</option>#}
+{#                                                </select>#}
+{#                                            </div>#}
+{#                                        </div> <!-- /.form-group -->#}
+{#                                    </div>#}
+{#                                </div>#}
+                            </div>
                         </div>
                         <table class="table">
                             <thead>
@@ -178,19 +219,21 @@
                                 {#                                <th>#</th>#}
                                 <th>Patient ID</th>
                                 <th>Patient Name</th>
-                                <th>Contact</th>
+                                <th>Contact Email</th>
                                 {#                                <th>Date Added</th>#}
                             </tr>
                             </thead>
                             <tbody>
                             {% for data in patient_data %}
                                 <tr style="color: black">
-{#                                    <th><li><a href={% url 'graphs' patientid=data.id %} class="">{{ data.id }}#}
-{#                                    </a></li></th>#}
-                                    <th><li><a href={% url 'graphs' patientid=1712 %} class="">{{ data.id }}
-                                    </a></li></th>
-                                    <th> {{ data.name }}</th>
-                                    <th> {{ data.contact_number }}</th>
+                                    {#                                    <th><li><a href={% url 'graphs' patientid=data.id %} class="">{{ data.id }}#}
+                                    {#                                    </a></li></th>#}
+                                    <th>
+                                        <li><a href={% url 'graphs' patientid=data.0 %} class="idlist">{{ data.0 }}
+                                        </a></li>
+                                    </th>
+                                    <th> {{ data.1 }}</th>
+                                    <th> {{ data.2 }}</th>
                                 </tr>
                             {% endfor %}
                             {#												<tr>#}
@@ -223,6 +266,14 @@
     </div>
 
 </div>
+<script>
+$('.idlist').on('click', function(e){
+  e.preventDefault();
+  var address = $(this).attr('href') + "?start="+$('#dateStart').val()+"&end="+$('#dateEnd').val();
+  alert(address);
+  window.location = address;
 
+});
+</script>
 </body>
 </html>

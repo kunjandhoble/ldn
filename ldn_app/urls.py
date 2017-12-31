@@ -22,8 +22,11 @@ urlpatterns= [
     # url(r'^dash/$', db_analyze, name='dash'),
     url(r'^client_token/$', client_token, name='client_token'),
     url(r'^checkout/$', create_purchase, name='checkout'),
+    url(r'^purchase/$', purchase, name='purchase'),
+    # url(r'^success/$', success, name='success'),
+    url(r'^checkpayment/$', checkpayment, name='checkpayment'),
 
-    # url(r'^confirm/(?P<activation_key>\w+)/', views.register_confirm),
+                 # url(r'^confirm/(?P<activation_key>\w+)/', views.register_confirm),
 
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

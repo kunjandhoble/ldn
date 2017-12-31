@@ -5,7 +5,14 @@ import random
 import string, json
 #
 # import json as json
-
+import time
+import paypalrestsdk
+from MySQLdb import escape_string as thwart
+from decimal import Decimal
+from django.http import JsonResponse
+from django.urls import reverse
+from werkzeug.datastructures import ImmutableOrderedMultiDict
+import requests
 import braintree
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -22,7 +29,7 @@ from .dashboard_data import *
 def login_view(request):
     c = {}
     c.update(csrf(request))
-    return render_to_response('loginLDN_pass.html', c)
+    return render_to_response('loginLDNewHarshal.html', c)
 
 
 # @csrf_protect
@@ -118,7 +125,7 @@ def admin_login_verify(request):
                 return HttpResponse("Your request is not approved. Please try again later.")
 
             login(request, user_obj)
-            return HttpResponseRedirect(request.POST.get('next'))
+            return HttpResponseRedirect('/ldn/adminpanel/')
         else:
             return HttpResponse("Invalid login please try again")
     c['next'] = request.GET.get('next', '')
@@ -149,7 +156,7 @@ def user_login_verify(request):
             signin_user = UserSignupDetails.objects.get(user_id=user_obj.id)
             if signin_user.dr_licence == dr_licence:
                 login(request, user_obj)
-                return HttpResponseRedirect("/ldn/userpatients/")
+                return HttpResponseRedirect("/ldn/dashboard/")
             else:
                 return HttpResponse("Wrong Dr Licence Number")
         else:
@@ -195,12 +202,21 @@ def send_password(request):
 
 @login_required(login_url='/ldn/login/')
 def user_patients(request):
-    patient_data = PatientData.objects.filter(user_id=request.user.id)
-    c = {}
-    c.update(csrf(request))
-    c.update({'request':request})
-    c['patient_data'] = patient_data
-    return render_to_response('patientdata.html', c)
+    try:
+        user_id = PaypalTransaction.objects.get(user_id=request.user.id)
+    except:
+        return HttpResponseRedirect('/ldn/purchase/')
+
+    if user_id.transaction_status != 'COMPLETED':
+        return HttpResponseRedirect('/ldn/purchase/')
+    else:
+        patient_data = PatientData.objects.filter(user_id=request.user.id)
+        c = {}
+        c.update(csrf(request))
+        c['patient_data'] = patient_data
+        c.update({'NA': 'Invalid patient id. Please try again.'})
+        c.update({'request': request})
+        return render_to_response('patientdata.html', c)
 
 
 # @login_required(login_url='/ldn/login/')
@@ -244,46 +260,90 @@ def user_patients(request):
 
 @login_required(login_url='/ldn/login/')
 def graphs(request, patientid):
-    dc={}
-    if patientid=='1712':
-        patient_data = PatientData.objects.get(id=7)
-        dc={'patient_data':patient_data}
-    dc.update({'request':request})
+    startdate = request.GET.get('start', '')
+    enddate = request.GET.get('end', '')
+
+    doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
+    sqlquery = r'SELECT user_id FROM ldnappor_development.user'
+    if doctor.dr_licence is not None or doctor.dr_licence is not '':
+        sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
+    if doctor.ph_licence is not None or doctor.ph_licence is not '':
+        sqlquery += r' or ph_licence = "{0}"'.format(doctor.ph_licence)
+    data = fetch_data_from_db(sqlquery=sqlquery)
+
+    # check patient id in subscription id list from user table.
+    dc = {}
     dc.update(csrf(request))
-    dc.update(oswestry_data('oswestry', patientid))
-    dc.update(cdc_data('cdc', patientid))
-    dc.update(weight_data('weight', patientid))
-    dc.update(prescriptionmeds_data('prescription_meds',patientid))
-    dc.update(pain_data('pain_tracker', patientid))
-    dc.update(dosehistory_data('research_dose_history', patientid))
-    dc.update(sleep_data('sleep', patientid))
-    dc.update(cfsfibrotracker_data('cfs_fibro_tracker', patientid))
-    dc.update(myday_data('myday', patientid))
-    dc.update(currentdose_data('currentdose', patientid))
-    dc.update(ldntracker_data('ldntracker', patientid))
+    if patientid not in [str(row[0]) for row in data]:
+        dc['notfound'] = "Patient Id = {} not found. Try again with a different id.".format(patientid)
+        return render_to_response('dashboard.html', dc)
+    dc.update({'request': request})
+    sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) FROM ldnappor_development.user where user_id={0}'.format(
+        patientid)
+    data = fetch_data_from_db(sqlquery=sqlquery)
+    dc.update({'patient_data': (data[0][0], data[0][1])})
+    dc.update(oswestry_data('oswestry', patientid, startdate, enddate))
+    dc.update(cdc_data('cdc', patientid, startdate, enddate))
+    dc.update(weight_data('weight', patientid, startdate, enddate))
+    dc.update(prescriptionmeds_data('prescription_meds', patientid, startdate, enddate))
+    dc.update(pain_data('pain_tracker', patientid, startdate, enddate))
+    dc.update(dosehistory_data('research_dose_history', patientid, startdate, enddate))
+    dc.update(sleep_data('sleep', patientid, startdate, enddate))
+    dc.update(cfsfibrotracker_data('cfs_fibro_tracker', patientid, startdate, enddate))
+    dc.update(myday_data('myday', patientid, startdate, enddate))
+    dc.update(currentdose_data('currentdose', patientid, startdate, enddate))
+    dc.update(ldntracker_data('ldntracker', patientid, startdate, enddate))
+    # dc.update(alcoholtracker_data('alcoholtracker', patientid, startdate, enddate))
+
     return render_to_response('dashboard.html', dc)
+
 
 @login_required(login_url='/ldn/login/')
 def dashboard(request):
     if request.method == "POST":
         patient_id = request.POST.get('patient_id')
         try:
-            if patient_id=='1712':
-                patient_id = 7
-            doctor = PatientData.objects.get(id=int(patient_id)).user
+            doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
+            sqlquery = r'SELECT user_id FROM ldnappor_development.user'
+            if doctor.dr_licence is not None or doctor.dr_licence is not '':
+                sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
+            if doctor.ph_licence is not None or doctor.ph_licence is not '':
+                sqlquery += r' or ph_licence = "{0}"'.format(doctor.ph_licence)
+            data = fetch_data_from_db(sqlquery=sqlquery)
+
             # doctor_id = '1712' #doctor.id
-            if doctor.is_active:
-                return HttpResponseRedirect('/ldn/graphs/'+str(1712))
+            if doctor.user.is_active and patient_id in [str(row[0]) for row in data]:
+                return HttpResponseRedirect('/ldn/graphs/' + patient_id)
             else:
-                patient_data = PatientData.objects.filter(user_id=request.user.id)
+                doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
+                sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname, email_address as fullname FROM ldnappor_development.user'
+                if doctor.dr_licence is not None or doctor.dr_licence is not '':
+                    sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
+                if doctor.ph_licence is not None or doctor.ph_licence is not '':
+                    sqlquery += r' or ph_licence = "{0}"'.format(doctor.ph_licence)
+                data = fetch_data_from_db(sqlquery=sqlquery)
+                patient_data = []
+                for row in data:
+                    patient_data.append((row[0], row[1], row[2]))
+                # patient_data = PatientData.objects.filter(user_id=request.user.id)
                 c = {}
                 c.update(csrf(request))
                 c['patient_data'] = patient_data
                 c.update({'NA': 'no record found'})
                 c.update({'request': request})
-                return render_to_response('patientdata.html',c)
+                return render_to_response('patientdata.html', c)
         except:
-            patient_data = PatientData.objects.filter(user_id=request.user.id)
+            doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
+            sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname, email_address as fullname FROM ldnappor_development.user'
+            if doctor.dr_licence is not None or doctor.dr_licence is not '':
+                sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
+            if doctor.ph_licence is not None or doctor.ph_licence is not '':
+                sqlquery += r' or ph_licence = "{0}"'.format(doctor.ph_licence)
+            data = fetch_data_from_db(sqlquery=sqlquery)
+            patient_data = []
+            for row in data:
+                patient_data.append((row[0], row[1], row[2]))
+            # patient_data = PatientData.objects.filter(user_id=request.user.id)
             c = {}
             c.update(csrf(request))
             c['patient_data'] = patient_data
@@ -291,25 +351,43 @@ def dashboard(request):
             c.update({'request': request})
             return render_to_response('patientdata.html', c)
     else:
-        patient_data = PatientData.objects.filter(user_id=request.user.id)
-        c = {}
-        c.update(csrf(request))
-        c['patient_data'] = patient_data
-        c.update({'NA': 'Invalid patient id. Please try again.'})
-        c.update({'request': request})
-        return render_to_response('patientdata.html', c)
+        try:
+            user_id = PaypalTransaction.objects.get(user_id=request.user.id)
+        except:
+            return HttpResponseRedirect('/ldn/purchase/')
+
+        if user_id.transaction_status != 'COMPLETED':
+            return HttpResponseRedirect('/ldn/purchase/')
+        else:
+
+            doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
+            sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname, email_address as fullname FROM ldnappor_development.user'
+            if doctor.dr_licence is not None or doctor.dr_licence is not '':
+                sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
+            if doctor.ph_licence is not None or doctor.ph_licence is not '':
+                sqlquery += r' or ph_licence = "{0}"'.format(doctor.ph_licence)
+            data = fetch_data_from_db(sqlquery=sqlquery)
+            patient_data = []
+            for row in data:
+                patient_data.append((row[0], row[1], row[2]))
+            # patient_data = PatientData.objects.filter(user_id=request.user.id)
+            c = {}
+            c.update(csrf(request))
+            c['patient_data'] = patient_data
+            c.update({'request': request})
+            return render_to_response('patientdata.html', c)
 
 
 def client_token():
-  return braintree.ClientToken.generate()
+    return braintree.ClientToken.generate()
 
 
 def create_purchase(request):
     if request.method == "GET":
-        c={}
+        c = {}
         c.update(csrf(request))
         c['client_token'] = json.dumps(client_token())
-        return render_to_response('paypalform.html',c)
+        return render_to_response('paypalform.html', c)
     else:
         # print(request.POST)
         nonce_from_the_client = request.POST.get("payment_method_nonce")
@@ -321,7 +399,7 @@ def create_purchase(request):
                 "submit_for_settlement": True
             }
         })
-        settled_transaction=''
+        settled_transaction = ''
         if result.is_success:
             print(result.transaction)
             settled_transaction = result.transaction
@@ -331,6 +409,7 @@ def create_purchase(request):
         # Use payment method nonce here...
         tr_id = settled_transaction.id
         print(tr_id)
+        print(json.dumps(settled_transaction))
         result = braintree.Transaction.submit_for_settlement(tr_id)
 
         if result.is_success:
@@ -339,3 +418,88 @@ def create_purchase(request):
         else:
             print(result.errors)
         return HttpResponseRedirect('/ldn/checkout/')
+
+
+@login_required(login_url='/ldn/login/')
+def purchase(request):
+    try:
+        c = {}
+        c.update(csrf(request))
+        return render_to_response("paypalsuccess.html", c)
+
+        # return render_to_response("paypalform.html")
+    except Exception as e:
+        return str(e)
+
+
+
+#TO DO: DB CREDS PATH
+def fetch_paypal_details():
+    config = cp.ConfigParser()
+    config.read("db_creds")
+    client_id = config.get("paypalSandboxClient", "client_id")
+    client_secret = config.get("paypalSandboxClient", "client_secret")
+    return (client_id, client_secret)
+
+
+ACCESS_TOKEN = ''
+
+
+def api_access_token():
+    headers = {
+        'Accept': 'application/json',
+        'Accept-Language': 'en_US',
+    }
+
+    data = [
+        ('grant_type', 'client_credentials'),
+    ]
+    paypal_creds = fetch_paypal_details()
+    client_id = paypal_creds[0],
+    client_secret = paypal_creds[1]
+
+    response = requests.post('https://api.sandbox.paypal.com/v1/oauth2/token', headers=headers, data=data,
+                             auth=(client_id, client_secret))
+    ACCESS_TOKEN = response.json()['access_token']
+    return ACCESS_TOKEN
+
+
+@login_required(login_url='/ldn/login/')
+def checkpayment(request):
+    if request.is_ajax() and request.POST:
+        paypal_creds = fetch_paypal_details()
+        # paypal_prod_creds = fetch_paypal_prod_details()
+        my_api = paypalrestsdk.Api({
+            'mode': 'sandbox',
+            # 'mode': 'production',
+            'client_id': paypal_creds[0],
+            'client_secret': paypal_creds[1]})
+        payment = paypalrestsdk.Payment.find(request.POST.get('paymentID'), api=my_api)
+
+        # PayerID is required to approve the payment.
+        if [payment['intent'], payment['state']] == ['sale', 'created']:
+            if [payment['transactions'][0]['amount']['currency'], payment['transactions'][0]['amount']['total']] != [
+                'GBP', '300.00']:
+                c = {}
+                c.update(csrf(request))
+                c.update({"error": "Payment Unsuccesful. Please try again and pay the subscribed amount."})
+                # return render_to_response("paypalsuccess.html", c)
+                return JsonResponse({"error": "payment failed"})
+            else:
+                print("inside else")
+                if payment.execute({"payer_id": request.POST.get('payerID')}):  # return True or False
+                    user = User.objects.get(id=request.user.id)
+                    paypal_obj = PaypalTransaction.objects.create(user=user, subscription_type='UNLIMITED',
+                                                                  amount=Decimal(
+                                                                      payment['transactions'][0]['amount']['total']),
+                                                                  transaction_no=request.POST.get('paymentID'),
+                                                                  transaction_status='COMPLETED')
+                    paypal_obj.save()
+                    return JsonResponse({"success": "payment done", "url": str(reverse("dashboard"))})
+                else:
+                    print(payment.error)
+                    return JsonResponse({"error": "payment failed"})
+    else:
+        c = {}
+        c.update(csrf(request))
+        return render_to_response("paypalsuccess.html", c)

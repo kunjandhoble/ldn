@@ -59,15 +59,15 @@
                                         <li class=""><a href="/ldn/dashboard/" class="add-project">Dashboard</a></li>
                                         <!-- <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li> -->
                                         <!-- <li> -->
-                                            <!-- <a href="#" class="icon-info"> -->
-                                                <!-- <i class="fa fa-bell" aria-hidden="true"></i> -->
-                                                <!-- <span class="label label-primary">3</span> -->
-                                            <!-- </a> -->
+                                        <!-- <a href="#" class="icon-info"> -->
+                                        <!-- <i class="fa fa-bell" aria-hidden="true"></i> -->
+                                        <!-- <span class="label label-primary">3</span> -->
+                                        <!-- </a> -->
                                         <!-- </li> -->
                                         <li class="dropdown">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span><i
                                                     class="fa fa-fw fa-user"></i></span>Profile
-                                                </a>
+                                            </a>
                                             <ul class="dropdown-menu">
                                                 <li>
                                                     <div class="navbar-content">
@@ -118,16 +118,84 @@
         </div>
     </div>
     <div class="page-header">
-        <div class="page-M">
-            <div class="PatientN"><h5>Patient Name:-</h5></div>
-            <div class="PatientNText">
-                <h5>{{ patient_data.name }} </h5>
+        {% if notfound %}
+            <div class="page-M">
+                <div class="PatientNText">
+                    <h5>{{ notfound }} </h5>
+                </div>
             </div>
-        </div>
-        <div class="page-M">
-            <div class="PatientN"><h5>Patient ID:-</h5></div>
-            <div class="PatientNText">
-                <h5>{{ patient_data.id }} </h5>
+        {% else %}
+            <div class="page-M">
+                <div class="PatientN"><h5>Patient Name:-</h5></div>
+                <div class="PatientNText">
+                    <h5>{{ patient_data.1 }} </h5>
+                </div>
+            </div>
+            <div class="page-M">
+                <div class="PatientN"><h5>Patient ID:-</h5></div>
+                <div class="PatientNText">
+                    <h5>{{ patient_data.0 }} </h5>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="container-fluid CustomCont">
+        <div class="row display-table-row">
+            <div class="col-md-12 col-sm-12 display-table-cell v-align">
+                <div class="user-dashboard">
+                    <div class="row">
+                        <div class="panel panel-primary filterable">
+                            <div class="panel-heading">
+                                <div class="row sales">
+                                    <div class="col-md-3 col-sm-3 col-xs-12 gutter">
+                                        <div class=" report">
+                                            <div class="form-group">
+                                                <label for="country" class="PaientCMS control-label">Graph Start
+                                                    Date</label>
+                                                <div class="PatintSec">
+                                                    <input type="date" id="dateStart" name="dateStart"
+                                                           class="form-control">
+                                                    {#                                                <select id="country" class="form-control">#}
+                                                    {#                                                    {% for data in patient_data %}#}
+                                                    {#                                                        <option>{{ data.1 }}</option>#}
+                                                    {#                                                    {% endfor %}#}
+                                                    {#                                                </select>#}
+                                                </div>
+                                            </div> <!-- /.form-group -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 gutter">
+                                        <div class=" report">
+                                            <div class="form-group">
+                                                <label for="country" class="PaientCMS control-label">Graph End
+                                                    Date</label>
+                                                <div class="PatintSec">
+                                                    <input type="date" id="dateEnd" name="dateEnd" class="form-control">
+                                                    {#                                                <select id="country" class="form-control">#}
+                                                    {#                                                    {% for data in patient_data %}#}
+                                                    {#                                                        <option>{{ data.1 }}</option>#}
+                                                    {#                                                    {% endfor %}#}
+                                                    {#                                                </select>#}
+                                                </div>
+                                            </div> <!-- /.form-group -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 gutter">
+                                        <div class=" report">
+                                            <div class="form-group">
+                                                <div class="PatintSec">
+                                                    <a href={% url 'graphs' patientid=patient_data.0 %} class="reloadGraph">
+                                                        <input type="button" name="reload" value="RELOAD" class="btn-danger">
+                                                    </a>
+                                                </div>
+                                            </div> <!-- /.form-group -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -137,19 +205,33 @@
                 <div class="panel with-nav-tabs panel-info">
                     <div class="panel-heading">
                         <ul class="nav nav-tabs TabHeadm">
-                            <li class="active"><a href="#tab1info" data-toggle="tab">CDC Data</a></li>
-                            <li><a href="#tab2info" data-toggle="tab">Oswestry Data</a></li>
-                            <li><a href="#tab3info" data-toggle="tab">Prescription Meds</a></li>
-                            <li><a href="#tab4info" data-toggle="tab">Weight</a></li>
-                            <li><a href="#tab5info" data-toggle="tab">Pain</a></li>
-                            <li><a href="#tab6info" data-toggle="tab">Sleep</a></li>
-                            <li><a href="#tab7info" data-toggle="tab">Current Dose & Dose History</a></li>
-                            <li><a href="#tab8info" data-toggle="tab">LDN Taken Tracker</a></li>
+                            {% if cdc_len %}
+                                <li class="active"><a href="#tab1info" data-toggle="tab">CDC Data</a></li>{% endif %}
+                            {% if oswestry_len %}
+                                <li><a href="#tab2info" data-toggle="tab">Oswestry Data</a></li>{% endif %}
+                            {% if pres_len %}
+                                <li><a href="#tab3info" data-toggle="tab">Prescription Meds</a></li>{% endif %}
+                            {% if weight_len %}
+                                <li><a href="#tab4info" data-toggle="tab">Weight</a></li>{% endif %}
+                            {% if pain_len %}
+                                <li><a href="#tab5info" data-toggle="tab">Pain</a></li>{% endif %}
+                            {% if sleep_len %}
+                                <li><a href="#tab6info" data-toggle="tab">Sleep</a></li>{% endif %}
+                            {% if currdose_len %}
+                                <li><a href="#tab7info" data-toggle="tab">Current Dose & Dose History</a>
+                                </li>{% endif %}
+                            {% if ldntracker_len %}
+                                <li><a href="#tab8info" data-toggle="tab">LDN Taken Tracker</a></li>{% endif %}
                             {#                            <li><a href="#tab9info" data-toggle="tab">Current Dose</a></li>#}
                             {#                            <li><a href="#tab10info" data-toggle="tab">Exercise</a></li>#}
                             {#                            <li><a href="#tab11info" data-toggle="tab">Diet</a></li>#}
-                            <li><a href="#tab12info" data-toggle="tab">My day</a></li>
-                            <li><a href="#tab13info" data-toggle="tab">CFS Fibro Tracker</a></li>
+                            {% if myday_len %}
+                                <li><a href="#tab12info" data-toggle="tab">My day</a></li>{% endif %}
+                            {% if cfs_len %}
+                                <li><a href="#tab13info" data-toggle="tab">CFS Fibro Tracker</a></li>{% endif %}
+{#                            {% if alcohol_len %}#}
+                                <li><a href="#tab14info" data-toggle="tab">Alcohol Tracker</a></li>
+{#                            {% endif %}#}
                         </ul>
                     </div>
                     <div class="panel-body">
@@ -224,7 +306,6 @@
                                                         <th>osw8</th>
                                                         <th>osw9</th>
                                                         <th>osw10</th>
-                                                        <th>oswScore</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -241,6 +322,28 @@
                                                             <td>{{ row.8 }}</td>
                                                             <td>{{ row.9 }}</td>
                                                             <td>{{ row.10 }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <h5><b>OSW SCORE</b></h5>
+                                        <div class="row">
+                                            <div id="no-more-tables">
+                                                <table class="col-md-12 table-bordered table-striped table-condensed cf">
+                                                    <thead class="cf">
+                                                    <tr>
+                                                        <th>Date for</th>
+                                                        <th>oswScore</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for row in oswestry_table_zipped %}
+                                                        <tr>
+                                                            <td>{{ row.0 }}</td>
                                                             <td>{{ row.11 }}</td>
                                                         </tr>
                                                     {% endfor %}
@@ -251,8 +354,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="oswestry" class="graphg"> class=graphg
-                                        >
+                                    <div id="oswestry" class="oswestryTabGraph">
+                                    </div>
+                                    <div id="oswestry_score" class="oswestryTabGraphSec">
                                     </div>
 
 
@@ -569,6 +673,41 @@
 
                                 </div>
                             </div>
+                            <div class="tab-pane fade" id="tab14info">
+                                <div class="col-md-4">
+                                    <div class="">
+                                        <h5><b>PATIENT DATA</b></h5>
+                                        <div class="row">
+                                            <div id="no-more-tables">
+                                                <table class="col-md-12 table-bordered table-striped table-condensed cf">
+                                                    <thead class="cf">
+                                                    <tr>
+                                                        <th>Date Record</th>
+                                                        <th>Alcohol Craving</th>
+                                                        <th>Alcohol Units</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for row in alcohol_table_zipped %}
+                                                        <tr>
+                                                            <td>{{ row.0 }}</td>
+                                                            <td>{{ row.1 }}</td>
+                                                            <td>{{ row.2 }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div id="alcoholtracker" class="graphg">
+                                    </div>
+
+
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -584,7 +723,13 @@
             $("#navigation").toggleClass("hidden-xs");
         });
     });
+    $('.reloadGraph').on('click', function (e) {
+        e.preventDefault();
+        var address = $(this).attr('href') + "?start=" + $('#dateStart').val() + "&end=" + $('#dateEnd').val();
+        alert(address);
+        window.location = address;
 
+    });
     $(function () {
         var cdc = new Highcharts.Chart({
             chart: {
@@ -603,6 +748,7 @@
             {#                min: 0,#}
             {#                max: 9#}
             {#            },#}
+
             xAxis: [{
                 categories: {{ cdc_fordate|safe }},
                 crosshair: true
@@ -669,11 +815,98 @@
         });
 
         var oswestry = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'oswestry'
+                },
+                title: {
+                    text: 'OSWESTRY QUESTIONNAIRE RESPONSE',
+                    x: -20 //center
+                },
+                {#            subtitle: {#}
+                {#                text: 'Source: WorldClimate.com',#}
+                {#                x: -20#}
+                {#            },#}
+                {#            xAxis: {#}
+                {#                type: 'datetime',#}
+                {#                min: 0,#}
+                {#                max: 9#}
+                {#            },#}
+                xAxis: [{
+                    categories: {{ oswestry_fordate|safe }},
+                    crosshair: true
+                }],
+
+                yAxis: {
+                    title: {
+                        text: 'OSW Score'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    {#                valueSuffix: '°C'#}
+                },
+                legend: {
+                    layout: 'horizontal',
+                    align: 'right',
+                    horizontalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+                    name: 'osw1',
+                    {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                    data:{{ osw1|safe }}
+                }, {
+                    name: 'osw2',
+                    {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                    data:{{ osw2|safe }}
+                }, {
+                    name: 'osw3',
+                    {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                    data:{{ osw3|safe }}
+                }, {
+                    name: 'osw4',
+                    {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                    data:{{ osw4|safe }}
+                },
+                    {
+                        name: 'osw5',
+                        {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                        data:{{ osw5|safe }}
+                    },
+                    {
+                        name: 'osw6',
+                        {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                        data:{{ osw6|safe }}
+                    }, {
+                        name: 'osw7',
+                        {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                        data:{{ osw7|safe }}
+                    }, {
+                        name: 'osw8',
+                        {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                        data:{{ osw8|safe }}
+                    }, {
+                        name: 'osw9',
+                        {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                        data:{{ osw9|safe }}
+                    },
+                    {
+                        name: 'osw10',
+                        {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                        data:{{ osw10|safe }}
+                    }]
+            });
+
+        var oswestry_score = new Highcharts.Chart({
             chart: {
-                renderTo: 'oswestry'
+                renderTo: 'oswestry_score'
             },
             title: {
-                text: 'OSWESTRY QUESTIONNAIRE RESPONSE',
+                text: 'OSWESTRY SCORE',
                 x: -20 //center
             },
             {#            subtitle: {#}
@@ -710,54 +943,10 @@
                 borderWidth: 0
             },
             series: [{
-                name: 'osw1',
+                name: 'osw_score',
                 {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                data:{{ osw1|safe }}
-            }, {
-                name: 'osw2',
-                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                data:{{ osw2|safe }}
-            }, {
-                name: 'osw3',
-                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                data:{{ osw3|safe }}
-            }, {
-                name: 'osw4',
-                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                data:{{ osw4|safe }}
-            },
-                {
-                    name: 'osw5',
-                    {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                    data:{{ osw5|safe }}
-                },
-                {
-                    name: 'osw6',
-                    {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                    data:{{ osw6|safe }}
-                }, {
-                    name: 'osw7',
-                    {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                    data:{{ osw7|safe }}
-                }, {
-                    name: 'osw8',
-                    {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                    data:{{ osw8|safe }}
-                }, {
-                    name: 'osw9',
-                    {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                    data:{{ osw9|safe }}
-                },
-                {
-                    name: 'osw10',
-                    {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                    data:{{ osw10|safe }}
-                },
-                {
-                    name: 'osw_score',
-                    {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                    data:{{ osw_score|safe }}
-                }]
+                data:{{ osw_score|safe }}
+            }]
         });
 
         var prescriptionmeds = new Highcharts.Chart({
@@ -1143,6 +1332,55 @@
                 data:{{ cfsfibro_rating|safe }}
             }]
         });
+{#        var alcoholtracker = new Highcharts.Chart({#}
+{#            chart: {#}
+{#                renderTo: 'alcoholtracker'#}
+{#            },#}
+{#            title: {#}
+{#                text: 'ALCOHOL TRACKER',#}
+{#                x: -20 //center#}
+{#            },#}
+            {#            subtitle: {#}
+            {#                text: 'Source: WorldClimate.com',#}
+            {#                x: -20#}
+            {#            },#}
+            {#            xAxis: {#}
+            {#                type: 'datetime',#}
+            {#                min: 0,#}
+            {#                max: 9#}
+            {#            },#}
+{#            xAxis: [{#}
+{#                categories: {{ alcohol_daterecord|safe }},#}
+{#                crosshair: true#}
+{#            }],#}
+{##}
+{#            yAxis: {#}
+{#                title: {#}
+{#                    text: 'RATING'#}
+{#                },#}
+{#                plotLines: [{#}
+{#                    value: 0,#}
+{#                    width: 1,#}
+{#                    color: '#808080'#}
+{#                }]#}
+{#            },#}
+{#            tooltip: {#}
+                {#                valueSuffix: '°C'#}
+{#            },#}
+{#            legend: {#}
+{#                layout: 'horizontal',#}
+{#                align: 'right',#}
+{#                horizontalAlign: 'middle',#}
+{#                borderWidth: 0#}
+{#            },#}
+{#            series: [{#}
+{#                name: 'Alcohol Craving',#}
+{#                data:{{ alcoholcraving|safe }}#}
+{#            },{#}
+{#                name: 'Alcohol Units',#}
+{#                data:{{ alcoholunits|safe }}#}
+{#            }]#}
+{#        });#}
 
         var myday = new Highcharts.Chart({
             chart: {

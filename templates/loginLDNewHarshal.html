@@ -88,7 +88,7 @@
 					<a href="#" class="active" id="login-form-link">Login</a>
 				  </div>
 				  <div class="col-xs-6 col-md-8">
-					<a href="#" id="register-form-link"> Register as a new</a>
+					<a href="#" id="register-form-link">Sign Up</a>
 				  </div>
 				</div>
 				<hr>
@@ -96,20 +96,20 @@
 			  <div class="panel-body">
 				<div class="row">
 				  <div class="col-lg-12">
-					<form id="login-form" action="#" method="post" role="form" style="display: block;">
+					<form id="login-form" method="post" action="/ldn/userlogin/" role="form" style="display: block;">{% csrf_token %}
 					 <div class="col-lg-1"></div>
 					 <div class="col-lg-10">
 					  <div class="form-group">
 						<label for="user">Username</label>
-						<input id="user" type="text" class="input form-control" placeholder="Username">
+						<input id="user" name="username" type="text" class="input form-control" placeholder="Username">
 					  </div>
 					  <div class="form-group">
 						<label>Dr Licence Number</label>
-						<input type="text" class="input form-control" data-type="input" placeholder="Password">
+						<input name="dr_licence" type="text" class="input form-control" data-type="input" placeholder="Password">
 					  </div>
 					  <div class="form-group">
 						<label for="pass">Password</label>
-						 <input id="pass" type="password" class="input form-control" data-type="password" placeholder="Password">
+						 <input name="password" id="pass" type="password" class="input form-control" data-type="password" placeholder="Password">
 					  </div>
 					  <div class="form-group text-center">
 						<input id="check" type="checkbox" class="check" checked>
@@ -123,36 +123,36 @@
 						</div>
 					  </div>
 					  <div class="form-group text-center">
-								<a href="#forgot">Forgot Password?</a>
+								<a href="#forgot" data-target="#pwdModal" data-toggle="modal">Forgot Password?</a>
 					   </div>
 					</div>
 					<div class="col-lg-1"></div>
 					</form>
-					<form id="register-form" action="#" method="post" role="form" style="display: none;">
+					<form method="post" action="/ldn/emailverify/" id="register-form" role="form" style="display: none;">{% csrf_token %}
 					<div class="col-md-6">
 						  <div class="form-group">
 							<label for="username">Licence Number</label>
-							<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Licence Number" value="">
+							<input type="text" name="dr_licence" id="dr_licence_id" tabindex="1" class="form-control" placeholder="Licence Number" value="">
 						  </div>
 						  <div class="form-group">
-							<label for="password">Name</label>
-							<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Name">
-						  </div>					 
+							<label for="username">Name</label>
+							<input type="text" name="username" id="user" tabindex="2" class="form-control" placeholder="Name">
+						  </div>
 						<div class="form-group">
-							<label for="confirm-password">Website</label>
-							<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Website">
-						  </div>					
+							<label for="website">Website</label>
+							<input  name="website" type="text" id="website" tabindex="2" class="form-control" placeholder="Website">
+						  </div>
 							<div class="form-group">
 								<label>Title</label>
 								<div class="selectDiv">
 									<span class="selectDefault"></span>
-									<select name="txtCountry" class="selectBox">
+									<select name="txtTitle" class="selectBox">
 										<option value="1">Select</option>
 										<option value="2">Phd</option>
-										<option value="2">MD</option>
-										<option value="2">DO</option>
-										<option value="2">ND</option>
-										<option value="2"> Nurse Prescribers</option>
+										<option value="3">MD</option>
+										<option value="4">DO</option>
+										<option value="5">ND</option>
+										<option value="6"> Nurse Prescribers</option>
 									</select>
 								</div>
 							</div>
@@ -162,8 +162,8 @@
 									<span class="selectDefault"></span>
 									<select name="txtCountry" class="selectBox">
 										<option value="1">Select</option>
-										<option value="2">India</option>
-										<option value="2">Shri Lanka</option>
+										<option value="2">UK</option>
+										<option value="3">USA</option>
 									</select>
 								</div>
 							</div>
@@ -171,41 +171,41 @@
 					  <div class="col-md-6">
 						  <div class="form-group">
 							<label for="username">Pharamacist Licence Number</label>
-							<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Pharamacist Licence Number" value="">
+							<input name="ph_licence_number" type="text" id="ph_licence_number" tabindex="1" class="form-control" placeholder="Pharamacist Licence Number" value="">
 						  </div>
 						  <div class="form-group">
 							<label for="password">Password</label>
 							<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
 						  </div>
 						   <div class="form-group">
-								<label >Roll</label>
+								<label >Role</label>
 								<div class="selectDiv">
 									<span class="selectDefault"></span>
-									<select name="txtCountry" class="selectBox">
+									<select name="txtRole" class="selectBox">
 										<option value="1">Select</option>
 										<option value="2">Prescriber</option>
-										<option value="2">Pharmacist</option>
-										<option value="2">Researcher </option>
+										<option value="3">Pharmacist</option>
+										<option value="4">Researcher </option>
 									</select>
 								</div>
 							</div>
 						  <div class="form-group">
-							<label for="confirm-password">Email Address</label>
-							<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Email Address">
+							<label for="email">Email Address</label>
+							<input name="email" type="text" id="email" tabindex="2" class="form-control" placeholder="Email Address">
 						  </div>
 					  </div>
 					  <div class="row">
 					  <div class="col-sm-12">
-					  <div class="form-group">						
+					  <div class="form-group">
 							  <div class="col-sm-6">
 								<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Sign Up">
 							  </div>
 							   <div class="col-sm-6">
-								<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Cancel">
+                                   <a href={% url "userlogin" %}><input type="button" name="register-cancel" id="register-cancel" tabindex="4" class="form-control btn btn-register" value="Cancel"></a>
 							  </div>
 							</div>
 							<div class="foot-lnk">
-                            <label for="tab-1">Already Member?</a>
+                            <label for="tab-1">Already Member?</label>
 							</div>
 						</div>
 						</div>
@@ -218,6 +218,50 @@
 		</div>
 	  </div>
     </div>
+
+<!--modal-->
+<div id="pwdModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h1 class="text-center">What's My Password?</h1>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="text-center">
+
+                                <p>If you have forgotten your password you can reset it here and will be sent to your
+                                    email address</p>
+                                <div class="panel-body">
+                                    <fieldset>
+                                        <form method="post" action="/ldn/sendpass/">{% csrf_token %}
+                                            <div class="form-group">
+                                                <input class="form-control input-lg" placeholder="Username"
+                                                       name="username" type="text">
+                                            </div>
+                                            <input class="btn btn-lg btn-primary btn-block" value="Send My Password"
+                                                   type="submit">
+                                        </form>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+
 </body>
 
 </html>

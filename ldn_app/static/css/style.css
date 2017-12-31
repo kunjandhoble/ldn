@@ -318,6 +318,16 @@ a:focus, a:hover, a {
 	    height: 350px;
     overflow: auto;
 }
+.oswestryTabGraph{
+	    margin-bottom: 45px;
+		    height: 350px;
+    overflow: auto;
+}
+.oswestryTabGraphSec{
+	    height: 350px;
+    overflow: auto;
+}
+
 table th,td{
 	font-size:12px;
 }

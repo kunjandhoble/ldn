@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'ldn.wsgi.application'
 import braintree
 import ConfigParser as cp
 config = cp.ConfigParser()
-config.read("/home/ubuntu/ldn_project/ldn/db_creds")
+config.read("db_creds")
 mid = config.get("paypal", "mid")
 pub = config.get("paypal", "pub")
 priv = config.get("paypal", "priv")
@@ -120,7 +120,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ldn_app_local',
         'USER': 'root',
-        'PASSWORD': 'Dave@ldn',
+        'PASSWORD': 'rockstar@31',
         'HOST': 'localhost',
         'PORT': '',
     }
