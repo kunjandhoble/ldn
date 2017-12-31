@@ -433,13 +433,6 @@ def purchase(request):
 
 
 
-#TO DO: DB CREDS PATH
-def fetch_paypal_details():
-    config = cp.ConfigParser()
-    config.read("db_creds")
-    client_id = config.get("paypalSandboxClient", "client_id")
-    client_secret = config.get("paypalSandboxClient", "client_secret")
-    return (client_id, client_secret)
 
 
 ACCESS_TOKEN = ''

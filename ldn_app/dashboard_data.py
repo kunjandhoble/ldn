@@ -6,8 +6,14 @@ import MySQLdb as mysqldb
 import json
 import simplejson
 
+def fetch_paypal_details():
+    config = cp.ConfigParser()
+    db_credpath = os.path.join(os.path.abspath(os.path.dirname(__name__)),"db_creds")
+    config.read(db_credpath)
+    client_id = config.get("paypalSandboxClient", "client_id")
+    client_secret = config.get("paypalSandboxClient", "client_secret")
+    return (client_id, client_secret)
 
-# TO DO: gice os path for db creds file
 def fetch_data_from_db(sqlquery):
     config = cp.ConfigParser()
     db_credpath = os.path.join(os.path.abspath(os.path.dirname(__name__)),"db_creds")
