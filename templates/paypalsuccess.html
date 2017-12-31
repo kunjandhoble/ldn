@@ -12,27 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src={% static "js/jquery-2.1.4.min.js" %}></script>
     <script type="text/javascript" src={% static "js/bootstrap.min.js" %}></script>
-	<script>
-		$(function() {
 
-		$('#login-form-link').click(function(e) {
-			$("#login-form").delay(100).fadeIn(100);
-			$("#register-form").fadeOut(100);
-			$('#register-form-link').removeClass('active');
-			$(this).addClass('active');
-			e.preventDefault();
-		});
-		$('#register-form-link').click(function(e) {
-			$("#register-form").delay(100).fadeIn(100);
-			$("#login-form").fadeOut(100);
-			$('#login-form-link').removeClass('active');
-			$(this).addClass('active');
-			e.preventDefault();
-		});
-
-		});
-
-		</script>
 </head>
 
 <body>
@@ -68,13 +48,14 @@
         <div class="bandright"></div>
     </div>
 
-{% csrf_token %}
+
 {% if error %}
 <div id="error">{{ error }}</div>
 {% endif %}
 <div>
     <h3 style="margin-left: 300px; margin-top: 150px"><b>Please pay GBP 300.00 to avail subscription till 1st Jan, 2019</b></h3>
 </div>
+{% csrf_token %}
     <div id="paypal-button" style="margin-left: 550px"></div>
 
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
@@ -108,18 +89,18 @@
         onAuthorize: function (data, actions) {
             window.alert("Please click OK and wait for a while for transaction to proceed.");
             var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-{#            function csrfSafeMethod(method) {#}
-{#                // these HTTP methods do not require CSRF protection#}
-{#                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));#}
-{#            }#}
-{##}
-{#            $.ajaxSetup({#}
-{#                beforeSend: function (xhr, settings) {#}
-{#                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {#}
-{#                        xhr.setRequestHeader("X-CSRFToken", csrftoken);#}
-{#                    }#}
-{#                }#}
-{#            });#}
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
             $.ajax({
 
                 type: "POST",
