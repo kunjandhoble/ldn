@@ -119,12 +119,12 @@ braintree.Configuration.configure(braintree.Environment.Sandbox,
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ldn_app_local',
-        'USER': 'root',
-        'PASSWORD': 'rockstar@31',
-        'HOST': 'localhost',
+        'NAME': config.get("ldn_app_local", "NAME"),
+        'USER': config.get("ldn_app_local", "USER"),
+        'PASSWORD': config.get("ldn_app_local", "PASSWORD"),
+        'HOST': config.get("ldn_app_local", "HOST"),
         'PORT': '',
-    }
+}
 }
 
 # Password validation
