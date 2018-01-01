@@ -9,6 +9,8 @@ import simplejson
 def fetch_paypal_details():
     config = cp.ConfigParser()
     db_credpath = os.path.join(os.path.abspath(os.path.dirname(__name__)),"db_creds")
+    db_credpath=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"db_creds")
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+db_credpath)
     config.read(db_credpath)
     client_id = config.get("paypalSandboxClient", "client_id")
     client_secret = config.get("paypalSandboxClient", "client_secret")
@@ -17,6 +19,7 @@ def fetch_paypal_details():
 def fetch_data_from_db(sqlquery):
     config = cp.ConfigParser()
     db_credpath = os.path.join(os.path.abspath(os.path.dirname(__name__)),"db_creds")
+    db_credpath=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"db_creds")
     config.read(db_credpath)
     name = config.get("ldnlocal", "NAME")
     user = config.get("ldnlocal", "USER")
