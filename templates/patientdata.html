@@ -270,7 +270,6 @@
 $('.idlist').on('click', function(e){
   e.preventDefault();
   var address = $(this).attr('href') + "?start="+$('#dateStart').val()+"&end="+$('#dateEnd').val();
-  alert(address);
   window.location = address;
 
 });
