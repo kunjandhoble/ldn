@@ -152,6 +152,7 @@ a{color:inherit;text-decoration:none}
 	 background-size: cover;
     background-image: url('../Images/ldnhub-login-narrow.jpg');
     background-repeat: no-repeat;
+	    min-height: 600px;
 }
 .login-html{
 	width:100%;
@@ -201,6 +202,7 @@ a{color:inherit;text-decoration:none}
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
     transition: all 0.1s linear;
+	    border-radius: 15px;
 }
 .panel-login input:hover,
 .panel-login input:focus {
@@ -208,41 +210,45 @@ a{color:inherit;text-decoration:none}
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    border-color: #ccc;
+    border-color: #198da8;
 }
 .btn-login {
     background-color:#26b4e9;
     outline: none;
     color: #fff;
-    font-size: 14px;
+    font-size: 20px;
     height: auto;
     font-weight: normal;
-    padding: 14px 0;
+    padding: 10px 0;
     text-transform: uppercase;
     border-color: #26b4e9;
+	    border-radius: 15px;
 }
 .btn-login:hover,
 .btn-login:focus {
     color: #fff;
     background-color: #198da8;
-    border-color: #53A3CD;
+    border-color: #198da8;
+	    border-radius: 15px;
 }
 .btn-register {
     background-color: #26b4e9;
     outline: none;
     color: #fff;
-    font-size: 14px;
+    font-size: 20px;
     height: auto;
     font-weight: normal;
     padding: 14px 0;
     text-transform: uppercase;
     border-color: #26b4e9;
+	    border-radius: 15px;
 }
 .btn-register:hover,
 .btn-register:focus {
     color: #fff;
-    background-color: #26b4e9;
-    border-color: #26b4e9;
+     background-color: #198da8;
+    border-color: #53A3CD;
+	    border-radius: 15px;
 }
 
 
@@ -258,20 +264,13 @@ a{color:inherit;text-decoration:none}
 }
 
 .panel-heading a{
-    background: -webkit-repeating-linear-gradient(-45deg, 
-    rgb(18, 83, 93) , 
-    rgb(18, 83, 93) 20px, 
-    rgb(64, 111, 118) 20px, 
-    rgb(64, 111, 118) 40px, 
-    rgb(18, 83, 93) 40px);
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
+	    color: #023a78;
 }
 .selectBox{
 padding: 10px;
     width: 100%;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 15px;
     height: 45px;
 }
 .modal-backdrop {
@@ -283,4 +282,11 @@ label {
     margin-bottom: 5px;
     font-weight: 700;
 	color:#fff;
+}
+.ForgotPassCls{
+	color:#fff;
+}
+.foot-lnk{
+	text-align:center;
+	margin-top:5px;
 }

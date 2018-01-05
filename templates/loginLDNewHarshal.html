@@ -42,7 +42,7 @@
                 <div class="col-md-12">
                     <header class="header-tp">
                         <nav class="navbar navbar-default navbar-static-top">
-                            <div class="container">
+                            <div class="container-fluid">
                                 <div class="navbar-header">
                                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                                         <span class="sr-only">Toggle navigation</span>
@@ -87,7 +87,7 @@
 				  <div class="col-xs-6 col-md-4">
 					<a href="#" class="active" id="login-form-link">Login</a>
 				  </div>
-				  <div class="col-xs-6 col-md-8">
+				  <div class="col-xs-6 col-md-8 text-left">
 					<a href="#" id="register-form-link">Sign Up</a>
 				  </div>
 				</div>
@@ -123,7 +123,7 @@
 						</div>
 					  </div>
 					  <div class="form-group text-center">
-								<a href="#forgot" data-target="#pwdModal" data-toggle="modal">Forgot Password?</a>
+								<a href="#forgot" data-target="#pwdModal" data-toggle="modal" class="ForgotPassCls">Forgot Password?</a>
 					   </div>
 					</div>
 					<div class="col-lg-1"></div>
@@ -170,8 +170,8 @@
 					  </div>
 					  <div class="col-md-6">
 						  <div class="form-group">
-							<label for="username">Pharamacist Licence Number</label>
-							<input name="ph_licence_number" type="text" id="ph_licence_number" tabindex="1" class="form-control" placeholder="Pharamacist Licence Number" value="">
+							<label for="username">Pharmacist Licence Number</label>
+							<input name="ph_licence_number" type="text" id="ph_licence_number" tabindex="1" class="form-control" placeholder="Pharmacist Licence Number" value="">
 						  </div>
 						  <div class="form-group">
 							<label for="password">Password</label>
@@ -203,12 +203,16 @@
 							   <div class="col-sm-6">
                                    <a href={% url "userlogin" %}><input type="button" name="register-cancel" id="register-cancel" tabindex="4" class="form-control btn btn-register" value="Cancel"></a>
 							  </div>
-							</div>
+					  </div>
+             		  </div>
+             		  </div>
+					  <div class="row">
+					  <div class="col-sm-12">
 							<div class="foot-lnk">
                             <label for="tab-1">Already Member?</label>
 							</div>
 						</div>
-						</div>
+					</div>
 					</form>
 				  </div>
 				</div>
@@ -261,7 +265,34 @@
     </div>
 </div>
 <!-- Modal -->
-
+<!--modal-->
+<div id="InvalidLoginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" style="display:block;">
+  <div class="modal-content">
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h1 class="text-center">Invalid Login</h1>
+      </div>
+      <div class="modal-body">
+          <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="text-center">                          
+                          <h3>Please try again.</h3>                       
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+          <div class="col-md-12">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+		  </div>	
+      </div>
+  </div>
+  </div>
+</div>
+<!-- Modal -->
 </body>
 
 </html>

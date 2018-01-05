@@ -84,7 +84,7 @@ a:focus, a:hover, a {
     border: solid 1px #E4E4E4;
     border-radius: 6px;
     background-color: #fff;
-	    margin: 11px 0 0 50px;
+	    margin: 15px 0 0 50px;
 		width: 40%;
     float: left;
 }
@@ -116,10 +116,11 @@ a:focus, a:hover, a {
     font-size: 16px;
 }
 .LogoN{
-	padding-left:30px;
+	padding-left:10px;
 }
 .LogoN img{
-	height:60px;
+	    height: auto;
+    max-width: 100%;
 }
 .blue-bg-nav{
 	background-color: #f7f7f7;
@@ -137,7 +138,7 @@ a:focus, a:hover, a {
 	left: -78px;
 }
 .navbar-content{
-	    padding: 5px 25px;
+	    padding: 5px;
 }
 .view  li{
 	list-style-type:none;
@@ -149,6 +150,9 @@ a:focus, a:hover, a {
     position: absolute;
     top: 14px;
 }
+label{
+	font-weight:100;
+}
 .bandleft {
     float: left;
     width: 50%;
@@ -159,7 +163,7 @@ a:focus, a:hover, a {
     float: left;
     width: 50%;
     height: 6px;
-    background-color: #3de44a;
+    background-color: #26b4e9;
 }
 .icon-info .label {
     border: 2px solid #ffffff;
@@ -182,8 +186,8 @@ a:focus, a:hover, a {
 	padding-top:7px;
 }
 .CustomCont{
-	    padding-left: 50px;
-    padding-right: 50px;
+	padding-left: 50px !important;
+    padding-right: 50px !important;
 }
 /* CSS Second Page */
 .page-header{
@@ -329,11 +333,39 @@ a:focus, a:hover, a {
 }
 
 table th,td{
-	font-size:12px;
+	font-size:13px;
 }
 .TabHeadm li a:focus, a:hover, a {
     font-size: 14px;	
 }
 .nav>li>a {
     padding: 10px 9px;
+}
+.DateFilterCls .form-group{
+	margin-bottom:0px;
+}
+.filterableBtn{
+	margin-top:10px;
+	text-transform: uppercase;
+}
+.PaientextM,.GraphM{
+	width:50%;
+	float:left;
+}
+.PaientDHide{
+	display:none;
+}
+.GraphDiv{
+	overflow:auto;
+}
+.searchBoxCls{
+	padding: 0px 10px;
+}
+.Ptabletr th li{
+	margin-left: 11px;
+}
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+	#custom-search-input {
+		width: 50%;
+	}
 }
