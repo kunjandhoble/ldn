@@ -242,9 +242,15 @@ def send_password(request):
             # licence = UserSignupDetails.objects.get(user=user)
             chars = string.ascii_uppercase + string.digits
             new_pass = ''.join(random.choice(chars) for _ in range(6))
+<<<<<<< HEAD
             user.set_password(new_pass)
             user.save()
             email_body = 'Hello ' + user.username + ',\n\n Your password is reset to \n\n\t\t' + new_pass + '\n\nPlease login to continue.'
+=======
+            user_obj.set_password(new_pass)
+            user_obj.save()
+            email_body = 'Hello ' + user_obj.username + ',\n\n Your password is reset to \n\n\t\t' + new_pass + '\n\nPlease login to continue.'
+>>>>>>> 606b584c44063f6d250427f760ea9d5edf3f6b61
             send_mail(
                 'Password Reset',
                 email_body,
