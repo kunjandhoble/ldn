@@ -48,6 +48,19 @@ body{
 	-border-radius:.1em;
 }	
 
+.sub input{
+	color:white;
+	background:#8F8E8C;
+	text-decoration:none;
+	padding:7px 120px;
+	font-size:13px;
+	font-family: arial, serif;
+	font-weight:bold;
+	-webkit-border-radius:3em;
+	-moz-border-radius:.1em;
+	-border-radius:.1em;
+}
+
 @media screen and (max-width: 1024px){
 	.logo h1 {
     font-size: 180px;
@@ -142,9 +155,10 @@ body{
 	<div class="wrap">
 	   <div class="logo">
 	   <h1>404</h1>
-	    <p>Error occurred! - File not Found</p>
+	    <p>{{ error }}</p>
   	      <div class="sub">
-	        <p><a href="#">Back</a></p>
+	        <p><input type="button" value="Back" onclick="history.back()"/></p>
+{#              <p><a href="history.back()">Back</a></p>#}
 	      </div>
         </div>
 	</div>	

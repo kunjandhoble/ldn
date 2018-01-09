@@ -7,222 +7,253 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
-    <link href={% static "css/bootstrap.min.css"%} rel="stylesheet">
+    <link href={% static "css/bootstrap.min.css" %} rel="stylesheet">
     <link href={% static  "css/customOne.css" %} type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src={% static "js/jquery-2.1.4.min.js" %}></script>
     <script type="text/javascript" src={% static "js/bootstrap.min.js" %}></script>
-	<script>
-		$(function() {
+    <script>
+        $(function () {
 
-		$('#login-form-link').click(function(e) {
-			$("#login-form").delay(100).fadeIn(100);
-			$("#register-form").fadeOut(100);
-			$('#register-form-link').removeClass('active');
-			$(this).addClass('active');
-			e.preventDefault();
-		});
-		$('#register-form-link').click(function(e) {
-			$("#register-form").delay(100).fadeIn(100);
-			$("#login-form").fadeOut(100);
-			$('#login-form-link').removeClass('active');
-			$(this).addClass('active');
-			e.preventDefault();
-		});
+            $('#login-form-link').click(function (e) {
+                $("#login-form").delay(100).fadeIn(100);
+                $("#register-form").fadeOut(100);
+                $('#register-form-link').removeClass('active');
+                $(this).addClass('active');
+                e.preventDefault();
+            });
+            $('#register-form-link').click(function (e) {
+                $("#register-form").delay(100).fadeIn(100);
+                $("#login-form").fadeOut(100);
+                $('#login-form-link').removeClass('active');
+                $(this).addClass('active');
+                e.preventDefault();
+            });
 
-		});
+        });
 
-		</script>
+    </script>
 </head>
 
 <body>
-    <div class="blue-bg-nav">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <header class="header-tp">
-                        <nav class="navbar navbar-default navbar-static-top">
-                            <div class="container-fluid">
-                                <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                        <span class="sr-only">Toggle navigation</span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-                                    <div class="">
-                                        <a href="#" class="btn-blu mrgn-top" data-toggle="modal" data-target="#at-helping">
-                                            <img src={% static "Images/ldn-research-trust-logo.png" %} alt="logoImage0" />
-                                        </a>
-                                    </div>
-                                </div>
-                                <div id="navbar" class="navbar-collapse collapse">
-{#                                    <form class="form-inline">#}
-{#                                        <ul class="nav navbar-nav navbar-right bdr">#}
-{##}
-{#                                            <li><a href="#" data-toggle="modal" id="Signn" data-target="#at-login">Sign in</a></li>#}
-{##}
-{#                                            <li><a href="#" data-toggle="modal" id="Signn2" data-target="#at-signup">Sign Up</a></li>#}
-{#                                        </ul>#}
-{#                                    </form>#}
+<div class="blue-bg-nav">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <header class="header-tp">
+                    <nav class="navbar navbar-default navbar-static-top">
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                        data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <div class="">
+                                    <a href="#" class="btn-blu mrgn-top" data-toggle="modal" data-target="#at-helping">
+                                        <img src={% static "Images/ldn-research-trust-logo.png" %} alt="logoImage0"/>
+                                    </a>
                                 </div>
                             </div>
-                        </nav>
-                    </header>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                {#                                    <form class="form-inline">#}
+                                {#                                        <ul class="nav navbar-nav navbar-right bdr">#}
+                                {##}
+                                {#                                            <li><a href="#" data-toggle="modal" id="Signn" data-target="#at-login">Sign in</a></li>#}
+                                {##}
+                                {#                                            <li><a href="#" data-toggle="modal" id="Signn2" data-target="#at-signup">Sign Up</a></li>#}
+                                {#                                        </ul>#}
+                                {#                                    </form>#}
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="band">
+    <div class="bandleft"></div>
+    <div class="bandright"></div>
+</div>
+<div class="login-wrap_Bg">
+    <div id="regContainer" class="container">
+        <div class="row">
+            <div class="col-md-7 col-md-offset-3">
+                <div class="panel panel-login">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-6 col-md-4">
+                                <a href="#" class="active" id="login-form-link">Login</a>
+                            </div>
+                            <div class="col-xs-6 col-md-8 text-left">
+                                <a href="#" id="register-form-link">Sign Up</a>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form id="login-form" method="post" action="/ldn/userlogin/" role="form"
+                                      style="display: block;">{% csrf_token %}
+                                    <div class="col-lg-1"></div>
+                                    <div class="col-lg-10">
+                                        {% if message %}
+                                            <div class="Login_validation_error_text">{{ message }}
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-group">
+                                            <label for="user">Username</label>
+                                            <input id="user" name="username" type="text" class="input form-control"
+                                                   placeholder="Username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>DR Licence Number</label>
+                                            <input name="dr_licence" type="text" class="input form-control"
+                                                   data-type="input" placeholder="DR LICENCE">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>PH Licence Number</label>
+                                            <input name="ph_licence" type="text" class="input form-control"
+                                                   data-type="input" placeholder="PH LICENCE">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pass">Password</label>
+                                            <input name="password" id="pass" type="password" class="input form-control"
+                                                   data-type="password" placeholder="Password">
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <input id="check" type="checkbox" class="check" checked>
+                                            <label for="check"><span class="icon"></span> Keep me Signed in</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6 col-sm-offset-3">
+                                                    <input type="submit" name="login-submit" id="login-submit"
+                                                           tabindex="4" class="form-control btn btn-login"
+                                                           value="Sign In">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <a href="#forgot" data-target="#pwdModal" data-toggle="modal"
+                                               class="ForgotPassCls">Forgot Password?</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1"></div>
+                                </form>
+                                <form method="post" action="/ldn/emailverify/" id="register-form" role="form"
+                                      style="display: none;">{% csrf_token %}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="username">Licence Number</label>
+                                            <input type="text" name="dr_licence" id="dr_licence_id" tabindex="1"
+                                                   class="form-control" placeholder="Licence Number" value="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Username</label>
+                                            <input type="text" name="username" id="user" tabindex="2"
+                                                   class="form-control" placeholder="Username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="website">Website</label>
+                                            <input name="website" type="text" id="website" tabindex="2"
+                                                   class="form-control" placeholder="Website">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Title</label>
+                                            <div class="selectDiv">
+                                                <span class="selectDefault"></span>
+                                                <select name="txtTitle" class="selectBox">
+                                                    <option value="1">Select</option>
+                                                    <option value="2">Phd</option>
+                                                    <option value="3">MD</option>
+                                                    <option value="4">DO</option>
+                                                    <option value="5">ND</option>
+                                                    <option value="6"> Nurse Prescribers</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Country</label>
+                                            <div class="selectDiv">
+                                                <span class="selectDefault"></span>
+                                                <select name="txtCountry" class="selectBox">
+                                                    <option value="1">Select</option>
+                                                    <option value="2">UK</option>
+                                                    <option value="3">USA</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="username">Pharmacist Licence Number</label>
+                                            <input name="ph_licence_number" type="text" id="ph_licence_number"
+                                                   tabindex="1" class="form-control"
+                                                   placeholder="Pharmacist Licence Number" value="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            <input type="password" name="password" id="password" tabindex="2"
+                                                   class="form-control" placeholder="Password">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Role</label>
+                                            <div class="selectDiv">
+                                                <span class="selectDefault"></span>
+                                                <select name="txtRole" class="selectBox">
+                                                    <option value="1">Select</option>
+                                                    <option value="2">Prescriber</option>
+                                                    <option value="3">Pharmacist</option>
+                                                    <option value="4">Researcher</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email Address</label>
+                                            <input name="email" type="text" id="email" tabindex="2" class="form-control"
+                                                   placeholder="Email Address">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="col-sm-6">
+                                                    <input type="submit" name="register-submit" id="register-submit"
+                                                           tabindex="4" class="form-control btn btn-register"
+                                                           value="Sign Up">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <a href={% url "userlogin" %}><input type="button"
+                                                                                         name="register-cancel"
+                                                                                         id="register-cancel"
+                                                                                         tabindex="4"
+                                                                                         class="form-control btn btn-register"
+                                                                                         value="Cancel"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="foot-lnk">
+                                                <label for="tab-1">Already Member?</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="band">
-        <div class="bandleft"></div>
-        <div class="bandright"></div>
-    </div>
-    <div class="login-wrap_Bg">
-        <div id="regContainer" class="container">
-		  <div class="row">
-		  <div class="col-md-7 col-md-offset-3">
-			<div class="panel panel-login">
-			  <div class="panel-heading">
-				<div class="row">
-				  <div class="col-xs-6 col-md-4">
-					<a href="#" class="active" id="login-form-link">Login</a>
-				  </div>
-				  <div class="col-xs-6 col-md-8 text-left">
-					<a href="#" id="register-form-link">Sign Up</a>
-				  </div>
-				</div>
-				<hr>
-			  </div>
-			  <div class="panel-body">
-				<div class="row">
-				  <div class="col-lg-12">
-					<form id="login-form" method="post" action="/ldn/userlogin/" role="form" style="display: block;">{% csrf_token %}
-					 <div class="col-lg-1"></div>
-					 <div class="col-lg-10">
-					  <div class="form-group">
-						<label for="user">Username</label>
-						<input id="user" name="username" type="text" class="input form-control" placeholder="Username">
-					  </div>
-					  <div class="form-group">
-						<label>Dr Licence Number</label>
-						<input name="dr_licence" type="text" class="input form-control" data-type="input" placeholder="Password">
-					  </div>
-					  <div class="form-group">
-						<label for="pass">Password</label>
-						 <input name="password" id="pass" type="password" class="input form-control" data-type="password" placeholder="Password">
-					  </div>
-					  <div class="form-group text-center">
-						<input id="check" type="checkbox" class="check" checked>
-						<label for="check"><span class="icon"></span> Keep me Signed in</label>
-					  </div>
-					  <div class="form-group">
-						<div class="row">
-						  <div class="col-sm-6 col-sm-offset-3">
-							<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Sign In">
-						  </div>
-						</div>
-					  </div>
-					  <div class="form-group text-center">
-								<a href="#forgot" data-target="#pwdModal" data-toggle="modal" class="ForgotPassCls">Forgot Password?</a>
-					   </div>
-					   <div class="Login_validation_error_text">Invalid login please try again</div>
-					</div>
-					<div class="col-lg-1"></div>
-					</form>
-					<form method="post" action="/ldn/emailverify/" id="register-form" role="form" style="display: none;">{% csrf_token %}
-					<div class="col-md-6">
-						  <div class="form-group">
-							<label for="username">Licence Number</label>
-							<input type="text" name="dr_licence" id="dr_licence_id" tabindex="1" class="form-control" placeholder="Licence Number" value="">
-						  </div>
-						  <div class="form-group">
-							<label for="username">Name</label>
-							<input type="text" name="username" id="user" tabindex="2" class="form-control" placeholder="Name">
-						  </div>
-						<div class="form-group">
-							<label for="website">Website</label>
-							<input  name="website" type="text" id="website" tabindex="2" class="form-control" placeholder="Website">
-						  </div>
-							<div class="form-group">
-								<label>Title</label>
-								<div class="selectDiv">
-									<span class="selectDefault"></span>
-									<select name="txtTitle" class="selectBox">
-										<option value="1">Select</option>
-										<option value="2">Phd</option>
-										<option value="3">MD</option>
-										<option value="4">DO</option>
-										<option value="5">ND</option>
-										<option value="6"> Nurse Prescribers</option>
-									</select>
-								</div>
-							</div>
-							 <div class="form-group">
-								<label>Country</label>
-								<div class="selectDiv">
-									<span class="selectDefault"></span>
-									<select name="txtCountry" class="selectBox">
-										<option value="1">Select</option>
-										<option value="2">UK</option>
-										<option value="3">USA</option>
-									</select>
-								</div>
-							</div>
-					  </div>
-					  <div class="col-md-6">
-						  <div class="form-group">
-							<label for="username">Pharmacist Licence Number</label>
-							<input name="ph_licence_number" type="text" id="ph_licence_number" tabindex="1" class="form-control" placeholder="Pharmacist Licence Number" value="">
-						  </div>
-						  <div class="form-group">
-							<label for="password">Password</label>
-							<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
-						  </div>
-						   <div class="form-group">
-								<label >Role</label>
-								<div class="selectDiv">
-									<span class="selectDefault"></span>
-									<select name="txtRole" class="selectBox">
-										<option value="1">Select</option>
-										<option value="2">Prescriber</option>
-										<option value="3">Pharmacist</option>
-										<option value="4">Researcher </option>
-									</select>
-								</div>
-							</div>
-						  <div class="form-group">
-							<label for="email">Email Address</label>
-							<input name="email" type="text" id="email" tabindex="2" class="form-control" placeholder="Email Address">
-						  </div>
-					  </div>
-					  <div class="row">
-					  <div class="col-sm-12">
-					  <div class="form-group">
-							  <div class="col-sm-6">
-								<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Sign Up">
-							  </div>
-							   <div class="col-sm-6">
-                                   <a href={% url "userlogin" %}><input type="button" name="register-cancel" id="register-cancel" tabindex="4" class="form-control btn btn-register" value="Cancel"></a>
-							  </div>
-					  </div>
-             		  </div>
-             		  </div>
-					  <div class="row">
-					  <div class="col-sm-12">
-							<div class="foot-lnk">
-                            <label for="tab-1">Already Member?</label>
-							</div>
-						</div>
-					</div>
-					</form>
-				  </div>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		</div>
-	  </div>
-    </div>
+</div>
 
 <!--modal-->
 <div id="pwdModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -238,14 +269,18 @@
                         <div class="panel-body">
                             <div class="text-center">
 
-                                <p>If you have forgotten your password you can reset it here and will be sent to your
-                                    email address</p>
+                                <p>If you have forgotten your password you can reset it here. <br>It will be sent to your
+                                    email address if your DR/PH Licence number matches with the email</p>
                                 <div class="panel-body">
                                     <fieldset>
                                         <form method="post" action="/ldn/sendpass/">{% csrf_token %}
                                             <div class="form-group">
-                                                <input class="form-control input-lg" placeholder="Username"
-                                                       name="username" type="text">
+{#                                                <input class="form-control input-lg" placeholder="Username"#}
+{#                                                       name="username" type="text">#}
+                                                <input class="form-control input-lg" placeholder="DR/PH Licence"
+                                                       name="DR/PHLicence" type="text">
+                                                <input class="form-control input-lg" placeholder="Email"
+                                                       name="email" type="text">
                                             </div>
                                             <input class="btn btn-lg btn-primary btn-block" value="Send My Password"
                                                    type="submit">
@@ -268,30 +303,30 @@
 <!-- Modal -->
 <!--modal-->
 <div id="InvalidLoginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" style="display:block;">
-  <div class="modal-content">
-      <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h1 class="text-center">Invalid Login</h1>
-      </div>
-      <div class="modal-body">
-          <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="text-center">                          
-                          <h3>Please try again.</h3>                       
+    <div class="modal-dialog" style="display:block;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h1 class="text-center">Invalid Login</h1>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="text-center">
+                                <h3>Please try again.</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-      </div>
-      <div class="modal-footer">
-          <div class="col-md-12">
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-		  </div>	
-      </div>
-  </div>
-  </div>
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Modal -->
 </body>

@@ -85,9 +85,8 @@
                                                     <div class="divider">
                                                     </div>
                                                     <ul class="view btn-sm active">
-                                                        <li><a href="#"><i class="fa fa-credit-card"></i> Payment</a>
-                                                        </li>
-                                                        {#																<li><a href="#"><i class="fa fa-user"></i> Account</a></li>#}
+                                                        <li><a href="/ldn/changepassword/"><i class="fa fa-user"></i>
+                                                            Change Password</a></li>
                                                         <li><a href="/ldn/logout/" class="">
                                                             <i class="fa fa-fw fa-power-off"></i> Logout
                                                         </a></li>
@@ -121,98 +120,70 @@
                 {% endif %}
                 <div class="">
                     <div class="panel panel-primary filterable">
-                        <div class="panel-heading">
-                            <div class="row sales">
-{#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
-{#                                    <div class=" report">#}
-{#                                        <div class="form-group">#}
-{#                                            <label for="country" class="PaientCMS  control-label">Patient ID </label>#}
-{#                                            <div class="PatintSec">#}
-{#                                                <select id="" class="form-control">#}
-{#                                                    {% for data in patient_data %}#}
-{#                                                        <option>{{ data.0 }}</option>#}
-{#                                                    {% endfor %}#}
-{#                                                </select>#}
-{#                                            </div>#}
-{#                                        </div> <!-- /.form-group -->#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
-{#                                    <div class=" report">#}
-{#                                        <div class="form-group">#}
-{#                                            <label for="country" class="PaientCMS control-label">Patient Name</label>#}
-{#                                            <div class="PatintSec">#}
-{#                                                <select id="country" class="form-control">#}
-{#                                                    {% for data in patient_data %}#}
-{#                                                        <option>{{ data.1 }}</option>#}
-{#                                                    {% endfor %}#}
-{#                                                </select>#}
-{#                                            </div>#}
-{#                                        </div> <!-- /.form-group -->#}
-{#                                    </div>#}
-{#                                </div>#}
-                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">
-                                    <div class=" report">
-                                        <div class="form-group">
-                                            <label for="country" class="PaientCMS control-label">Graph Start Date</label>
-                                            <div class="PatintSec">
-                                                <input type="date" id="dateStart" name="dateStart" class="form-control">
-{#                                                <select id="country" class="form-control">#}
-{#                                                    {% for data in patient_data %}#}
-{#                                                        <option>{{ data.1 }}</option>#}
-{#                                                    {% endfor %}#}
-{#                                                </select>#}
-                                            </div>
-                                        </div> <!-- /.form-group -->
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">
-                                    <div class=" report">
-                                        <div class="form-group">
-                                            <label for="country" class="PaientCMS control-label">Graph End Date</label>
-                                            <div class="PatintSec">
-                                                <input type="date" id ="dateEnd" name="dateEnd" class="form-control">
-{#                                                <select id="country" class="form-control">#}
-{#                                                    {% for data in patient_data %}#}
-{#                                                        <option>{{ data.1 }}</option>#}
-{#                                                    {% endfor %}#}
-{#                                                </select>#}
-                                            </div>
-                                        </div> <!-- /.form-group -->
-                                    </div>
-                                </div>
-{#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
-{#                                    <div class=" report">#}
-{#                                        <div class="form-group">#}
-{#                                            <label for="country" class="PaientCMS control-label">Report Date</label>#}
-{#                                            <div class="PatintSec">#}
-{#                                                <select id="country" class="form-control">#}
-{#                                                    <option>25.29.2017</option>#}
-{#                                                    <option>25.29.2015</option>#}
-{#                                                    <option>25.29.2014</option>#}
-{#                                                    <option>25.29.2013</option>#}
-{#                                                </select>#}
-{#                                            </div>#}
-{#                                        </div> <!-- /.form-group -->#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
-{#                                    <div class=" report">#}
-{#                                        <div class="form-group">#}
-{#                                            <label for="country" class="PaientCMS control-label">Date Added</label>#}
-{#                                            <div class="PatintSec">#}
-{#                                                <select id="country" class="form-control">#}
-{#                                                    <option>25.29.2017</option>#}
-{#                                                    <option>25.29.2015</option>#}
-{#                                                    <option>25.29.2014</option>#}
-{#                                                    <option>25.29.2013</option>#}
-{#                                                </select>#}
-{#                                            </div>#}
-{#                                        </div> <!-- /.form-group -->#}
-{#                                    </div>#}
-{#                                </div>#}
-                            </div>
-                        </div>
+                        {#                        <div class="panel-heading">#}
+                        {#                            <div class="row sales">#}
+                        {#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
+                        {#                                    <div class=" report">#}
+                        {#                                        <div class="form-group">#}
+                        {#                                            <label for="country" class="PaientCMS control-label">Graph Start Date</label>#}
+                        {#                                            <div class="PatintSec">#}
+                        {#                                                <input type="date" id="dateStart" name="dateStart" class="form-control">#}
+                        {#                                                <select id="country" class="form-control">#}
+                        {#                                                    {% for data in patient_data %}#}
+                        {#                                                        <option>{{ data.1 }}</option>#}
+                        {#                                                    {% endfor %}#}
+                        {#                                                </select>#}
+                        {#                                            </div>#}
+                        {#                                        </div> <!-- /.form-group -->#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
+                        {#                                    <div class=" report">#}
+                        {#                                        <div class="form-group">#}
+                        {#                                            <label for="country" class="PaientCMS control-label">Graph End Date</label>#}
+                        {#                                            <div class="PatintSec">#}
+                        {#                                                <input type="date" id ="dateEnd" name="dateEnd" class="form-control">#}
+                        {#                                                <select id="country" class="form-control">#}
+                        {#                                                    {% for data in patient_data %}#}
+                        {#                                                        <option>{{ data.1 }}</option>#}
+                        {#                                                    {% endfor %}#}
+                        {#                                                </select>#}
+                        {#                                            </div>#}
+                        {#                                        </div> <!-- /.form-group -->#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
+                        {#                                    <div class=" report">#}
+                        {#                                        <div class="form-group">#}
+                        {#                                            <label for="country" class="PaientCMS control-label">Report Date</label>#}
+                        {#                                            <div class="PatintSec">#}
+                        {#                                                <select id="country" class="form-control">#}
+                        {#                                                    <option>25.29.2017</option>#}
+                        {#                                                    <option>25.29.2015</option>#}
+                        {#                                                    <option>25.29.2014</option>#}
+                        {#                                                    <option>25.29.2013</option>#}
+                        {#                                                </select>#}
+                        {#                                            </div>#}
+                        {#                                        </div> <!-- /.form-group -->#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                                <div class="col-md-3 col-sm-3 col-xs-12 gutter">#}
+                        {#                                    <div class=" report">#}
+                        {#                                        <div class="form-group">#}
+                        {#                                            <label for="country" class="PaientCMS control-label">Date Added</label>#}
+                        {#                                            <div class="PatintSec">#}
+                        {#                                                <select id="country" class="form-control">#}
+                        {#                                                    <option>25.29.2017</option>#}
+                        {#                                                    <option>25.29.2015</option>#}
+                        {#                                                    <option>25.29.2014</option>#}
+                        {#                                                    <option>25.29.2013</option>#}
+                        {#                                                </select>#}
+                        {#                                            </div>#}
+                        {#                                        </div> <!-- /.form-group -->#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
                         <table class="table">
                             <thead>
                             <tr class="filters">
@@ -267,12 +238,12 @@
 
 </div>
 <script>
-$('.idlist').on('click', function(e){
-  e.preventDefault();
-  var address = $(this).attr('href') + "?start="+$('#dateStart').val()+"&end="+$('#dateEnd').val();
-  window.location = address;
+    {#$('.idlist').on('click', function(e){#}
+    {#  e.preventDefault();#}
+    {#  var address = $(this).attr('href') + "?start="+$('#dateStart').val()+"&end="+$('#dateEnd').val();#}
+    {#  window.location = address;#}
 
-});
+    {#{);#}
 </script>
 </body>
 </html>

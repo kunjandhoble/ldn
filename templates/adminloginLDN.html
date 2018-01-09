@@ -38,12 +38,12 @@
                                 </div>
                             </div>
                             <div id="navbar" class="navbar-collapse collapse">
-{#                                <form class="form-inline">#}
-{#                                    <ul class="nav navbar-nav navbar-right bdr">#}
-{#                                        <li><a href="{% url 'userlogin' %}" class="btn-blu mrgn-top">DOCTOR LOGIN</a>#}
-{#                                        </li>#}
-{#                                    </ul>#}
-{#                                </form>#}
+                                {#                                <form class="form-inline">#}
+                                {#                                    <ul class="nav navbar-nav navbar-right bdr">#}
+                                {#                                        <li><a href="{% url 'userlogin' %}" class="btn-blu mrgn-top">DOCTOR LOGIN</a>#}
+                                {#                                        </li>#}
+                                {#                                    </ul>#}
+                                {#                                </form>#}
                             </div>
                         </div>
                     </nav>
@@ -66,6 +66,10 @@
             <div class="login-form">
                 <form method="post" action="/ldn/adminlogin/">{% csrf_token %}
                     <div class="sign-in-htm">
+                        {% if message %}
+                            <div class="Login_validation_error_text">{{ message }}
+                            </div>
+                        {% endif %}
                         <div class="group">
                             <label for="user" class="label">Username</label>
                             <input name="username" id="user" type="text" class="input">

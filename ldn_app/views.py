@@ -9,6 +9,8 @@ import time
 import paypalrestsdk
 from MySQLdb import escape_string as thwart
 from decimal import Decimal
+
+from django.http import HttpResponseForbidden
 from django.http import JsonResponse
 from django.urls import reverse
 from werkzeug.datastructures import ImmutableOrderedMultiDict
@@ -22,6 +24,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.views.decorators.csrf import csrf_protect
 from django.template.context_processors import csrf
 from django.core.mail import send_mail
+from django.contrib import messages
 from .models import *
 from .dashboard_data import *
 
@@ -29,6 +32,9 @@ from .dashboard_data import *
 def login_view(request):
     c = {}
     c.update(csrf(request))
+    for msg in messages.get_messages(request):
+        c["message"] = msg
+        # print(msg)
     return render_to_response('loginLDNewHarshal.html', c)
 
 
@@ -118,17 +124,26 @@ def admin_login_verify(request):
         try:
             user_obj = authenticate(request, username=u_name, password=pwd)
         except:
-            return HttpResponse("Username/Password not matched")
+            # return HttpResponse("Username/Password not matched")
+            messages.add_message(request, messages.INFO, "Username/Password not matched")
+            return HttpResponseRedirect("/ldn/adminlogin/")
 
         if user_obj is not None:
             if not user_obj.is_active:
-                return HttpResponse("Your request is not approved. Please try again later.")
+                # return HttpResponse("Your request is not approved. Please try again later.")
+                messages.add_message(request, messages.INFO, "Your request is not approved. Please try again later.")
+                return HttpResponseRedirect("/ldn/adminlogin/")
 
             login(request, user_obj)
             return HttpResponseRedirect('/ldn/adminpanel/')
         else:
-            return HttpResponse("Invalid login please try again")
+            # return HttpResponse("Invalid login please try again")
+            messages.add_message(request, messages.INFO, "Invalid login please try again")
+            return HttpResponseRedirect("/ldn/adminlogin/")
     c['next'] = request.GET.get('next', '')
+    for msg in messages.get_messages(request):
+        c["message"] = msg
+        # print(msg)
     return render_to_response('adminloginLDN.html', c)
 
 
@@ -139,28 +154,37 @@ def user_login_verify(request):
     if request.method == 'POST':
         u_name = request.POST['username']
         dr_licence = request.POST['dr_licence']
+        ph_licence = request.POST['ph_licence']
         pwd = request.POST['password']
-
+        err = {}
         try:
             user_obj = User.objects.get(username=u_name, password=pwd)
         except:
             try:
                 user_obj = authenticate(request, username=u_name, password=pwd)
             except:
-                return HttpResponse("Username/Password not matched")
+                # return HttpResponse("Username/Password not matched")
+                messages.add_message(request, messages.INFO, "Username/Password not matched")
+                return HttpResponseRedirect("/ldn/login/")
 
         if user_obj is not None:
             if not user_obj.is_active:
-                return HttpResponse("Your request is not approved. Please try again later.")
+                # return HttpResponse("Your request is not approved. Please try again later.")
+                messages.add_message(request, messages.INFO, "Your request is not approved. Please try again later.")
+                return HttpResponseRedirect("/ldn/login/")
 
             signin_user = UserSignupDetails.objects.get(user_id=user_obj.id)
-            if signin_user.dr_licence == dr_licence:
+            if signin_user.dr_licence == dr_licence or signin_user.ph_licence == ph_licence:
                 login(request, user_obj)
                 return HttpResponseRedirect("/ldn/dashboard/")
             else:
-                return HttpResponse("Wrong Dr Licence Number")
+                # return HttpResponse("Wrong Dr Licence Number")
+                messages.add_message(request, messages.INFO, "Wrong Dr Licence Number")
+                return HttpResponseRedirect("/ldn/login/")
         else:
-            return HttpResponse("Invalid login please try again")
+            # return HttpResponse("Invalid login please try again")
+            messages.add_message(request, messages.INFO, "Invalid login please try again")
+            return HttpResponseRedirect("/ldn/login/")
 
 
 def user_logout(request):
@@ -171,22 +195,49 @@ def user_logout(request):
 def send_password(request):
     if request.method == 'POST':
         try:
-            user_obj = User.objects.get(username__exact=request.POST.get('username', ''))
+            print(request.POST.get('email'))
+            filtered_users = User.objects.filter(email__exact=request.POST.get('email', ''))
+            print(filtered_users)
         except:
+            err = {}
             # try:
             #     user_obj = UserSignupDetails.objects.get(dr_licence__exact=request.POST.get('username', ''))
             # except:
             #     return HttpResponse("Enter correct username")
-            return HttpResponse("Enter correct username")
+            # return HttpResponse("Enter correct username")
+            err["error"] = "Email does not exists"
+            return render_to_response("404.html", err)
 
-        if user_obj is not None:
-            if not user_obj.is_active:
-                return HttpResponse("Your request is not approved. Please try again later.")
+        # licence = UserSignupDetails.objects.get(user=user_obj)
+        found=False
+        user=''
+        if filtered_users is not None:
+            for user_obj in filtered_users:
+                print(user_obj.id)
+                try:
+                    licence = UserSignupDetails.objects.get(user_id=user_obj.id)
+                except:
+                    continue
+                if not user_obj.is_active:
+                    found = False
+                    continue
+                elif licence.dr_licence == request.POST.get('DR/PHLicence', '') or licence.ph_licence == request.POST.get('DR/PHLicence', ''):
+                    found = True
+                    user = user_obj
+                else:
+                    found = False
+
+            if not found:
+                err = {}
+                err["error"] = "DR/PH Licence not found or it does not match with Email"
+                return render_to_response("404.html", err)
+
+            licence = UserSignupDetails.objects.get(user=user)
             chars = string.ascii_uppercase + string.digits
             new_pass = ''.join(random.choice(chars) for _ in range(6))
             user_obj.set_password(new_pass)
             user_obj.save()
-            email_body = 'Hello ' + user_obj.username.upper() + ',\n\n Your password is reset to ' + new_pass + '.\nPlease login to continue.'
+            email_body = 'Hello' + user_obj.username + ',\n\n Your password is reset to \n\t' + new_pass + '.\nPlease login to continue.'
             send_mail(
                 'Password Reset',
                 email_body,
@@ -198,6 +249,43 @@ def send_password(request):
         return HttpResponseRedirect("/ldn/login/")
 
     return HttpResponseRedirect("/ldn/login/")
+
+
+@login_required(login_url='/ldn/login/')
+def changepassword(request):
+    c = {}
+    c.update(csrf(request))
+    if request.method == "POST":
+        user_id = request.user.id
+        old_pwd = request.POST.get('current_pwd', '')
+        new_pwd = request.POST.get('new_pwd', '')
+        confirm_pwd = request.POST.get('confirm_pwd', '')
+        test_passed = True
+        user = User.objects.get(id=user_id)
+        if old_pwd == new_pwd:
+            messages.add_message(request, messages.ERROR, "Current and New Password must be different")
+            test_passed = False
+        if not user.check_password(str(old_pwd)):
+            messages.add_message(request, messages.ERROR, "Incorrect Old Password")
+            test_passed = False
+        if new_pwd != confirm_pwd:
+            messages.add_message(request, messages.ERROR, "New Passwords do not match")
+            test_passed = False
+        if new_pwd == '' or confirm_pwd == '' or old_pwd == '':
+            messages.add_message(request, messages.ERROR, "Blank Password field not allowed")
+            test_passed = False
+        if test_passed:
+            try:
+                user.set_password(str(new_pwd))
+                user.save()
+            except:
+                messages.add_message(request, messages.ERROR, "Some error occurred. Please try after some time.")
+                test_passed = False
+        return HttpResponseRedirect("/ldn/changepassword/")
+    for msg in messages.get_messages(request):
+        print(msg)
+        c["message"] = msg
+    return render_to_response('registration/password_reset_confirm.html', c)
 
 
 @login_required(login_url='/ldn/login/')
@@ -432,9 +520,6 @@ def purchase(request):
         return str(e)
 
 
-
-
-
 ACCESS_TOKEN = ''
 
 
@@ -496,3 +581,15 @@ def checkpayment(request):
         c = {}
         c.update(csrf(request))
         return render_to_response("paypalsuccess.html", c)
+
+
+def handler404(request):
+    response = render_to_response('404.html')
+    response.status_code = 404
+    return response
+
+
+def handler500(request):
+    response = render_to_response('500.html')
+    response.status_code = 500
+    return response

@@ -316,3 +316,18 @@ select {
 		min-height: 943px;
 	}
 }
+
+.Login_validation_error_text{
+    /*padding: 8px;*/
+    /*border: 1px solid #b92b27;*/
+    color: #b92b27;
+    /*border-radius: 4px;*/
+    margin: 8px auto;
+    text-align: center;
+    background-color: #fff;
+	opacity: .7;
+    width: 80%;
+	    font-size: 18px;
+		display:inline;
+
+}

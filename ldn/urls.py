@@ -18,10 +18,15 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from ldn_app import urls
 from ldn import settings
+
+# handler404 = 'ldn_app.views.handler404'
+# handler500 = 'ldn_app.views.handler500'
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^ldn/', include('ldn_app.urls')),
 ]
+
 
 # if settings.DEBUG:
 #     urlpatterns += static('/static/', document_root='app_root/path/to/css/')
