@@ -153,8 +153,8 @@ def user_login_verify(request):
 
     if request.method == 'POST':
         u_name = request.POST['username']
-        dr_licence = request.POST['dr_licence']
-        ph_licence = request.POST['ph_licence']
+        licencetype = request.POST['licencetype']
+        licence = request.POST['licence']
         pwd = request.POST['password']
         err = {}
         try:
@@ -174,12 +174,17 @@ def user_login_verify(request):
                 return HttpResponseRedirect("/ldn/login/")
 
             signin_user = UserSignupDetails.objects.get(user_id=user_obj.id)
-            if signin_user.dr_licence == dr_licence or signin_user.ph_licence == ph_licence:
+            if licencetype == '2' and signin_user.ph_licence == licence:
                 login(request, user_obj)
                 return HttpResponseRedirect("/ldn/dashboard/")
+
+            elif licencetype == '3' and signin_user.dr_licence == licence:
+                login(request, user_obj)
+                return HttpResponseRedirect("/ldn/dashboard/")
+
             else:
                 # return HttpResponse("Wrong Dr Licence Number")
-                messages.add_message(request, messages.INFO, "Wrong Dr Licence Number")
+                messages.add_message(request, messages.INFO, "Wrong Licence Number")
                 return HttpResponseRedirect("/ldn/login/")
         else:
             # return HttpResponse("Invalid login please try again")
@@ -209,8 +214,8 @@ def send_password(request):
             return render_to_response("404.html", err)
 
         # licence = UserSignupDetails.objects.get(user=user_obj)
-        found=False
-        user=''
+        found = False
+        user = ''
         if filtered_users is not None:
             for user_obj in filtered_users:
                 print(user_obj.id)
@@ -221,7 +226,9 @@ def send_password(request):
                 if not user_obj.is_active:
                     found = False
                     continue
-                elif licence.dr_licence == request.POST.get('DR/PHLicence', '') or licence.ph_licence == request.POST.get('DR/PHLicence', ''):
+                elif licence.dr_licence == request.POST.get('DR/PHLicence',
+                                                            '') or licence.ph_licence == request.POST.get(
+                        'DR/PHLicence', ''):
                     found = True
                     user = user_obj
                 else:
@@ -232,12 +239,12 @@ def send_password(request):
                 err["error"] = "DR/PH Licence not found or it does not match with Email"
                 return render_to_response("404.html", err)
 
-            licence = UserSignupDetails.objects.get(user=user)
+            # licence = UserSignupDetails.objects.get(user=user)
             chars = string.ascii_uppercase + string.digits
             new_pass = ''.join(random.choice(chars) for _ in range(6))
-            user_obj.set_password(new_pass)
-            user_obj.save()
-            email_body = 'Hello' + user_obj.username + ',\n\n Your password is reset to \n\t' + new_pass + '.\nPlease login to continue.'
+            user.set_password(new_pass)
+            user.save()
+            email_body = 'Hello ' + user.username + ',\n\n Your password is reset to \n\n\t\t' + new_pass + '\n\nPlease login to continue.'
             send_mail(
                 'Password Reset',
                 email_body,
