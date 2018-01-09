@@ -65,6 +65,9 @@
 		background:#f7f7f7;
 		font-family: 'bitterregular';
 }
+/*a,td,th,p{*/
+	 /*font-family: 'latoregular';*/
+/*}*/
 td,th,p{
 	 font-family: 'latoregular';
 }
