@@ -237,7 +237,7 @@ def send_password(request):
             new_pass = ''.join(random.choice(chars) for _ in range(6))
             user_obj.set_password(new_pass)
             user_obj.save()
-            email_body = 'Hello' + user_obj.username + ',\n\n Your password is reset to \n\t' + new_pass + '.\nPlease login to continue.'
+            email_body = 'Hello ' + user_obj.username + ',\n\n Your password is reset to \n\n\t\t' + new_pass + '\n\nPlease login to continue.'
             send_mail(
                 'Password Reset',
                 email_body,
