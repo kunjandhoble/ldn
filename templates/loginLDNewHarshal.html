@@ -100,11 +100,7 @@
                                 <form id="login-form" method="post" action="/ldn/userlogin/" role="form"
                                       style="display: block;">{% csrf_token %}
                                     <div class="col-lg-1"></div>
-                                    <div class="col-lg-10">
-                                        {% if message %}
-                                            <div class="Login_validation_error_text">{{ message }}
-                                            </div>
-                                        {% endif %}
+                                    <div class="col-lg-10">                                        
                                         <div class="form-group">
                                             <label for="user">Username</label>
                                             <input id="user" name="username" type="text" class="input form-control"
@@ -114,7 +110,7 @@
                                             <label>Role</label>
                                             <div class="selectDiv">
                                                 <span class="selectDefault"></span>
-                                                <select name="licencetype" class="selectBox">
+                                                <select name="licencetype" class="selectBox OneSelect">
                                                     <option value="1">Select</option>
                                                     <option value="2">Pharmacist</option>
                                                     <option value="3">Doctor</option>
@@ -132,10 +128,16 @@
                                             <input name="password" id="pass" type="password" class="input form-control"
                                                    data-type="password" placeholder="Password">
                                         </div>
-                                        <div class="form-group text-center">
+                                        <div class=" text-center">
                                             <input id="check" type="checkbox" class="check" checked>
                                             <label for="check"><span class="icon"></span> Keep me Signed in</label>
                                         </div>
+										<div class=" form-group">
+										{% if message %}
+                                            <div class="Login_validation_error_text col-lg-12 col-md-12">{{ message }}
+                                            </div>
+                                        {% endif %}
+										</div>
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-sm-6 col-sm-offset-3">
@@ -174,7 +176,7 @@
                                             <label>Title</label>
                                             <div class="selectDiv">
                                                 <span class="selectDefault"></span>
-                                                <select name="txtTitle" class="selectBox">
+                                                <select name="txtTitle" class="selectBox SecSelect">
                                                     <option value="1">Select</option>
                                                     <option value="2">Phd</option>
                                                     <option value="3">MD</option>
@@ -188,7 +190,7 @@
                                             <label>Country</label>
                                             <div class="selectDiv">
                                                 <span class="selectDefault"></span>
-                                                <select name="txtCountry" class="selectBox">
+                                                <select name="txtCountry" class="selectBox SecSelect">
                                                     <option value="1">Select</option>
                                                     <option value="2">UK</option>
                                                     <option value="3">USA</option>
@@ -212,7 +214,7 @@
                                             <label>Role</label>
                                             <div class="selectDiv">
                                                 <span class="selectDefault"></span>
-                                                <select name="txtRole" class="selectBox">
+                                                <select name="txtRole" class="selectBox SecSelect">
                                                     <option value="1">Select</option>
                                                     <option value="2">Prescriber</option>
                                                     <option value="3">Pharmacist</option>
@@ -226,27 +228,27 @@
                                                    placeholder="Email Address">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-12">
+                                        <div class="">
                                             <div class="form-group">
-                                                <div class="col-sm-6">
+											<div class="row">
+                                                <div class="col-sm-6 col-sm-offset-4">
                                                     <input type="submit" name="register-submit" id="register-submit"
                                                            tabindex="4" class="form-control btn btn-register"
                                                            value="Sign Up">
                                                 </div>
-                                                <div class="col-sm-6">
-                                                    <a href={% url "userlogin" %}><input type="button"
-                                                                                         name="register-cancel"
-                                                                                         id="register-cancel"
-                                                                                         tabindex="4"
-                                                                                         class="form-control btn btn-register"
-                                                                                         value="Cancel"></a>
-                                                </div>
+                                                <!-- <div class="col-sm-6"> -->
+                                                    <!-- <a href={% url "userlogin" %}><input type="button" -->
+                                                                                         <!-- name="register-cancel" -->
+                                                                                         <!-- id="register-cancel" -->
+                                                                                         <!-- tabindex="4" -->
+                                                                                         <!-- class="form-control btn btn-register" -->
+                                                                                         <!-- value="Cancel"></a> -->
+                                                <!-- </div> -->
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-12 col-md-12">
                                             <div class="foot-lnk">
                                                 <label for="tab-1">Already Member?</label>
                                             </div>
@@ -284,7 +286,7 @@
                                             <div class="form-group">
 {#                                                <input class="form-control input-lg" placeholder="Username"#}
 {#                                                       name="username" type="text">#}
-                                                <input class="form-control input-lg" placeholder="DR/PH Licence"
+                                                <input class="form-control input-lg DRLicencee" placeholder="DR/PH Licence"
                                                        name="DR/PHLicence" type="text">
                                                 <input class="form-control input-lg" placeholder="Email"
                                                        name="email" type="text">

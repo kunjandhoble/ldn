@@ -61,13 +61,19 @@ body{
 		margin:0;
 		font-family: 'latoregular';
 }
-h1,h2,h3,h4,h5,h6{
+h1,h2,h3,h4,h5,h6,button{
 	font-family: 'bitterregular';
 	font-weight:100;
 }
-p,label,th,td,a{
+p,label,th,td{
 	font-family: 'latoregular';
 	
+}
+li a{
+	font-family: 'bitterregular';
+}
+.TabHeadm a{
+	font-family: 'latoregular';
 }
 a:focus, a:hover, a {
     outline: none;
@@ -134,14 +140,17 @@ a:focus, a:hover, a {
 .header-rightside{
 	margin-top:23px;
 }
+    
 .dropdown-menu {
-	left: -78px;
+	left: -95px;
+	min-width: 170px;
 }
 .navbar-content{
 	    padding: 5px;
 }
 .view  li{
 	list-style-type:none;
+	    margin: 5px 0;
 }
 .label.label-primary {
     border-radius: 50%;
@@ -363,6 +372,9 @@ table th,td{
 }
 .Ptabletr th li{
 	margin-left: 11px;
+}
+.highcharts-container {
+	width:1187px !important;
 }
 @media screen and (max-width: 1024px) and (min-width: 768px) {
 	#custom-search-input {
