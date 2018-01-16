@@ -15,6 +15,13 @@
     <script>
         $(function () {
 
+            $('#already-member-link').click(function (e) {
+                $("#login-form").delay(100).fadeIn(100);
+                $("#register-form").fadeOut(100);
+                $('#register-form-link').removeClass('active');
+                $('#login-form-link').addClass('active');
+                e.preventDefault();
+            });
             $('#login-form-link').click(function (e) {
                 $("#login-form").delay(100).fadeIn(100);
                 $("#register-form").fadeOut(100);
@@ -100,44 +107,27 @@
                                 <form id="login-form" method="post" action="/ldn/userlogin/" role="form"
                                       style="display: block;">{% csrf_token %}
                                     <div class="col-lg-1"></div>
-                                    <div class="col-lg-10">                                        
+                                    <div class="col-lg-10">
                                         <div class="form-group">
-                                            <label for="user">Username</label>
-                                            <input id="user" name="username" type="text" class="input form-control"
-                                                   placeholder="Username">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Role</label>
-                                            <div class="selectDiv">
-                                                <span class="selectDefault"></span>
-                                                <select name="licencetype" class="selectBox OneSelect">
-                                                    <option value="1">Select</option>
-                                                    <option value="2">Pharmacist</option>
-                                                    <option value="3">Doctor</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Licence Number</label>
-                                            <input name="licence" type="text" class="input form-control"
-                                                   data-type="input" placeholder="Licence Number">
+                                            <label for="user">Email</label>
+                                            <input id="email_id" name="email" type="email" class="input form-control"
+                                                   placeholder="Email" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="pass">Password</label>
                                             <input name="password" id="pass" type="password" class="input form-control"
-                                                   data-type="password" placeholder="Password">
+                                                   data-type="password" placeholder="Password" required>
                                         </div>
                                         <div class=" text-center">
                                             <input id="check" type="checkbox" class="check" checked>
                                             <label for="check"><span class="icon"></span> Keep me Signed in</label>
                                         </div>
-										<div class=" form-group">
-										{% if message %}
-                                            <div class="Login_validation_error_text col-lg-12 col-md-12">{{ message }}
-                                            </div>
-                                        {% endif %}
-										</div>
+                                        <div class=" form-group">
+                                            {% if message %}
+                                                <div class="Login_validation_error_text col-lg-12 col-md-12">{{ message }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-sm-6 col-sm-offset-3">
@@ -160,17 +150,17 @@
                                         <div class="form-group">
                                             <label for="username">Licence Number</label>
                                             <input type="text" name="dr_licence" id="dr_licence_id" tabindex="1"
-                                                   class="form-control" placeholder="Licence Number" value="">
+                                                   class="form-control" placeholder="Licence Number" value="" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="username">Username</label>
                                             <input type="text" name="username" id="user" tabindex="2"
-                                                   class="form-control" placeholder="Username">
+                                                   class="form-control" placeholder="Username" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="website">Website</label>
                                             <input name="website" type="text" id="website" tabindex="2"
-                                                   class="form-control" placeholder="Website">
+                                                   class="form-control" placeholder="Website" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Title</label>
@@ -203,12 +193,12 @@
                                             <label for="username">Pharmacist Licence Number</label>
                                             <input name="ph_licence_number" type="text" id="ph_licence_number"
                                                    tabindex="1" class="form-control"
-                                                   placeholder="Pharmacist Licence Number" value="">
+                                                   placeholder="Pharmacist Licence Number" value="" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="password">Password</label>
                                             <input type="password" name="password" id="password" tabindex="2"
-                                                   class="form-control" placeholder="Password">
+                                                   class="form-control" placeholder="Password" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Role</label>
@@ -225,32 +215,32 @@
                                         <div class="form-group">
                                             <label for="email">Email Address</label>
                                             <input name="email" type="text" id="email" tabindex="2" class="form-control"
-                                                   placeholder="Email Address">
+                                                   placeholder="Email Address" required>
                                         </div>
                                     </div>
-                                        <div class="">
-                                            <div class="form-group">
-											<div class="row">
+                                    <div class="">
+                                        <div class="form-group">
+                                            <div class="row">
                                                 <div class="col-sm-6 col-sm-offset-4">
                                                     <input type="submit" name="register-submit" id="register-submit"
                                                            tabindex="4" class="form-control btn btn-register"
                                                            value="Sign Up">
                                                 </div>
                                                 <!-- <div class="col-sm-6"> -->
-                                                    <!-- <a href={% url "userlogin" %}><input type="button" -->
-                                                                                         <!-- name="register-cancel" -->
-                                                                                         <!-- id="register-cancel" -->
-                                                                                         <!-- tabindex="4" -->
-                                                                                         <!-- class="form-control btn btn-register" -->
-                                                                                         <!-- value="Cancel"></a> -->
+                                                <!-- <a href={% url "userlogin" %}><input type="button" -->
+                                                <!-- name="register-cancel" -->
+                                                <!-- id="register-cancel" -->
+                                                <!-- tabindex="4" -->
+                                                <!-- class="form-control btn btn-register" -->
+                                                <!-- value="Cancel"></a> -->
                                                 <!-- </div> -->
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12">
-                                            <div class="foot-lnk">
-                                                <label for="tab-1">Already Member?</label>
+                                            <div class="form-group text-center">
+                                                <a href="#" class="active" id="already-member-link" class="ForgotPassCls" style="color: white">Already Member?</a>
                                             </div>
                                         </div>
                                     </div>
@@ -278,15 +268,17 @@
                         <div class="panel-body">
                             <div class="text-center">
 
-                                <p>If you have forgotten your password you can reset it here. <br>It will be sent to your
+                                <p>If you have forgotten your password you can reset it here. <br>It will be sent to
+                                    your
                                     email address if your DR/PH Licence number matches with the email</p>
                                 <div class="panel-body">
                                     <fieldset>
                                         <form method="post" action="/ldn/sendpass/">{% csrf_token %}
                                             <div class="form-group">
-{#                                                <input class="form-control input-lg" placeholder="Username"#}
-{#                                                       name="username" type="text">#}
-                                                <input class="form-control input-lg DRLicencee" placeholder="DR/PH Licence"
+                                                {#                                                <input class="form-control input-lg" placeholder="Username"#}
+                                                {#                                                       name="username" type="text">#}
+                                                <input class="form-control input-lg DRLicencee"
+                                                       placeholder="DR/PH Licence"
                                                        name="DR/PHLicence" type="text">
                                                 <input class="form-control input-lg" placeholder="Email"
                                                        name="email" type="text">

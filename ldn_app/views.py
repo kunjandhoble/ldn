@@ -147,21 +147,28 @@ def admin_login_verify(request):
     return render_to_response('adminloginLDN.html', c)
 
 
+def email_isunique(request):
+    if User.objects.filter(email__iexact=request.POST['email']):
+        return False
+    return True
+
+
 def user_login_verify(request):
     c = {}
     c.update(csrf(request))
-
     if request.method == 'POST':
-        u_name = request.POST['username']
-        licencetype = request.POST['licencetype']
-        licence = request.POST['licence']
+        email = request.POST['email']
+        # licencetype = request.POST['licencetype']
+        # licence = request.POST['licence']
         pwd = request.POST['password']
         err = {}
         try:
-            user_obj = User.objects.get(username=u_name, password=pwd)
+            user_obj = User.objects.get(email=email, password=pwd)
+            print(user_obj,"get")
         except:
             try:
-                user_obj = authenticate(request, username=u_name, password=pwd)
+                username = User.objects.get(email__exact=email).username
+                user_obj = authenticate(request, username=username, password=pwd)
             except:
                 # return HttpResponse("Username/Password not matched")
                 messages.add_message(request, messages.INFO, "Username/Password not matched")
@@ -173,19 +180,21 @@ def user_login_verify(request):
                 messages.add_message(request, messages.INFO, "Your request is not approved. Please try again later.")
                 return HttpResponseRedirect("/ldn/login/")
 
-            signin_user = UserSignupDetails.objects.get(user_id=user_obj.id)
-            if licencetype == '2' and signin_user.ph_licence == licence:
-                login(request, user_obj)
-                return HttpResponseRedirect("/ldn/dashboard/")
-
-            elif licencetype == '3' and signin_user.dr_licence == licence:
-                login(request, user_obj)
-                return HttpResponseRedirect("/ldn/dashboard/")
-
-            else:
-                # return HttpResponse("Wrong Dr Licence Number")
-                messages.add_message(request, messages.INFO, "Wrong Licence Number")
-                return HttpResponseRedirect("/ldn/login/")
+            login(request, user_obj)
+            return HttpResponseRedirect("/ldn/dashboard/")
+            # signin_user = UserSignupDetails.objects.get(user_id=user_obj.id)
+            # if licencetype == '2' and signin_user.ph_licence == licence:
+            #     login(request, user_obj)
+            #     return HttpResponseRedirect("/ldn/dashboard/")
+            #
+            # elif licencetype == '3' and signin_user.dr_licence == licence:
+            #     login(request, user_obj)
+            #     return HttpResponseRedirect("/ldn/dashboard/")
+            #
+            # else:
+            #     # return HttpResponse("Wrong Dr Licence Number")
+            #     messages.add_message(request, messages.INFO, "Wrong Licence Number")
+            #     return HttpResponseRedirect("/ldn/login/")
         else:
             # return HttpResponse("Invalid login please try again")
             messages.add_message(request, messages.INFO, "Invalid login please try again")
@@ -370,8 +379,24 @@ def graphs(request, patientid):
     dc = {}
     dc.update(csrf(request))
     if patientid not in [str(row[0]) for row in data]:
-        dc['notfound'] = "Patient Id = {} not found. Try again with a different id.".format(patientid)
-        return render_to_response('dashboard.html', dc)
+        doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
+        sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname as fullname FROM ldnappor_development.user'
+        if doctor.dr_licence is not None or doctor.dr_licence is not '':
+            sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
+        if doctor.ph_licence is not None or doctor.ph_licence is not '':
+            sqlquery += r' or ph_licence = "{0}"'.format(doctor.ph_licence)
+        data = fetch_data_from_db(sqlquery=sqlquery)
+        patient_data = []
+        for row in data:
+            patient_data.append((row[0], row[1]))
+        # patient_data = PatientData.objects.filter(user_id=request.user.id)
+        c = {}
+        c.update(csrf(request))
+        c['patient_data'] = patient_data
+        c['NA'] = "Patient Id = {} not found. Try again with a different id.".format(patientid)
+        c.update({'request': request})
+        return render_to_response('patientdata.html', c)
+
     dc.update({'request': request})
     sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) FROM ldnappor_development.user where user_id={0}'.format(
         patientid)
@@ -411,7 +436,7 @@ def dashboard(request):
                 return HttpResponseRedirect('/ldn/graphs/' + patient_id)
             else:
                 doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
-                sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname, email_address as fullname FROM ldnappor_development.user'
+                sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname FROM ldnappor_development.user'
                 if doctor.dr_licence is not None or doctor.dr_licence is not '':
                     sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
                 if doctor.ph_licence is not None or doctor.ph_licence is not '':
@@ -419,7 +444,7 @@ def dashboard(request):
                 data = fetch_data_from_db(sqlquery=sqlquery)
                 patient_data = []
                 for row in data:
-                    patient_data.append((row[0], row[1], row[2]))
+                    patient_data.append((row[0], row[1]))
                 # patient_data = PatientData.objects.filter(user_id=request.user.id)
                 c = {}
                 c.update(csrf(request))
@@ -429,7 +454,7 @@ def dashboard(request):
                 return render_to_response('patientdata.html', c)
         except:
             doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
-            sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname, email_address as fullname FROM ldnappor_development.user'
+            sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname FROM ldnappor_development.user'
             if doctor.dr_licence is not None or doctor.dr_licence is not '':
                 sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
             if doctor.ph_licence is not None or doctor.ph_licence is not '':
@@ -437,7 +462,7 @@ def dashboard(request):
             data = fetch_data_from_db(sqlquery=sqlquery)
             patient_data = []
             for row in data:
-                patient_data.append((row[0], row[1], row[2]))
+                patient_data.append((row[0], row[1]))
             # patient_data = PatientData.objects.filter(user_id=request.user.id)
             c = {}
             c.update(csrf(request))
@@ -456,7 +481,7 @@ def dashboard(request):
         else:
 
             doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
-            sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname, email_address as fullname FROM ldnappor_development.user'
+            sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname FROM ldnappor_development.user'
             if doctor.dr_licence is not None or doctor.dr_licence is not '':
                 sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
             if doctor.ph_licence is not None or doctor.ph_licence is not '':
@@ -464,7 +489,7 @@ def dashboard(request):
             data = fetch_data_from_db(sqlquery=sqlquery)
             patient_data = []
             for row in data:
-                patient_data.append((row[0], row[1], row[2]))
+                patient_data.append((row[0], row[1]))
             # patient_data = PatientData.objects.filter(user_id=request.user.id)
             c = {}
             c.update(csrf(request))
