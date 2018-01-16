@@ -380,7 +380,7 @@ def graphs(request, patientid):
     dc.update(csrf(request))
     if patientid not in [str(row[0]) for row in data]:
         doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
-        sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname as fullname FROM ldnappor_development.user'
+        sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname FROM ldnappor_development.user'
         if doctor.dr_licence is not None or doctor.dr_licence is not '':
             sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
         if doctor.ph_licence is not None or doctor.ph_licence is not '':
