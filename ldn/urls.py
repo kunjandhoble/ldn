@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 
 from django.contrib import admin
-from ldn_app import urls
+from ldn_app import urls,views
 from ldn import settings
+from django.contrib.auth import views as auth_views
+
 
 # handler404 = 'ldn_app.views.handler404'
 # handler500 = 'ldn_app.views.handler500'
@@ -25,6 +27,7 @@ from ldn import settings
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^ldn/', include('ldn_app.urls')),
+    url(r'^accounts/login/', auth_views.login),
 ]
 
 

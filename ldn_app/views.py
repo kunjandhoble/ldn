@@ -140,6 +140,7 @@ def admin_login_verify(request):
             # return HttpResponse("Invalid login please try again")
             messages.add_message(request, messages.INFO, "Invalid login please try again")
             return HttpResponseRedirect("/ldn/adminlogin/")
+    print(">>>>>>>>>>>>>>>>>>>>>>")
     c['next'] = request.GET.get('next', '')
     for msg in messages.get_messages(request):
         c["message"] = msg
