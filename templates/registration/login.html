@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link href={% static "css/bootstrap.min.css" %} rel="stylesheet">
+    <link href={% static  "css/custom.css" %} type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src={% static "js/jquery-2.1.4.min.js" %}></script>
+    <script type="text/javascript" src={% static "js/bootstrap.min.js" %}></script>
+
+</head>
+
+<body>
+<div class="blue-bg-nav">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <header class="header-tp">
+                    <nav class="navbar navbar-default navbar-static-top">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                        data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <div class="">
+                                    <a href="#" class="btn-blu mrgn-top" data-toggle="modal" data-target="#at-helping">
+                                        <img src={% static "Images/ldn-research-trust-logo.png" %} alt="logoImage0"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                {#                                <form class="form-inline">#}
+                                {#                                    <ul class="nav navbar-nav navbar-right bdr">#}
+                                {#                                        <li><a href="{% url 'userlogin' %}" class="btn-blu mrgn-top">DOCTOR LOGIN</a>#}
+                                {#                                        </li>#}
+                                {#                                    </ul>#}
+                                {#                                </form>#}
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="band">
+    <div class="bandleft"></div>
+    <div class="bandright"></div>
+</div>
+<div class="login-wrap_Bg">
+    <div class="login-wrap">
+        <div class="login-html NewS" id="Screen">
+            <input id="tab-1" type="radio" name="tab" class="sign-in" checked>
+            <label for="tab-1" class="tab">Admin Sign in</label>
+            <input id="tab-2" type="radio" name="tab" class="sign-up">
+            <label for="tab-2" class="tab"></label>
+            <div class="login-form">
+                <form method="post" action="/ldn/adminlogin/">{% csrf_token %}
+                    <div class="sign-in-htm">
+                        {% if message %}
+                            <div class="Login_validation_error_text">{{ message }}
+                            </div>
+                        {% endif %}
+                        <div class="group">
+                            <label for="user" class="label">Username</label>
+                            <input name="username" id="user" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <label for="pass" class="label">Password</label>
+                            <input name="password" id="pass" type="password" class="input" data-type="input">
+                        </div>
+                        <div class="group">
+                            <input name="next" id="next_id" type="hidden" class="input" data-type="input"
+                                   value="{{ next }}">
+                        </div>
+                        <div class="group">
+                            <input id="check" type="checkbox" class="check" checked>
+                            <label for="check"><span class="icon"></span> Keep me Signed in</label>
+                        </div>
+                        <div class="group">
+                            <input type="submit" class="button" value="Sign In">
+                        </div>
+                        <div class="foot-lnk">
+                            <a href="#forgot" data-target="#pwdModal" data-toggle="modal">Forgot Password?</a>
+                        </div>
+                    </div>
+                </form>
+                <form method="post" action="/ldn/emailverify/">{% csrf_token %}
+                    <div class="sign-up-htm">
+                        <div class="group">
+                            <label class="label">Pharamacist Licence Number</label>
+                            <input name="ph_licence_number" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <label class="label">Licence Number</label>
+                            <input name="dr_licence" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <label for="user" class="label">Password</label>
+                            <input name="password" id="user" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <label for="user" class="label">Name</label>
+                            <input name="username" id="user" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <label class="label">Role</label>
+                            <div class="selectDiv">
+                                <span class="selectDefault"></span>
+                                <select name="txtRole" class="selectBox">
+                                    <option value="1">Select</option>
+                                    <option value="2">Prescriber</option>
+                                    <option value="3">Pharmacist</option>
+                                    <option value="4">Researcher</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <label class="label">Website</label>
+                            <input name="website" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <label for="pass" class="label">Email Address</label>
+                            <input name="email" id="pass" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <label class="label">Title</label>
+                            <div class="selectDiv">
+                                <span class="selectDefault"></span>
+                                <select name="txtTitle" class="selectBox">
+                                    <option value="1">Select</option>
+                                    <option value="2">Phd</option>
+                                    <option value="3">MD</option>
+                                    <option value="4">DO</option>
+                                    <option value="5">ND</option>
+                                    <option value="6"> Nurse Prescribers</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <label class="label">Country</label>
+                            <div class="selectDiv">
+                                <span class="selectDefault"></span>
+                                <select name="txtCountry" class="selectBox">
+                                    <option value="1">Select</option>
+                                    <option value="2">India</option>
+                                    <option value="3">Sri Lanka</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <input type="button" class="button" value="Cancel">
+                        </div>
+                        <div class="group">
+
+                            <input type="submit" class="button" value="Sign Up">
+                        </div>
+                        <div class="foot-lnk">
+                            <label for="tab-1">Already Member?</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal-->
+<div id="pwdModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h1 class="text-center">What's My Password?</h1>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="text-center">
+
+                                <p>If you have forgotten your password you can reset it here and will be sent to your
+                                    email address</p>
+                                <div class="panel-body">
+                                    <fieldset>
+                                        <form method="post" action="/ldn/sendpass/">
+                                            <div class="form-group">
+                                                <input class="form-control input-lg" placeholder="Username"
+                                                       name="username" type="text">
+                                            </div>
+                                            <input class="btn btn-lg btn-primary btn-block" value="Send My Password"
+                                                   type="submit">
+                                        </form>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+</body>
+
+</html>
