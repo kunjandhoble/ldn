@@ -15,6 +15,12 @@
     <script>
         $(function () {
 
+            if ({{ signup|safe }}) {
+                $("#register-form").delay(100).fadeIn(100);
+                $("#login-form").fadeOut(100);
+                $('#login-form-link').removeClass('active');
+                $('#register-form-link').addClass('active');
+            }
             $('#already-member-link').click(function (e) {
                 $("#login-form").delay(100).fadeIn(100);
                 $("#register-form").fadeOut(100);
@@ -104,7 +110,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <form id="login-form" method="post" action="/ldn/userlogin/" role="form"
+                                <form id="login-form" method="post" action="/ldn/loginverify/" role="form"
                                       style="display: block;">{% csrf_token %}
                                     <div class="col-lg-1"></div>
                                     <div class="col-lg-10">
@@ -123,7 +129,7 @@
                                             <label for="check"><span class="icon"></span> Keep me Signed in</label>
                                         </div>
                                         <div class=" form-group">
-                                            {% if message %}
+                                            {% if message and signup == 'false' %}
                                                 <div class="Login_validation_error_text col-lg-12 col-md-12">{{ message }}
                                                 </div>
                                             {% endif %}
@@ -144,7 +150,7 @@
                                     </div>
                                     <div class="col-lg-1"></div>
                                 </form>
-                                <form method="post" action="/ldn/emailverify/" id="register-form" role="form"
+                                <form method="post" action="/ldn/signupverify/" id="register-form" role="form"
                                       style="display: none;">{% csrf_token %}
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -166,7 +172,7 @@
                                             <label>Title</label>
                                             <div class="selectDiv">
                                                 <span class="selectDefault"></span>
-                                                <select name="txtTitle" class="selectBox SecSelect">
+                                                <select name="txtTitle" class="selectBox SecSelect" required>
                                                     <option value="1">Select</option>
                                                     <option value="2">Phd</option>
                                                     <option value="3">MD</option>
@@ -180,7 +186,7 @@
                                             <label>Country</label>
                                             <div class="selectDiv">
                                                 <span class="selectDefault"></span>
-                                                <select name="txtCountry" class="selectBox SecSelect">
+                                                <select name="txtCountry" class="selectBox SecSelect" required>
                                                     <option value="1">Select</option>
                                                     <option value="2">UK</option>
                                                     <option value="3">USA</option>
@@ -204,7 +210,7 @@
                                             <label>Role</label>
                                             <div class="selectDiv">
                                                 <span class="selectDefault"></span>
-                                                <select name="txtRole" class="selectBox SecSelect">
+                                                <select name="txtRole" class="selectBox SecSelect" required>
                                                     <option value="1">Select</option>
                                                     <option value="2">Prescriber</option>
                                                     <option value="3">Pharmacist</option>
@@ -217,6 +223,25 @@
                                             <input name="email" type="text" id="email" tabindex="2" class="form-control"
                                                    placeholder="Email Address" required>
                                         </div>
+                                        {#                                        <div class=" form-group">#}
+                                        {#                                            {% if message %}#}
+                                        {#                                            <div class="row">#}
+                                        {#                                                <div class="Login_validation_error_text col-lg-12 col-md-12">{{ message }}#}
+                                        {#                                                </div>#}
+                                        {#                                            </div>#}
+                                        {#                                            {% endif %}#}
+                                        {#                                        </div>#}
+                                    </div>
+                                    <div class="">
+                                    <div class=" form-group">
+
+                                        {% if message and signup %}
+                                            <div class="row">
+                                                <div class="Login_validation_error_text col-lg-12 col-md-8">{{ message }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                     </div>
                                     <div class="">
                                         <div class="form-group">
@@ -240,7 +265,8 @@
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group text-center">
-                                                <a href="#" class="active" id="already-member-link" class="ForgotPassCls" style="color: white">Already Member?</a>
+                                                <a href="#" class="active" id="already-member-link"
+                                                   class="ForgotPassCls" style="color: white">Already Member?</a>
                                             </div>
                                         </div>
                                     </div>

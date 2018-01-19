@@ -32,10 +32,25 @@ from .dashboard_data import *
 def login_view(request):
     c = {}
     c.update(csrf(request))
+    c["signup"] = json.dumps(False)
     for msg in messages.get_messages(request):
         c["message"] = msg
-        # print(msg)
+        print(type(c["signup"]))
+        if msg and not c["signup"]:
+            print(msg)
     return render_to_response('loginLDNewHarshal.html', c)
+
+
+def email_isunique(request):
+    if User.objects.filter(email__iexact=request.POST['email']):
+        return False
+    return True
+
+
+def username_isunique(request):
+    if User.objects.filter(username__iexact=request.POST['username']):
+        return False
+    return True
 
 
 # @csrf_protect
@@ -52,7 +67,25 @@ def email_signup_verify(request):
         title_id = form['txtTitle']
         email = form['email']
 
-        User.objects.create(username=username, email=email, is_active=False)
+        if username_isunique(request):
+            if email_isunique(request):
+                User.objects.create(username=username, email=email, is_active=False)
+            else:
+                messages.add_message(request, messages.INFO, "Email used for Signup already exists.")
+                c = {}
+                c.update(csrf(request))
+                for msg in messages.get_messages(request):
+                    c["message"] = msg
+                c["signup"] = json.dumps(True)
+                return render_to_response("loginLDNewHarshal.html", c)
+        else:
+            c = {}
+            c.update(csrf(request))
+            messages.add_message(request, messages.INFO, "Username used for Signup already exists.")
+            for msg in messages.get_messages(request):
+                c["message"] = msg
+            c["signup"] = json.dumps(True)
+            return render_to_response("loginLDNewHarshal.html", c)
 
         user_id = User.objects.last().id
         user_obj = User.objects.get(id=user_id)
@@ -93,13 +126,13 @@ def admin_panel_verify(request):
         user_obj = User.objects.get(id=int(request.POST['user_id']))
         user_obj.is_active = True
         user_obj.save()
-        email_body = 'Hello ' + user_obj.username.upper() + ',\n\nWe welcome you to our family. ' \
+        email_body = 'Hello ' + user_obj.username + ',\n\nWe welcome you to our family. ' \
                                                             'Your request for access to LDN research is accepted by admin. You can now login and perform your analysis.  '
         send_mail(
             'Access Confirmed',
             email_body,
             'gvoicecall31@gmail.com',
-            ['gvoicecall31@gmail.com'],  # user_obj.email
+            [str(user_obj.email)],  # user_obj.email
             fail_silently=False,
         )
 
@@ -140,18 +173,11 @@ def admin_login_verify(request):
             # return HttpResponse("Invalid login please try again")
             messages.add_message(request, messages.INFO, "Invalid login please try again")
             return HttpResponseRedirect("/ldn/adminlogin/")
-    print(">>>>>>>>>>>>>>>>>>>>>>")
     c['next'] = request.GET.get('next', '')
     for msg in messages.get_messages(request):
         c["message"] = msg
         # print(msg)
     return render_to_response('adminloginLDN.html', c)
-
-
-def email_isunique(request):
-    if User.objects.filter(email__iexact=request.POST['email']):
-        return False
-    return True
 
 
 def user_login_verify(request):
@@ -165,7 +191,7 @@ def user_login_verify(request):
         err = {}
         try:
             user_obj = User.objects.get(email=email, password=pwd)
-            print(user_obj,"get")
+            print(user_obj, "get")
         except:
             try:
                 username = User.objects.get(email__exact=email).username
@@ -214,14 +240,14 @@ def send_password(request):
             filtered_users = User.objects.filter(email__exact=request.POST.get('email', ''))
             print(filtered_users)
         except:
-            err = {}
             # try:
             #     user_obj = UserSignupDetails.objects.get(dr_licence__exact=request.POST.get('username', ''))
             # except:
             #     return HttpResponse("Enter correct username")
             # return HttpResponse("Enter correct username")
-            err["error"] = "Email does not exists"
-            return render_to_response("404.html", err)
+
+            messages.add_message(request, messages.INFO, "Email does not exists")
+            return HttpResponseRedirect("/ldn/login/")
 
         # licence = UserSignupDetails.objects.get(user=user_obj)
         found = False
@@ -234,20 +260,23 @@ def send_password(request):
                 except:
                     continue
                 if not user_obj.is_active:
-                    found = False
+                    found = "Your request is not approved by the admin"
                     continue
                 elif licence.dr_licence == request.POST.get('DR/PHLicence',
                                                             '') or licence.ph_licence == request.POST.get(
-                        'DR/PHLicence', ''):
+                    'DR/PHLicence', ''):
                     found = True
                     user = user_obj
                 else:
                     found = False
 
+            if isinstance(found,basestring):
+                messages.add_message(request, messages.INFO, found)
+                return HttpResponseRedirect("/ldn/login/")
+
             if not found:
-                err = {}
-                err["error"] = "DR/PH Licence not found or it does not match with Email"
-                return render_to_response("404.html", err)
+                messages.add_message(request, messages.INFO, "DR/PH Licence not found or it does not match with Email")
+                return HttpResponseRedirect("/ldn/login/")
 
             # licence = UserSignupDetails.objects.get(user=user)
             chars = string.ascii_uppercase + string.digits
@@ -259,7 +288,7 @@ def send_password(request):
                 'Password Reset',
                 email_body,
                 'gvoicecall31@gmail.com',
-                ['gvoicecall31@gmail.com'],  # user_obj.email
+                [str(user.email)],  # user_obj.email
                 fail_silently=False,
             )
 

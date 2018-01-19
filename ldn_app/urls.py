@@ -10,10 +10,10 @@ urlpatterns = [
                   # register new user
                   #     url(r'^register/$', views.register_view),
                   url(r'^login/$', login_view, name='userlogin'),
-                  url(r'^emailverify/$', email_signup_verify),
+                  url(r'^signupverify/$', email_signup_verify),
                   url(r'^adminpanel/$', admin_panel_verify, name='adminpanel'),
                   url(r'^adminlogin/$', admin_login_verify),
-                  url(r'^userlogin/$', user_login_verify),
+                  url(r'^loginverify/$', user_login_verify),
                   url(r'^logout/$', user_logout, name='logout'),
                   url(r'^userpatients/$', user_patients),
                   url(r'^sendpass/$', send_password, name='sendpass'),
