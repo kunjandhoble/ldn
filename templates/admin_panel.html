@@ -84,7 +84,9 @@
                                         <form method="post" action="/ldn/adminpanel/">{% csrf_token %}
                                             <input id="hidden_userid" type="hidden" name="user_id"
                                                    value="{{ data.user_id }}"/>
-                                            <input style="color: white;background-color: #1b6d85" type="submit" value="Approve"></form>
+                                            <input style="color: white;background-color: #1b6d85" type="submit" value="Approve">
+{#                                            <input style="color: white;background-color: #1b6d85" onclick="window.location='/ldn/logout/'" type="button" value="Cancel"></form>#}
+                                        </form>
                                     </th>
 
                                 </tr>

@@ -154,14 +154,14 @@
                                       style="display: none;">{% csrf_token %}
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="username">Licence Number</label>
+                                            <label for="dr_licence">Licence Number</label>
                                             <input type="text" name="dr_licence" id="dr_licence_id" tabindex="1"
                                                    class="form-control" placeholder="Licence Number" value="">
                                         </div>
                                         <div class="form-group">
-                                            <label for="username">Username</label>
-                                            <input type="text" name="username" id="user" tabindex="2"
-                                                   class="form-control" placeholder="Username" required>
+                                            <label for="firstname">Name</label>
+                                            <input type="text" name="firstname" id="user" tabindex="2"
+                                                   class="form-control" placeholder="Name" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="website">Website</label>
@@ -173,7 +173,7 @@
                                             <div class="selectDiv">
                                                 <span class="selectDefault"></span>
                                                 <select name="txtTitle" class="selectBox SecSelect" required>
-                                                    <option value="1">Select</option>
+{#                                                    <option value="1">Select</option>#}
                                                     <option value="2">Phd</option>
                                                     <option value="3">MD</option>
                                                     <option value="4">DO</option>
@@ -187,7 +187,7 @@
                                             <div class="selectDiv">
                                                 <span class="selectDefault"></span>
                                                 <select name="txtCountry" class="selectBox SecSelect" required>
-                                                    <option value="1">Select</option>
+{#                                                    <option value="1">Select</option>#}
                                                     <option value="2">UK</option>
                                                     <option value="3">USA</option>
                                                 </select>
@@ -211,7 +211,7 @@
                                             <div class="selectDiv">
                                                 <span class="selectDefault"></span>
                                                 <select name="txtRole" class="selectBox SecSelect" required>
-                                                    <option value="1">Select</option>
+{#                                                    <option disabled selected value>Select</option>#}
                                                     <option value="2">Prescriber</option>
                                                     <option value="3">Pharmacist</option>
                                                     <option value="4">Researcher</option>

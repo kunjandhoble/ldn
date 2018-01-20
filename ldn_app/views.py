@@ -1,21 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
-import random
-import string, json
-#
-# import json as json
-import time
-import paypalrestsdk
-from MySQLdb import escape_string as thwart
 from decimal import Decimal
-
-from django.http import HttpResponseForbidden
 from django.http import JsonResponse
 from django.urls import reverse
-from werkzeug.datastructures import ImmutableOrderedMultiDict
-import requests
-import braintree
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
@@ -27,6 +14,11 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from .models import *
 from .dashboard_data import *
+import random
+import string
+import paypalrestsdk
+import requests
+import braintree
 
 
 def login_view(request):
@@ -35,9 +27,6 @@ def login_view(request):
     c["signup"] = json.dumps(False)
     for msg in messages.get_messages(request):
         c["message"] = msg
-        print(type(c["signup"]))
-        if msg and not c["signup"]:
-            print(msg)
     return render_to_response('loginLDNewHarshal.html', c)
 
 
@@ -47,17 +36,17 @@ def email_isunique(request):
     return True
 
 
-def username_isunique(request):
-    if User.objects.filter(username__iexact=request.POST['username']):
-        return False
-    return True
+# def username_isunique(request):
+#     if User.objects.filter(username__iexact=request.POST['username']):
+#         return False
+#     return True
 
 
 # @csrf_protect
 def email_signup_verify(request):
     if request.POST:
         form = request.POST
-        username = form['username']
+        firstname = form['firstname']
         password = form['password']
         dr_licence = form['dr_licence']
         ph_licence_number = form['ph_licence_number']
@@ -67,52 +56,71 @@ def email_signup_verify(request):
         title_id = form['txtTitle']
         email = form['email']
 
-        if username_isunique(request):
-            if email_isunique(request):
-                User.objects.create(username=username, email=email, is_active=False)
-            else:
-                messages.add_message(request, messages.INFO, "Email used for Signup already exists.")
-                c = {}
-                c.update(csrf(request))
-                for msg in messages.get_messages(request):
-                    c["message"] = msg
-                c["signup"] = json.dumps(True)
-                return render_to_response("loginLDNewHarshal.html", c)
+        # if username_isunique(request):
+        if email_isunique(request):
+            User.objects.create(first_name=firstname, email=email, is_active=False)
         else:
+            messages.add_message(request, messages.INFO, "Email used for Signup already exists.")
             c = {}
             c.update(csrf(request))
-            messages.add_message(request, messages.INFO, "Username used for Signup already exists.")
             for msg in messages.get_messages(request):
                 c["message"] = msg
             c["signup"] = json.dumps(True)
             return render_to_response("loginLDNewHarshal.html", c)
+        # else:
+        #     c = {}
+        #     c.update(csrf(request))
+        #     messages.add_message(request, messages.INFO, "Either DR Licence or PH Licence is required for registration")
+        #     for msg in messages.get_messages(request):
+        #         c["message"] = msg
+        #     c["signup"] = json.dumps(True)
+        #     return render_to_response("loginLDNewHarshal.html", c)
 
+        # find last created user id
         user_id = User.objects.last().id
         user_obj = User.objects.get(id=user_id)
+        user_obj.username = str(user_id)
         user_obj.set_password(password)
         user_obj.save()
+
+        # enter user details
         UserSignupDetails.objects.create(user_id=user_id, country_id=country_id, dr_licence=dr_licence,
                                          ph_licence=ph_licence_number, website=website, title=title_id, role=role_id)
 
-        email_body = 'Approval request received with following details:' + \
-                     '\nDoctor Licence :' + dr_licence + \
-                     '\nPharamacist Licence :' + ph_licence_number + \
-                     '\nEmail : ' + email + \
-                     '\nWebsite :' + website + \
-                     '\nCountry ID :' + country_id + \
-                     '\nRole :' + role_id + \
-                     '\nTitle :' + title_id + \
-                     '\nUsername :' + username + \
-                     '\n\nKindly check admin panel for more details.'
+        admin_email_body = 'Approval request received with following details:' + \
+                           '\nDoctor Licence :' + dr_licence + \
+                           '\nPharamacist Licence :' + ph_licence_number + \
+                           '\nEmail : ' + email + \
+                           '\nWebsite :' + website + \
+                           '\nCountry ID :' + country_id + \
+                           '\nRole :' + role_id + \
+                           '\nTitle :' + title_id + \
+                           '\nName :' + firstname + \
+                           '\n\nKindly check admin panel for more details.'
+        user_email_body = 'Hello ' + firstname + ',\n\nYou have completed registration process. '+\
+                          'You will receive a confirmation mail of request approval in a few days.'+\
+                          '\n\nKindly contact us for more details.'
 
-        send_mail(
-            'Approval Request',
-            email_body,
-            'gvoicecall31@gmail.com',
-            ['gvoicecall31@gmail.com'],
-            fail_silently=False,
-        )
+        try:
+            send_mail(
+                'Approval Request',
+                admin_email_body,
+                'gvoicecall31@gmail.com',
+                ['gvoicecall31@gmail.com'],
+                fail_silently=False,
+            )
+            send_mail(
+                'Request Submitted',
+                user_email_body,
+                'gvoicecall31@gmail.com',
+                [str(email)],
+                fail_silently=False,
+            )
+        except:
+            messages.add_message(request, messages.INFO, "Experiencing technical error in resgistration.")
+
         return redirect("/ldn/login/")
+
 
     return HttpResponse("Method: /GET not allowed")  # @login_required
 
@@ -126,8 +134,8 @@ def admin_panel_verify(request):
         user_obj = User.objects.get(id=int(request.POST['user_id']))
         user_obj.is_active = True
         user_obj.save()
-        email_body = 'Hello ' + user_obj.username + ',\n\nWe welcome you to our family. ' \
-                                                            'Your request for access to LDN research is accepted by admin. You can now login and perform your analysis.  '
+        email_body = 'Hello ' + user_obj.first_name + ',\n\nWe welcome you to our family. ' \
+                                                      'Your request for access to LDN research is accepted by admin. You can now login and perform your analysis.  '
         send_mail(
             'Access Confirmed',
             email_body,
@@ -138,7 +146,7 @@ def admin_panel_verify(request):
 
         return redirect("/ldn/adminpanel/")
 
-    unverified_users_id = User.objects.filter(is_active=False).values_list('id', 'username', 'date_joined').order_by(
+    unverified_users_id = User.objects.filter(is_active=False).values_list('id', 'first_name', 'date_joined').order_by(
         'date_joined')
     unverified_users = UserSignupDetails.objects.filter(user_id__in=[i[0] for i in unverified_users_id])
     c['unverified_users'] = zip([[i[1], i[2]] for i in unverified_users_id], unverified_users)
@@ -176,7 +184,6 @@ def admin_login_verify(request):
     c['next'] = request.GET.get('next', '')
     for msg in messages.get_messages(request):
         c["message"] = msg
-        # print(msg)
     return render_to_response('adminloginLDN.html', c)
 
 
@@ -194,8 +201,14 @@ def user_login_verify(request):
             print(user_obj, "get")
         except:
             try:
+                user_active = User.objects.get(email__exact=email).is_active
                 username = User.objects.get(email__exact=email).username
+                if user_active != 1:
+                    # return HttpResponse("Invalid login please try again")
+                    messages.add_message(request, messages.INFO, "Invalid login please try again")
+                    return HttpResponseRedirect("/ldn/login/")
                 user_obj = authenticate(request, username=username, password=pwd)
+
             except:
                 # return HttpResponse("Username/Password not matched")
                 messages.add_message(request, messages.INFO, "Username/Password not matched")
@@ -270,7 +283,7 @@ def send_password(request):
                 else:
                     found = False
 
-            if isinstance(found,basestring):
+            if isinstance(found, basestring):
                 messages.add_message(request, messages.INFO, found)
                 return HttpResponseRedirect("/ldn/login/")
 
@@ -283,7 +296,7 @@ def send_password(request):
             new_pass = ''.join(random.choice(chars) for _ in range(6))
             user.set_password(new_pass)
             user.save()
-            email_body = 'Hello ' + user.username + ',\n\n Your password is reset to \n\n\t\t' + new_pass + '\n\nPlease login to continue.'
+            email_body = 'Hello ' + user.first_name + ',\n\n Your password is reset to \n\n\t\t' + new_pass + '\n\nPlease login to continue.'
             send_mail(
                 'Password Reset',
                 email_body,
@@ -351,46 +364,6 @@ def user_patients(request):
         c.update({'NA': 'Invalid patient id. Please try again.'})
         c.update({'request': request})
         return render_to_response('patientdata.html', c)
-
-
-# @login_required(login_url='/ldn/login/')
-# def graphs(request, tablename, userid):
-#     if tablename == 'oswestry':
-#         dc = oswestry_data(tablename, userid)
-#         return render_to_response('dashboard/oswestry.html', dc)
-#     elif tablename == 'cdc':
-#         dc = cdc_data(tablename, userid)
-#         return render_to_response('dashboard/cdc.html', dc)
-#     elif tablename == 'weight':
-#         dc = weight_data(tablename, userid)
-#         return render_to_response('dashboard/weight.html', dc)
-#     elif tablename == 'prescriptionmeds':
-#         dc = prescriptionmeds_data('prescription_meds',userid)
-#         return render_to_response('dashboard/prescriptionmeds.html', dc)
-#     elif tablename == 'pain':
-#         dc = pain_data('pain_tracker', userid)
-#         return render_to_response('dashboard/pain_tracker.html', dc)
-#     elif tablename == 'dosehistory':
-#         dc = dosehistory_data('research_dose_history', userid)
-#         return render_to_response('dashboard/dose_history.html', dc)
-#     elif tablename == 'sleep':
-#         dc = sleep_data(tablename, userid)
-#         return render_to_response('dashboard/sleep.html', dc)
-#     elif tablename == 'cfsfibrotracker':
-#         dc = cfsfibrotracker_data('cfs_fibro_tracker', userid)
-#         return render_to_response('dashboard/cfs_fibrotracker.html', dc)
-#     elif tablename == 'myday':
-#         dc = myday_data(tablename, userid)
-#         return render_to_response('dashboard/myday.html', dc)
-#     elif tablename == 'currentdose':
-#         dc = currentdose_data(tablename, userid)
-#         return render_to_response('dashboard/currentdose.html', dc)
-#     elif tablename == 'ldntracker':
-#         dc = ldntracker_data(tablename, userid)
-#         return render_to_response('dashboard/ldntracker.html', dc)
-#     else:
-#         dc = {}
-#     return render_to_response('dashboard/DashSecond.html', dc)
 
 @login_required(login_url='/ldn/login/')
 def graphs(request, patientid):

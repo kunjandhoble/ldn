@@ -72,7 +72,7 @@
                                             <ul class="dropdown-menu">
                                                 <li>
                                                     <div class="navbar-content">
-                                                        <!-- <span>{{ request.user.firstname }} {{ request.user.lastname }}</span> -->
+{#                                                        <!-- <span>{{ request.user.firstname }} {{ request.user.lastname }}</span> -->#}
                                                         <!-- <p class="text-muted small"> -->
                                                             <!-- {{ request.user.email }} -->
                                                         <!-- </p> -->
@@ -111,7 +111,7 @@
     <div class="row display-table-row">
         <div class="col-md-9 col-sm-9 display-table-cell v-align">
             <div class="user-dashboard">
-                <h4>Hello {{ request.user }}</h4>
+                <h4>Hello {{ request.user.firstname }}</h4>
 
             </div>
         </div>
