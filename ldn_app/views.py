@@ -58,7 +58,7 @@ def email_signup_verify(request):
 
         # if username_isunique(request):
         if email_isunique(request):
-            User.objects.create(first_name=firstname, email=email, is_active=False)
+            User.objects.create(username=email, first_name=firstname, email=email, is_active=False)
         else:
             messages.add_message(request, messages.INFO, "Email used for Signup already exists.")
             c = {}
