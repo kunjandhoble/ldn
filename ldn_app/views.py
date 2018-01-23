@@ -48,8 +48,8 @@ def email_signup_verify(request):
         form = request.POST
         firstname = form['firstname']
         password = form['password']
-        dr_licence = form['dr_licence']
-        ph_licence_number = form['ph_licence_number']
+        licence = form['licence']
+        # ph_licence_number = form['ph_licence_number']
         website = form['website']
         country_id = form['txtCountry']
         role_id = form['txtRole']
@@ -57,7 +57,15 @@ def email_signup_verify(request):
         email = form['email']
 
         # if username_isunique(request):
-        if email_isunique(request):
+        if role_id not in ["1","2","3"]:
+            messages.add_message(request, messages.INFO, "Invalid Role Selected")
+            c = {}
+            c.update(csrf(request))
+            for msg in messages.get_messages(request):
+                c["message"] = msg
+            c["signup"] = json.dumps(True)
+            return render_to_response("loginLDNewHarshal.html", c)
+        elif email_isunique(request):
             User.objects.create(username=email, first_name=firstname, email=email, is_active=False)
         else:
             messages.add_message(request, messages.INFO, "Email used for Signup already exists.")
@@ -67,14 +75,6 @@ def email_signup_verify(request):
                 c["message"] = msg
             c["signup"] = json.dumps(True)
             return render_to_response("loginLDNewHarshal.html", c)
-        # else:
-        #     c = {}
-        #     c.update(csrf(request))
-        #     messages.add_message(request, messages.INFO, "Either DR Licence or PH Licence is required for registration")
-        #     for msg in messages.get_messages(request):
-        #         c["message"] = msg
-        #     c["signup"] = json.dumps(True)
-        #     return render_to_response("loginLDNewHarshal.html", c)
 
         # find last created user id
         user_id = User.objects.last().id
@@ -83,13 +83,24 @@ def email_signup_verify(request):
         user_obj.set_password(password)
         user_obj.save()
 
-        # enter user details
-        UserSignupDetails.objects.create(user_id=user_id, country_id=country_id, dr_licence=dr_licence,
-                                         ph_licence=ph_licence_number, website=website, title=title_id, role=role_id)
+        # save user details
+        # "1" > Prescriber
+        # "2" > Pharmacist
+        # "3" > Researcher
+        if role_id in ["1","2"]:
+            UserSignupDetails.objects.create(user_id=user_id, country_id=country_id,
+                                             ph_licence=licence,dr_licence='', website=website, title=title_id, role=role_id)
+            email_text = '\nPharamacist Licence :' + licence
+        elif role_id == "3":
+            UserSignupDetails.objects.create(user_id=user_id, country_id=country_id, ph_licence='', dr_licence=licence,
+                                            website=website, title=title_id,
+                                             role=role_id)
+            email_text = '\nDoctor Licence :' + licence
+        else:
+            messages.add_message(request, messages.INFO, "Invalid Role Selected")
+            return redirect("/ldn/login/")
 
-        admin_email_body = 'Approval request received with following details:' + \
-                           '\nDoctor Licence :' + dr_licence + \
-                           '\nPharamacist Licence :' + ph_licence_number + \
+        admin_email_body = 'Approval request received with following details:' + email_text +\
                            '\nEmail : ' + email + \
                            '\nWebsite :' + website + \
                            '\nCountry ID :' + country_id + \
