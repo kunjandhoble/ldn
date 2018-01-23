@@ -93,8 +93,7 @@ def email_signup_verify(request):
             email_text = '\nPharamacist Licence :' + licence
         elif role_id == "3":
             UserSignupDetails.objects.create(user_id=user_id, country_id=country_id, ph_licence='', dr_licence=licence,
-                                            website=website, title=title_id,
-                                             role=role_id)
+                                            website=website, title=title_id, role=role_id)
             email_text = '\nDoctor Licence :' + licence
         else:
             messages.add_message(request, messages.INFO, "Invalid Role Selected")

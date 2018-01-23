@@ -133,13 +133,15 @@ def weight_data(tablename, patientid, startdate, enddate):
                     meds_count_id is not null and ldn_type_id is not null order by user_id
                   ){2} order by user_id, forDate ASC""".format(tablename, patientid, date_query)
     data = fetch_data_from_db(sqlquery)
-    justlb, fordate, prefWt = [], [], "justLb"
+    kg, justlb, st, fordate, prefWt = [], [], [], [], "justLb"
     for row in data:
+        kg.append(row[2])
         justlb.append(row[3])
+        st.append(str((row[4]/row[5])+14))
         fordate.append(str(row[-2]))
     weight_len = 1 if len(justlb) > 1 else 0
-    weight_table_zipped = list(zip(fordate, justlb, [prefWt] * len(fordate)))
-    dc = {'weight_justlb': json.dumps(justlb), 'weight_fordate': json.dumps(fordate), 'weight_prefWt': prefWt,
+    weight_table_zipped = list(zip(fordate, kg, justlb, st, [prefWt] * len(fordate)))
+    dc = {'weight_kg': json.dumps(kg), 'weight_justlb': json.dumps(justlb), 'weight_st': json.dumps(st), 'weight_fordate': json.dumps(fordate), 'weight_prefWt': prefWt,
           'weight_table_zipped': weight_table_zipped, 'weight_len': weight_len}
     return dc
 

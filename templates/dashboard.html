@@ -19,6 +19,61 @@
 </head>
 
 <body>
+<script>
+    function selectprefmethod(prefvalue) {
+        var chart = $('#weight').highcharts();
+        if (prefvalue == 1) {
+            chart.yAxis[0].update({
+                title: {
+                    text: "LB"
+                }
+            });
+            chart.series[0].update({
+                name: 'justLb',
+                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                data:{{ weight_justlb|safe }}
+            });
+        }
+
+        else if (prefvalue == 2) {
+            chart.yAxis[0].update({
+                title: {
+                    text: "KG"
+                }
+            });
+            chart.series[0].update({
+                name: 'KG',
+                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                data:{{ weight_kg|safe }}
+            });
+
+        }
+
+        else if (prefvalue == 3) {
+            chart.yAxis[0].update({
+                title: {
+                    text: "ST"
+                }
+            });
+            chart.series[0].update({
+                name: 'ST',
+                {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
+                data:(function () {
+                    // generate an array of random data
+                    var data_arr = {{ weight_st|safe }};
+                    var data = [];
+                    for (i = 0; i < data_arr.length; i++) {
+                        data.push(Number(data_arr[i]));
+                    }
+                    return data;
+                }())
+            });
+
+        }
+
+
+    }
+</script>
 <div class="blue-bg-nav">
     <div class="container-fluid">
         <div class="row">
@@ -72,9 +127,9 @@
                                             <ul class="dropdown-menu">
                                                 <li>
                                                     <div class="navbar-content">
-{#                                                        <!-- <span>{{ request.user.firstname }} {{ request.user.lastname }}</span> -->#}
+                                                        {#                                                        <!-- <span>{{ request.user.firstname }} {{ request.user.lastname }}</span> -->#}
                                                         <!-- <p class="text-muted small"> -->
-                                                            <!-- {{ request.user.email }} -->
+                                                        <!-- {{ request.user.email }} -->
                                                         <!-- </p> -->
                                                         <div class="divider">
                                                         </div>
@@ -252,8 +307,9 @@
                         <div class="tab-content">
                             {#                            <div class="tab-pane fade in active" id="tab1info">#}
                             <div class="tab-pane fade in active" id="tab1info">
-                                <div class="">                                   
-									<button class="btn btn-primary BtnShowHide ShowTable"  onclick="ShowTable();">Show Patient Data
+                                <div class="">
+                                    <button class="btn btn-primary BtnShowHide ShowTable" onclick="ShowTable();">Show
+                                        Patient Data
                                     </button>
                                 </div>
                                 <div class="col-md-4 PaientDHide">
@@ -300,69 +356,86 @@
                                 <div class="col-md-12 GraphDiv">
                                     <div id="cdc" class="graphg" class="graphg">
                                     </div>
-									
+
                                 </div>
-								<div class="">
-									  <p>Description:</p>            
-									  <table class="table table-bordered table-striped">
-										<thead>
-										  <tr>
-											<th>1</th>
-											<th>2</th>
-											<th>3</th>
-										  </tr>
-										</thead>
-										<tbody>
-										  <tr>
-											<td>q1</td>
-											<td>Would you say that in general your health is:</td>
-											<td>1 = Excellent 2 = Very good 3= Good 4=Fair 5=Poor</td>
-										  </tr>
-										  <tr>
-											<td>q2</td>
-											<td>Now thinking about your physical health, which includes physical illness and injury, 
-											for how many days during the last 30 days was your physical health NOT good?</td>
-											<td>0 - 30 days</td>
-										  </tr>
-										  <tr>
-											<td>q4</td>
-											<td>During the past 30 days, for about how many days did poor physical or mental
-											health keep you from doing your usual activities, such as self care, work or recreation?</td>
-											<td>0 - 30 days</td>
-										  </tr>
-										  <tr>
-											<td>q5</td>
-											<td>During the past 30 days, for about how many days did PAIN make it hard for you to do your usual activities,
-											such as self care, work, or recreation?</td>
-											<td>0 - 30 days</td>
-										  </tr>
-										  <tr>
-											<td>q6</td>
-											<td>During the past 30 days, for about how many days have you felt SAD, BLUE, or DEPRESSED?</td>
-											<td>0 - 30 days</td>
-										  </tr>
-										  <tr>
-											<td>q7</td>
-											<td>During the past 30 days, for about how many days have you felt WORRIED, TENSE, or ANXIOUS?</td>
-											<td>0 - 30 days</td>
-										  </tr>
-										  <tr>
-											<td>q8</td>
-											<td>During the past 30 days, for about how many days have you felt you did NOT get ENOUGH REST or SLEEP?</td>
-											<td>0 - 30 days</td>
-										  </tr>
-										  <tr>
-											<td>q9</td>
-											<td>During the past 30 days, for about how many days have you felt VERY HEALTHY AND FULL OF ENERGY?</td>
-											<td>0 - 30 days</td>
-										  </tr>
-										</tbody>
-									  </table>
-									</div>
+                                <div class="">
+                                    <p>Description:</p>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>1</th>
+                                            <th>2</th>
+                                            <th>3</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>q1</td>
+                                            <td>Would you say that in general your health is:</td>
+                                            <td>1 = Excellent 2 = Very good 3= Good 4=Fair 5=Poor</td>
+                                        </tr>
+                                        <tr>
+                                            <td>q2</td>
+                                            <td>Now thinking about your physical health, which includes physical illness
+                                                and injury,
+                                                for how many days during the last 30 days was your physical health NOT
+                                                good?
+                                            </td>
+                                            <td>0 - 30 days</td>
+                                        </tr>
+                                        <tr>
+                                            <td>q4</td>
+                                            <td>During the past 30 days, for about how many days did poor physical or
+                                                mental
+                                                health keep you from doing your usual activities, such as self care,
+                                                work or recreation?
+                                            </td>
+                                            <td>0 - 30 days</td>
+                                        </tr>
+                                        <tr>
+                                            <td>q5</td>
+                                            <td>During the past 30 days, for about how many days did PAIN make it hard
+                                                for you to do your usual activities,
+                                                such as self care, work, or recreation?
+                                            </td>
+                                            <td>0 - 30 days</td>
+                                        </tr>
+                                        <tr>
+                                            <td>q6</td>
+                                            <td>During the past 30 days, for about how many days have you felt SAD,
+                                                BLUE, or DEPRESSED?
+                                            </td>
+                                            <td>0 - 30 days</td>
+                                        </tr>
+                                        <tr>
+                                            <td>q7</td>
+                                            <td>During the past 30 days, for about how many days have you felt WORRIED,
+                                                TENSE, or ANXIOUS?
+                                            </td>
+                                            <td>0 - 30 days</td>
+                                        </tr>
+                                        <tr>
+                                            <td>q8</td>
+                                            <td>During the past 30 days, for about how many days have you felt you did
+                                                NOT get ENOUGH REST or SLEEP?
+                                            </td>
+                                            <td>0 - 30 days</td>
+                                        </tr>
+                                        <tr>
+                                            <td>q9</td>
+                                            <td>During the past 30 days, for about how many days have you felt VERY
+                                                HEALTHY AND FULL OF ENERGY?
+                                            </td>
+                                            <td>0 - 30 days</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="tab2info">
                                 <div class="">
-									<button class="btn btn-primary BtnShowHide ShowTable"  onclick="ShowTable();">Show Patient Data
+                                    <button class="btn btn-primary BtnShowHide ShowTable" onclick="ShowTable();">Show
+                                        Patient Data
                                     </button>
                                 </div>
                                 <div class="col-md-4 PaientDHide">
@@ -437,123 +510,127 @@
                                     <div id="oswestry_score" class="oswestryTabGraphSec">
                                     </div>
                                 </div>
-								<div class="">
-									  <p>Description:</p>            
-									  <table class="table table-bordered table-striped">
-										<thead>
-										  <tr>
-											<th>1</th>
-											<th>2</th>
-										  </tr>
-										</thead>
-										<tbody>
-										  <tr>
-											<td>osw1: Pain intensity:</td>
-											<td>0 = I have no pain at the moment</br>
-											1 = The pain is very mild at the moment</br>
-											2 = The pain is moderate at the moment</br>
-											3 = The pain is fairly severe at the moment</br>
-											4 = The pain is very severe at the moment</br>
-											5 = The pain is the worst imaginable at the moment
-											</td>
-										  </tr>
-										   <tr>
-											<td>osw2: Personal care (washing, dressing etc):</td>
-											<td>0 = I can look after myself normally without causing extra pain</br>
-											1 = I can look after myself normally but it causes extra pain</br>
-											2 = It is painful to look after myself and I am slow and careful</br>
-											3 = I need some help but manage most of my personal care</br>
-											4 = I need help every day in most aspects of self-care</br>
-											5 = I do not get dressed, I wash with difficulty and stay in bed
-											</td>
-										  </tr>
-										   <tr>
-											<td>osw3: Lifting:</td>
-											<td>0 = I can lift heavy weights without extra pain</br>
-											1 = I can lift heavy weights but it gives extra pain</br>
-											2 = Pain prevents me from lifting heavy weights off the floor, but I can manage if they are conveniently placed eg. on a table</br>
-											3 = Pain prevents me from lifting heavy weights, but I can manage light to medium weights if they are conveniently positioned</br>
-											4 = I can lift very light weights</br>
-											5 = I cannot lift or carry anything at all
-											</td>
-										  </tr>
-										   <tr>
-											<td>osw4: Walking:</td>
-											<td>0 = Pain does not prevent me walking any distance</br>
-											1 = Pain prevents me from walking more than 2 kilometres</br>
-											2 = Pain prevents me from walking more than 1 kilometre</br>
-											3 = Pain prevents me from walking more than 500 metres</br>
-											4 = I can only walk using a stick or crutches</br>
-											5 = I am in bed most of the time
-											</td>
-										  </tr>
-										   <tr>
-											<td>osw5: Sitting:</td>
-											<td>0 = I can sit in any chair as long as I like</br>
-											1 = I can only sit in my favourite chair as long as I like</br>
-											2 = Pain prevents me sitting more than one hour</br>
-											3 = Pain prevents me from sitting more than 30 minutes</br>
-											4 = Pain prevents me from sitting more than 10 minutes</br>
-											5 = Pain prevents me from sitting at all
-											</td>
-										  </tr>
-										  <tr>
-											<td>osw6: Standing:</td>
-											<td>0 = I can stand as long as I want without extra pain</br>
-												1 = I can stand as long as I want but it gives me extra pain</br>
-												2 = Pain prevents me from standing for more than 1 hour</br>
-												3 = Pain prevents me from standing for more than 30 minutes</br>
-												4 = Pain prevents me from standing for more than 10 minutes</br>
-												5 = Pain prevents me from standing at all
-											</td>
-										  </tr>
-										  <tr>
-											<td>osw7:  Sleeping:</td>
-											<td>0 = My sleep is never disturbed by pain</br>
-												1 = My sleep is occasionally disturbed by pain</br>
-												2 = Because of pain I have less than 6 hours sleep</br>
-												3 = Because of pain I have less than 4 hours sleep</br>
-												4 = Because of pain I have less than 2 hours sleep</br>
-												5 = Pain prevents me from sleeping at all
-											</td>
-										  </tr>
-										  <tr>
-											<td>osw8: Sex life:</td>
-											<td>0 = My sex life is normal and causes no extra pain</br>
-												1 = My sex life is normal but causes some extra pain</br>
-												2 = My sex life is nearly normal but is very painful</br>
-												3 = My sex life is severely restricted by pain</br>
-												4 = My sex life is nearly absent because of pain</br>
-												5 = Pain prevents any sex life at all
-											</td>
-										  </tr>
-										  <tr>
-											<td>osw9: Social life:</td>
-											<td>0 = My social life is normal and gives me no extra pain</br>
-												1 = My social life is normal but increases the degree of pain</br>
-												2 = Pain has no significant effect on my social life apart from limiting my more energetic interests eg, sport</br>
-												3 = Pain has restricted my social life and I do not go out as often</br>
-												4 = Pain has restricted my social life to my home</br>
-												5 = I have no social life because of pain
-											</td>
-										  </tr>
-										  <tr>
-											<td>osw10: Travelling:</td>
-											<td>0 = I can travel anywhere without pain</br>
-											1 = I can travel anywhere but it gives me extra pain</br>
-											2 = Pain is bad but I manage journeys over two hours</br>
-											3 = Pain restricts me to journeys of less than one hour</br>
-											4 = Pain restricts me to short necessary journeys under 30 minutes</br>
-											5 = Pain prevents me from travelling except to receive treatment
-											</td>
-										  </tr>
-										</tbody>
-									  </table>
-									</div>
+                                <div class="">
+                                    <p>Description:</p>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>1</th>
+                                            <th>2</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>osw1: Pain intensity:</td>
+                                            <td>0 = I have no pain at the moment</br>
+                                                1 = The pain is very mild at the moment</br>
+                                                2 = The pain is moderate at the moment</br>
+                                                3 = The pain is fairly severe at the moment</br>
+                                                4 = The pain is very severe at the moment</br>
+                                                5 = The pain is the worst imaginable at the moment
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>osw2: Personal care (washing, dressing etc):</td>
+                                            <td>0 = I can look after myself normally without causing extra pain</br>
+                                                1 = I can look after myself normally but it causes extra pain</br>
+                                                2 = It is painful to look after myself and I am slow and careful</br>
+                                                3 = I need some help but manage most of my personal care</br>
+                                                4 = I need help every day in most aspects of self-care</br>
+                                                5 = I do not get dressed, I wash with difficulty and stay in bed
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>osw3: Lifting:</td>
+                                            <td>0 = I can lift heavy weights without extra pain</br>
+                                                1 = I can lift heavy weights but it gives extra pain</br>
+                                                2 = Pain prevents me from lifting heavy weights off the floor, but I can
+                                                manage if they are conveniently placed eg. on a table</br>
+                                                3 = Pain prevents me from lifting heavy weights, but I can manage light
+                                                to medium weights if they are conveniently positioned</br>
+                                                4 = I can lift very light weights</br>
+                                                5 = I cannot lift or carry anything at all
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>osw4: Walking:</td>
+                                            <td>0 = Pain does not prevent me walking any distance</br>
+                                                1 = Pain prevents me from walking more than 2 kilometres</br>
+                                                2 = Pain prevents me from walking more than 1 kilometre</br>
+                                                3 = Pain prevents me from walking more than 500 metres</br>
+                                                4 = I can only walk using a stick or crutches</br>
+                                                5 = I am in bed most of the time
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>osw5: Sitting:</td>
+                                            <td>0 = I can sit in any chair as long as I like</br>
+                                                1 = I can only sit in my favourite chair as long as I like</br>
+                                                2 = Pain prevents me sitting more than one hour</br>
+                                                3 = Pain prevents me from sitting more than 30 minutes</br>
+                                                4 = Pain prevents me from sitting more than 10 minutes</br>
+                                                5 = Pain prevents me from sitting at all
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>osw6: Standing:</td>
+                                            <td>0 = I can stand as long as I want without extra pain</br>
+                                                1 = I can stand as long as I want but it gives me extra pain</br>
+                                                2 = Pain prevents me from standing for more than 1 hour</br>
+                                                3 = Pain prevents me from standing for more than 30 minutes</br>
+                                                4 = Pain prevents me from standing for more than 10 minutes</br>
+                                                5 = Pain prevents me from standing at all
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>osw7: Sleeping:</td>
+                                            <td>0 = My sleep is never disturbed by pain</br>
+                                                1 = My sleep is occasionally disturbed by pain</br>
+                                                2 = Because of pain I have less than 6 hours sleep</br>
+                                                3 = Because of pain I have less than 4 hours sleep</br>
+                                                4 = Because of pain I have less than 2 hours sleep</br>
+                                                5 = Pain prevents me from sleeping at all
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>osw8: Sex life:</td>
+                                            <td>0 = My sex life is normal and causes no extra pain</br>
+                                                1 = My sex life is normal but causes some extra pain</br>
+                                                2 = My sex life is nearly normal but is very painful</br>
+                                                3 = My sex life is severely restricted by pain</br>
+                                                4 = My sex life is nearly absent because of pain</br>
+                                                5 = Pain prevents any sex life at all
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>osw9: Social life:</td>
+                                            <td>0 = My social life is normal and gives me no extra pain</br>
+                                                1 = My social life is normal but increases the degree of pain</br>
+                                                2 = Pain has no significant effect on my social life apart from limiting
+                                                my more energetic interests eg, sport</br>
+                                                3 = Pain has restricted my social life and I do not go out as often</br>
+                                                4 = Pain has restricted my social life to my home</br>
+                                                5 = I have no social life because of pain
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>osw10: Travelling:</td>
+                                            <td>0 = I can travel anywhere without pain</br>
+                                                1 = I can travel anywhere but it gives me extra pain</br>
+                                                2 = Pain is bad but I manage journeys over two hours</br>
+                                                3 = Pain restricts me to journeys of less than one hour</br>
+                                                4 = Pain restricts me to short necessary journeys under 30 minutes</br>
+                                                5 = Pain prevents me from travelling except to receive treatment
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="tab3info">
                                 <div class="">
-									<button class="btn btn-primary BtnShowHide ShowTable"  onclick="ShowTable();">Show Patient Data
+                                    <button class="btn btn-primary BtnShowHide ShowTable" onclick="ShowTable();">Show
+                                        Patient Data
                                     </button>
                                 </div>
                                 <div class="col-md-4 PaientDHide">
@@ -590,7 +667,8 @@
                             </div>
                             <div class="tab-pane fade" id="tab4info">
                                 <div class="">
-									<button class="btn btn-primary BtnShowHide ShowTable"  onclick="ShowTable();">Show Patient Data
+                                    <button class="btn btn-primary BtnShowHide ShowTable" onclick="ShowTable();">Show
+                                        Patient Data
                                     </button>
                                 </div>
                                 <div class="col-md-4 PaientDHide">
@@ -602,7 +680,9 @@
                                                     <thead class="cf">
                                                     <tr>
                                                         <th>Date for</th>
+                                                        <th>KG</th>
                                                         <th>Just LB</th>
+                                                        <th>St</th>
                                                         <th>prefWt</th>
                                                     </tr>
                                                     </thead>
@@ -612,6 +692,8 @@
                                                             <td>{{ row.0 }}</td>
                                                             <td>{{ row.1 }}</td>
                                                             <td>{{ row.2 }}</td>
+                                                            <td>{{ row.3 }}</td>
+                                                            <td>{{ row.4 }}</td>
                                                         </tr>
                                                     {% endfor %}
                                                     </tbody>
@@ -621,6 +703,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 GraphDiv">
+                                    <div id="prefSelect" style="margin-left: 200px">
+                                        <label for="prefSelect">Select Preference</label>
+                                        <select id="prefSelect" name="SelectPreference" class="selectBox SecSelect"
+                                                onchange="selectprefmethod(this.value)" required>
+                                            <option value="1">JustLB</option>
+                                            <option value="2">KG</option>
+                                            <option value="3">ST</option>
+                                        </select>
+                                    </div>
                                     <div id="weight" class="graphg">
                                     </div>
 
@@ -629,7 +720,8 @@
                             </div>
                             <div class="tab-pane fade" id="tab5info">
                                 <div class="">
-									<button class="btn btn-primary BtnShowHide ShowTable"  onclick="ShowTable();">Show Patient Data
+                                    <button class="btn btn-primary BtnShowHide ShowTable" onclick="ShowTable();">Show
+                                        Patient Data
                                     </button>
                                 </div>
                                 <div class="col-md-4 PaientDHide">
@@ -671,39 +763,40 @@
                                     <div id="painThird" class="painTabGraphThird">
                                     </div>
                                 </div>
-								<div class="">
-									  <p>Description:</p>            
-									  <table class="table table-bordered table-striped">
-										<thead>
-										  <tr>
-											<th>1</th>
-											<th>2</th>
-										  </tr>
-										</thead>
-										<tbody>
-										  <tr>
-											<td>0 = no pain</td>
-											<td>10 = maximum pain
-											</td>
-										  </tr>
-										   <tr>
-											<td>0 = good</td>
-											<td>10 = very bad
-											</td>
-										  </tr>
-										   <tr>
-											<td>0 = more</td>
-											<td>10 = none
-											</td>
-										  </tr>										   
-										</tbody>
-									  </table>
-									</div>
+                                <div class="">
+                                    <p>Description:</p>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>1</th>
+                                            <th>2</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>0 = no pain</td>
+                                            <td>10 = maximum pain
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>0 = good</td>
+                                            <td>10 = very bad
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>0 = more</td>
+                                            <td>10 = none
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="tab6info">
                                 <div class="">
-									<button class="btn btn-primary BtnShowHide ShowTable"  onclick="ShowTable();">Show Patient Data
+                                    <button class="btn btn-primary BtnShowHide ShowTable" onclick="ShowTable();">Show
+                                        Patient Data
                                     </button>
                                 </div>
                                 <div class="col-md-4 PaientDHide">
@@ -746,7 +839,8 @@
                             </div>
                             <div class="tab-pane fade" id="tab7info">
                                 <div class="">
-									<button class="btn btn-primary BtnShowHide ShowTable"  onclick="ShowTable();">Show Patient Data
+                                    <button class="btn btn-primary BtnShowHide ShowTable" onclick="ShowTable();">Show
+                                        Patient Data
                                     </button>
                                 </div>
                                 <div class="col-md-4 PaientDHide">
@@ -812,7 +906,8 @@
                             </div>
                             <div class="tab-pane fade" id="tab8info">
                                 <div class="">
-									<button class="btn btn-primary BtnShowHide ShowTable"  onclick="ShowTable();">Show Patient Data
+                                    <button class="btn btn-primary BtnShowHide ShowTable" onclick="ShowTable();">Show
+                                        Patient Data
                                     </button>
                                 </div>
                                 <div class="col-md-4 PaientDHide">
@@ -849,7 +944,8 @@
                             </div>
                             <div class="tab-pane fade" id="tab12info">
                                 <div class="">
-									<button class="btn btn-primary BtnShowHide ShowTable"  onclick="ShowTable();">Show Patient Data
+                                    <button class="btn btn-primary BtnShowHide ShowTable" onclick="ShowTable();">Show
+                                        Patient Data
                                     </button>
                                 </div>
                                 <div class="col-md-4 PaientDHide">
@@ -881,43 +977,44 @@
                                     <div id="myday" class="graphg">
                                     </div>
                                 </div>
-								<div class="">
-								  <p>Description:</p>            
-								  <table class="table table-bordered table-striped">
-									<thead>
-									  <tr>
-										<th>1</th>
-									  </tr>
-									</thead>
-									<tbody>
-									  <tr>
-										<td>7 = Today is great</td>										
-									  </tr>
-									   <tr>
-										<td>6 = Today is really good</td>
-									  </tr>
-									   <tr>
-										<td>5 = Today is good</td>
-									  </tr>	
-									  <tr>
-										<td>4 = Today is manageable</td>
-									  </tr>	
-									  <tr>
-										<td>3 = Today is bad</td>
-									  </tr>	
-										<tr>
-										<td>2 = Today is really bad</td>
-									  </tr>
-										<tr>
-										<td>1 = Today is unbearable</td>
-									  </tr>									  
-									</tbody>
-								  </table>
-								</div>
+                                <div class="">
+                                    <p>Description:</p>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>1</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>7 = Today is great</td>
+                                        </tr>
+                                        <tr>
+                                            <td>6 = Today is really good</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5 = Today is good</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4 = Today is manageable</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3 = Today is bad</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2 = Today is really bad</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1 = Today is unbearable</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="tab13info">
                                 <div class="">
-                                    <button class="btn btn-primary BtnShowHide ShowTable"  onclick="ShowTable();">Show Patient Data
+                                    <button class="btn btn-primary BtnShowHide ShowTable" onclick="ShowTable();">Show
+                                        Patient Data
                                     </button>
                                 </div>
                                 <div class="col-md-4 PaientDHide">
@@ -949,75 +1046,86 @@
                                     <div id="cfsfibro" class="graphg">
                                     </div>
                                 </div>
-								<div class="">
-								  <p>Description:</p>            
-								  <table class="table table-bordered table-striped">
-									<thead>
-									  <tr>
-										<th>1</th>
-										<th>2</th>
-									  </tr>
-									</thead>
-									<tbody>
-									  <tr>
-										<td>10</td>										
-										<td>Fully recovered. Normal activity level with no symptoms.</td>										
-									  </tr>
-									   <tr>
-										<td>9</td>
-										<td>Normal activity level with mild symptoms at times.</td>
-									  </tr>
-									   <tr>
-										<td>8</td>
-										<td>Near normal activity level with some symptoms.</td>
-									  </tr>	
-									  <tr>
-										<td>7</td>
-										<td>Able to work full time but with difficulty. Mostly mild symptoms.</td>
-									  </tr>	
-									  <tr>
-										<td>6</td>
-										<td>Able to do about 6-7 hours of work a day. Mostly mild to moderate symptoms.</td>
-									  </tr>	
-										<tr>
-										<td>5</td>
-										<td>Able to do about 4-5 hours a day of work or similar activity at home. Daily rests required. Symptoms mostly moderate.</td>
-									  </tr>
-										<tr>
-										<td>4</td>
-										<td>Able to leave house every day. Moderate symptoms on average. Able to do about 3-4 hours a day of work or activity 
-										like housework, shopping, using computer.</td>
-									  </tr>	
-										<tr>
-										<td>3</td>
-										<td>Able to leave house several times a week. Moderate to severe symptoms much of the time. Able to do about 2 hours a day of work
-										at home or activity like housework, shopping, using computer.</td>
-									  </tr>	
-										<tr>
-										<td>2</td>
-										<td>Able to leave house once or twice a week. Moderate to severe symptoms. Able to concentrate for 1 hour or less per day.</td>
-									  </tr>	
-										<tr>
-										<td>1</td>
-										<td>Mostly bedridden. Severe symptoms.</td>
-									  </tr>	
-										<tr>
-										<td>0</td>
-										<td>Bedridden constantly. Unable to care for self.</td>
-									  </tr>	
-									</tbody>
-								  </table>
-								</div>
+                                <div class="">
+                                    <p>Description:</p>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>1</th>
+                                            <th>2</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>10</td>
+                                            <td>Fully recovered. Normal activity level with no symptoms.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>9</td>
+                                            <td>Normal activity level with mild symptoms at times.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>8</td>
+                                            <td>Near normal activity level with some symptoms.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td>Able to work full time but with difficulty. Mostly mild symptoms.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td>Able to do about 6-7 hours of work a day. Mostly mild to moderate
+                                                symptoms.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>Able to do about 4-5 hours a day of work or similar activity at home.
+                                                Daily rests required. Symptoms mostly moderate.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>Able to leave house every day. Moderate symptoms on average. Able to do
+                                                about 3-4 hours a day of work or activity
+                                                like housework, shopping, using computer.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>Able to leave house several times a week. Moderate to severe symptoms
+                                                much of the time. Able to do about 2 hours a day of work
+                                                at home or activity like housework, shopping, using computer.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Able to leave house once or twice a week. Moderate to severe symptoms.
+                                                Able to concentrate for 1 hour or less per day.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Mostly bedridden. Severe symptoms.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>0</td>
+                                            <td>Bedridden constantly. Unable to care for self.</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="tab14info">
                                 <div class="">
                                     <!-- <button class="btn btn-primary "  onclick="ShowGraphA();">Show Patient -->
-                                        <!-- Data Table -->
+                                    <!-- Data Table -->
                                     <!-- </button> -->
                                     <!-- <button class="btn btn-primary BtnShowHide"  onclick="HideGraphA();">Hide -->
-                                        <!-- Patient Data Table -->
+                                    <!-- Patient Data Table -->
                                     <!-- </button> -->
-									<button class="btn btn-primary BtnShowHide ShowTable"  onclick="ShowTable();">Show Patient Data
+                                    <button class="btn btn-primary BtnShowHide ShowTable" onclick="ShowTable();">Show
+                                        Patient Data
                                     </button>
                                 </div>
                                 <div class="col-md-4 PaientDHide">
@@ -1365,7 +1473,7 @@
 
             yAxis: {
                 title: {
-                    text: 'LB'
+                    text: "LB"
                 },
                 plotLines: [{
                     value: 0,
@@ -1978,22 +2086,22 @@
         }
 
     });
-  
+
     function HideGraphA() {
         $(".GraphDiv").removeClass("col-md-8").addClass("col-md-12");
         $(".PaientDHide").hide();
-		$(".ShowTable").text('Show Patient Data');
+        $(".ShowTable").text('Show Patient Data');
     }
-	
-	$('.ShowTable').on('click', function () {
+
+    $('.ShowTable').on('click', function () {
         if ($('.PaientDHide').is(':visible')) {
-			$('.PaientDHide').hide();
+            $('.PaientDHide').hide();
             $(this).text('Show Patient Data');
-			$(".GraphDiv").removeClass("col-md-8").addClass("col-md-12");
-           
+            $(".GraphDiv").removeClass("col-md-8").addClass("col-md-12");
+
         } else {
             $(this).text("Hide Patient Data");
-			$(".GraphDiv").removeClass("col-md-12").addClass("col-md-8");
+            $(".GraphDiv").removeClass("col-md-12").addClass("col-md-8");
             $('.PaientDHide').show();
         }
     });
