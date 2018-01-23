@@ -376,6 +376,19 @@ table th,td{
 .highcharts-container {
 	width:1187px !important;
 }
+.SecSelect {
+    width: 200px;
+    padding: 5px 10px;
+    font-size: 16px;
+    line-height: 1;
+    background: url(../Images/if_arrow_sans_down_103299.png) no-repeat right #ddd;
+    -webkit-appearance: none;
+    background-position: 128px -40px;
+    height: 40px;
+    border-radius: 3px;
+    background-color: rgb(255, 255, 255);
+    color: #000 !important;
+}
 @media screen and (max-width: 1024px) and (min-width: 768px) {
 	#custom-search-input {
 		width: 50%;
