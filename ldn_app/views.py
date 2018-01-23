@@ -202,10 +202,8 @@ def user_login_verify(request):
     c.update(csrf(request))
     if request.method == 'POST':
         email = request.POST['email']
-        # licencetype = request.POST['licencetype']
-        # licence = request.POST['licence']
         pwd = request.POST['password']
-        err = {}
+        un=''
         try:
             user_obj = User.objects.get(email=email, password=pwd)
             print(user_obj, "get")
@@ -213,6 +211,7 @@ def user_login_verify(request):
             try:
                 user_active = User.objects.get(email__exact=email).is_active
                 username = User.objects.get(email__exact=email).username
+                un=username
                 if user_active != 1:
                     # return HttpResponse("Invalid login please try again")
                     messages.add_message(request, messages.INFO, "Invalid login please try again")
@@ -221,33 +220,21 @@ def user_login_verify(request):
 
             except:
                 # return HttpResponse("Username/Password not matched")
-                messages.add_message(request, messages.INFO, "Username/Password not matched")
+                messages.add_message(request, messages.INFO, "Email/Password not matched")
                 return HttpResponseRedirect("/ldn/login/")
 
         if user_obj is not None:
             if not user_obj.is_active:
-                # return HttpResponse("Your request is not approved. Please try again later.")
                 messages.add_message(request, messages.INFO, "Your request is not approved. Please try again later.")
                 return HttpResponseRedirect("/ldn/login/")
 
             login(request, user_obj)
             return HttpResponseRedirect("/ldn/dashboard/")
-            # signin_user = UserSignupDetails.objects.get(user_id=user_obj.id)
-            # if licencetype == '2' and signin_user.ph_licence == licence:
-            #     login(request, user_obj)
-            #     return HttpResponseRedirect("/ldn/dashboard/")
-            #
-            # elif licencetype == '3' and signin_user.dr_licence == licence:
-            #     login(request, user_obj)
-            #     return HttpResponseRedirect("/ldn/dashboard/")
-            #
-            # else:
-            #     # return HttpResponse("Wrong Dr Licence Number")
-            #     messages.add_message(request, messages.INFO, "Wrong Licence Number")
-            #     return HttpResponseRedirect("/ldn/login/")
         else:
-            # return HttpResponse("Invalid login please try again")
-            messages.add_message(request, messages.INFO, "Invalid login please try again")
+            if un is not None:
+                messages.add_message(request, messages.INFO, "Email/Password do not match")
+            else:
+                messages.add_message(request, messages.INFO, "Invalid login please try again")
             return HttpResponseRedirect("/ldn/login/")
 
 

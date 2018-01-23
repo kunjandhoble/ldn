@@ -140,7 +140,7 @@ def weight_data(tablename, patientid, startdate, enddate):
         st.append(str((row[4]/row[5])+14))
         fordate.append(str(row[-2]))
     weight_len = 1 if len(justlb) > 1 else 0
-    weight_table_zipped = list(zip(fordate, kg, justlb, st, [prefWt] * len(fordate)))
+    weight_table_zipped = list(zip(fordate, kg, justlb, st, [prefWt] * len(fordate), ["KG"] * len(fordate), ["ST"] * len(fordate)))
     dc = {'weight_kg': json.dumps(kg), 'weight_justlb': json.dumps(justlb), 'weight_st': json.dumps(st), 'weight_fordate': json.dumps(fordate), 'weight_prefWt': prefWt,
           'weight_table_zipped': weight_table_zipped, 'weight_len': weight_len}
     return dc

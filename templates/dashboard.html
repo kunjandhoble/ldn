@@ -23,6 +23,12 @@
     function selectprefmethod(prefvalue) {
         var chart = $('#weight').highcharts();
         if (prefvalue == 1) {
+            $(".JustLB").css('display',"table-cell");
+            $(".prefWT_LB").css('display',"table-cell");
+            $(".KG").css("display","none");
+            $(".prefWT_KG").css("display", "none");
+            $(".ST").css("display","none");
+            $(".prefWT_ST").css("display", "none");
             chart.yAxis[0].update({
                 title: {
                     text: "LB"
@@ -36,6 +42,12 @@
         }
 
         else if (prefvalue == 2) {
+            $(".KG").css("display", "table-cell");
+            $(".prefWT_KG").css("display", "table-cell");
+            $(".JustLB").css("display", "none");
+            $(".prefWT_LB").css("display", "none");
+            $(".ST").css("display", "none");
+            $(".prefWT_ST").css("display", "none");
             chart.yAxis[0].update({
                 title: {
                     text: "KG"
@@ -50,6 +62,12 @@
         }
 
         else if (prefvalue == 3) {
+            $(".ST").css("display", "table-cell");
+            $(".prefWT_ST").css("display", "table-cell");
+            $(".JustLB").css("display", "none");
+            $(".prefWT_LB").css("display", "none");
+            $(".KG").css("display", "none");
+            $(".prefWT_KG").css("display", "none");
             chart.yAxis[0].update({
                 title: {
                     text: "ST"
@@ -680,20 +698,24 @@
                                                     <thead class="cf">
                                                     <tr>
                                                         <th>Date for</th>
-                                                        <th>KG</th>
-                                                        <th>Just LB</th>
-                                                        <th>St</th>
-                                                        <th>prefWt</th>
+                                                        <th class= "KG" style="display: none;">KG</th>
+                                                        <th class= "JustLB" style="display: table-cell;">Just LB</th>
+                                                        <th class= "ST" style="display: none;">ST</th>
+                                                        <th class= "prefWT_LB" style="display: table-cell;">prefWt</th>
+                                                        <th class= "prefWT_KG" style="display: none;">prefWt</th>
+                                                        <th class= "prefWT_ST" style="display: none;">prefWt</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     {% for row in weight_table_zipped %}
                                                         <tr>
                                                             <td>{{ row.0 }}</td>
-                                                            <td>{{ row.1 }}</td>
-                                                            <td>{{ row.2 }}</td>
-                                                            <td>{{ row.3 }}</td>
-                                                            <td>{{ row.4 }}</td>
+                                                            <td class= "KG" style="display: none;">{{ row.1 }}</td>
+                                                            <td class= "JustLB" style="display: table-cell;">{{ row.2 }}</td>
+                                                            <td class= "ST" style="display: none;">{{ row.3 }}</td>
+                                                            <td class= "prefWT_LB" style="display: table-cell;">{{ row.4 }}</td>
+                                                            <th class= "prefWT_KG" style="display: none;">{{ row.5 }}</th>
+                                                            <th class= "prefWT_ST" style="display: none;">{{ row.6 }}</th>
                                                         </tr>
                                                     {% endfor %}
                                                     </tbody>
