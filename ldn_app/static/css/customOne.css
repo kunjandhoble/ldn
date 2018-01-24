@@ -177,12 +177,12 @@ a{color:inherit;text-decoration:none}
     text-align:center;
 }
 .panel-login>.panel-heading a{
-    text-decoration: none;
+    text-decoration: none; 
     font-weight: bold;
     font-size: 28px;
-    -webkit-transition: all 0.1s linear;
-    -moz-transition: all 0.1s linear;
-    transition: all 0.1s linear;
+    /* -webkit-transition: all 0.1s linear; */
+    /* -moz-transition: all 0.1s linear; */
+    /* transition: all 0.1s linear; */
 }
 .panel-login>.panel-heading a.active{
     font-size: 34px;
@@ -317,6 +317,8 @@ label {
 }
 .panel-login{
 	height:625px;
+	    display: inline-block;
+    width: 100%;
 }
 
 .Login_validation_error_text{
