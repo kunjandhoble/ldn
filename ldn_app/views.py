@@ -128,7 +128,10 @@ def email_signup_verify(request):
             )
         except:
             messages.add_message(request, messages.INFO, "Experiencing technical error in resgistration.")
+            return redirect("/ldn/login/")
 
+        messages.add_message(request, messages.INFO, "Your Registration request is under process."+\
+         "You will be intimated by an email of your account activation when all your details are verified.")
         return redirect("/ldn/login/")
 
 
@@ -294,14 +297,19 @@ def send_password(request):
             user.set_password(new_pass)
             user.save()
             email_body = 'Hello ' + user.first_name + ',\n\n Your password is reset to \n\n\t\t' + new_pass + '\n\nPlease login to continue.'
-            send_mail(
+            try:
+                send_mail(
                 'Password Reset',
                 email_body,
                 'gvoicecall31@gmail.com',
                 [str(user.email)],  # user_obj.email
                 fail_silently=False,
             )
+            except:
+                messages.add_message(request, messages.INFO, "Experiencing technical error in password reset. Please provide valid email id.")
+                return redirect("/ldn/login/")
 
+        messages.add_message(request, messages.INFO, "Password is reset. Please log in to your email for new password.")
         return HttpResponseRedirect("/ldn/login/")
 
     return HttpResponseRedirect("/ldn/login/")
@@ -334,12 +342,12 @@ def changepassword(request):
             try:
                 user.set_password(str(new_pwd))
                 user.save()
+                messages.add_message(request, messages.INFO, "Password Changed. Please login again to continue.")
             except:
                 messages.add_message(request, messages.ERROR, "Some error occurred. Please try after some time.")
                 test_passed = False
         return HttpResponseRedirect("/ldn/changepassword/")
     for msg in messages.get_messages(request):
-        print(msg)
         c["message"] = msg
     return render_to_response('registration/password_reset_confirm.html', c)
 

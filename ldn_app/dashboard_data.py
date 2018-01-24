@@ -232,7 +232,7 @@ def sleep_data(tablename, patientid, startdate, enddate):
     return dc
 
 
-# dbname to be used  = === ldnappor_development
+# dbname to be used  == ldnappor_development
 def cfsfibrotracker_data(tablename, patientid, startdate, enddate):
     date_query = """"""
     if startdate != '':
