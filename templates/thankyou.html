@@ -38,14 +38,12 @@
                                 </div>
                             </div>
                             <div id="navbar" class="navbar-collapse collapse">
-                                {#                                    <form class="form-inline">#}
-                                {#                                        <ul class="nav navbar-nav navbar-right bdr">#}
-                                {##}
-                                {#                                            <li><a href="#" data-toggle="modal" id="Signn" data-target="#at-login">Sign in</a></li>#}
-                                {##}
-                                {#                                            <li><a href="#" data-toggle="modal" id="Signn2" data-target="#at-signup">Sign Up</a></li>#}
-                                {#                                        </ul>#}
-                                {#                                    </form>#}
+                                <form class="form-inline">
+                                    <ul class="nav navbar-nav navbar-right bdr">
+                                        <li><a href="{% url 'userlogin' %}" class="btn-blu mrgn-top">LOGIN</a>
+                                        </li>
+                                    </ul>
+                                </form>
                             </div>
                         </div>
                     </nav>
