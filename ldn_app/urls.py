@@ -18,6 +18,7 @@ urlpatterns = [
                   url(r'^userpatients/$', user_patients),
                   url(r'^sendpass/$', send_password, name='sendpass'),
                   url(r'^graphs/(?P<patientid>[0-9]+)$', graphs, name='graphs'),
+                  # url(r'^matplot/(?P<patientid>[0-9]+)$', matplot, name='matplot'),
                   url(r'^dashboard/$', dashboard, name='dashboard'),
                   # url(r'^dash/$', auth_views.login, name='dash'),
                   url(r'^client_token/$', client_token, name='client_token'),

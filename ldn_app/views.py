@@ -21,12 +21,22 @@ import requests
 import braintree
 
 
-def login_view(request):
+def render_login_dict(request):
     c = {}
     c.update(csrf(request))
-    c["signup"] = json.dumps(False)
+    c_list = fetch_data_from_db("SELECT country_name FROM master_countries;")
+    # country_list = [(str(i[0]).decode('ISO-8859-1'), str(i[1]).decode('ISO-8859-1'),)for i in c_list]
+    country_list = [str(i[0]).decode('ISO-8859-1') for i in c_list]
+    # c['countries'] = json.dumps(country_list)
+    c['countries'] = country_list
     for msg in messages.get_messages(request):
         c["message"] = msg
+    return c
+
+
+def login_view(request):
+    c = render_login_dict(request)
+    c["signup"] = json.dumps(False)
     return render_to_response('loginLDNewHarshal.html', c)
 
 
@@ -51,30 +61,32 @@ def email_signup_verify(request):
         licence = form['licence']
         # ph_licence_number = form['ph_licence_number']
         website = form['website']
-        country_id = form['txtCountry']
+        country_name = form['txtCountry']
         role_id = form['txtRole']
         title_id = form['txtTitle']
         email = form['email']
+        try:
+            country_id = \
+            fetch_data_from_db("SELECT country_id FROM master_countries where country_name='" + country_name + "'")[0][0]
+        except:
+            messages.add_message(request, messages.INFO, "Country Name not found in the approved list.")
+            c = render_login_dict(request)
+            c["signup"] = json.dumps(True)
+            return render_to_response('loginLDNewHarshal.html', c)
 
         # if username_isunique(request):
-        if role_id not in ["1","2","3"]:
+        if role_id not in ["1", "2", "3"]:
             messages.add_message(request, messages.INFO, "Invalid Role Selected")
-            c = {}
-            c.update(csrf(request))
-            for msg in messages.get_messages(request):
-                c["message"] = msg
+            c = render_login_dict(request)
             c["signup"] = json.dumps(True)
-            return render_to_response("loginLDNewHarshal.html", c)
+            return render_to_response('loginLDNewHarshal.html', c)
         elif email_isunique(request):
             User.objects.create(username=email, first_name=firstname, email=email, is_active=False)
         else:
             messages.add_message(request, messages.INFO, "Email used for Signup already exists.")
-            c = {}
-            c.update(csrf(request))
-            for msg in messages.get_messages(request):
-                c["message"] = msg
+            c = render_login_dict(request)
             c["signup"] = json.dumps(True)
-            return render_to_response("loginLDNewHarshal.html", c)
+            return render_to_response('loginLDNewHarshal.html', c)
 
         # find last created user id
         user_id = User.objects.last().id
@@ -87,28 +99,31 @@ def email_signup_verify(request):
         # "1" > Prescriber
         # "2" > Pharmacist
         # "3" > Researcher
-        if role_id in ["1","2"]:
+        if role_id in ["1", "2"]:
             UserSignupDetails.objects.create(user_id=user_id, country_id=country_id,
-                                             ph_licence=licence,dr_licence='', website=website, title=title_id, role=role_id)
+                                             ph_licence=licence, dr_licence='', website=website, title=title_id,
+                                             role=role_id)
             email_text = '\nPharamacist Licence :' + licence
         elif role_id == "3":
             UserSignupDetails.objects.create(user_id=user_id, country_id=country_id, ph_licence='', dr_licence=licence,
-                                            website=website, title=title_id, role=role_id)
+                                             website=website, title=title_id, role=role_id)
             email_text = '\nDoctor Licence :' + licence
         else:
             messages.add_message(request, messages.INFO, "Invalid Role Selected")
-            return redirect("/ldn/login/")
+            c = render_login_dict(request)
+            c["signup"] = json.dumps(True)
+            return render_to_response('loginLDNewHarshal.html', c)
 
-        admin_email_body = 'Approval request received with following details:' + email_text +\
+        admin_email_body = 'Approval request received with following details:' + email_text + \
                            '\nEmail : ' + email + \
                            '\nWebsite :' + website + \
-                           '\nCountry ID :' + country_id + \
+                           '\nCountry :' + country_name + \
                            '\nRole :' + role_id + \
                            '\nTitle :' + title_id + \
                            '\nName :' + firstname + \
                            '\n\nKindly check admin panel for more details.'
-        user_email_body = 'Hello ' + firstname + ',\n\nYou have completed registration process. '+\
-                          'You will receive a confirmation mail of request approval in a few days.'+\
+        user_email_body = 'Hello ' + firstname + ',\n\nYou have completed registration process. ' + \
+                          'You will receive a confirmation mail of request approval in a few days.' + \
                           '\n\nKindly contact us for more details.'
 
         try:
@@ -127,13 +142,12 @@ def email_signup_verify(request):
                 fail_silently=False,
             )
         except:
-            messages.add_message(request, messages.INFO, "Experiencing technical error in resgistration.")
-            return redirect("/ldn/login/")
+            messages.add_message(request, messages.INFO, "Experiencing technical error in registration.")
+            c = render_login_dict(request)
+            c["signup"] = json.dumps(True)
+            return render_to_response('loginLDNewHarshal.html', c)
 
-        messages.add_message(request, messages.INFO, "Your Registration request is under process."+\
-         "You will be intimated by an email of your account activation when all your details are verified.")
-        return redirect("/ldn/login/")
-
+        return render_to_response('thankyou.html')
 
     return HttpResponse("Method: /GET not allowed")  # @login_required
 
@@ -206,7 +220,7 @@ def user_login_verify(request):
     if request.method == 'POST':
         email = request.POST['email']
         pwd = request.POST['password']
-        un=''
+        un = ''
         try:
             user_obj = User.objects.get(email=email, password=pwd)
             print(user_obj, "get")
@@ -214,7 +228,7 @@ def user_login_verify(request):
             try:
                 user_active = User.objects.get(email__exact=email).is_active
                 username = User.objects.get(email__exact=email).username
-                un=username
+                un = username
                 if user_active != 1:
                     # return HttpResponse("Invalid login please try again")
                     messages.add_message(request, messages.INFO, "Invalid login please try again")
@@ -299,14 +313,15 @@ def send_password(request):
             email_body = 'Hello ' + user.first_name + ',\n\n Your password is reset to \n\n\t\t' + new_pass + '\n\nPlease login to continue.'
             try:
                 send_mail(
-                'Password Reset',
-                email_body,
-                'gvoicecall31@gmail.com',
-                [str(user.email)],  # user_obj.email
-                fail_silently=False,
-            )
+                    'Password Reset',
+                    email_body,
+                    'gvoicecall31@gmail.com',
+                    [str(user.email)],  # user_obj.email
+                    fail_silently=False,
+                )
             except:
-                messages.add_message(request, messages.INFO, "Experiencing technical error in password reset. Please provide valid email id.")
+                messages.add_message(request, messages.INFO,
+                                     "Experiencing technical error in password reset. Please provide valid email id.")
                 return redirect("/ldn/login/")
 
         messages.add_message(request, messages.INFO, "Password is reset. Please log in to your email for new password.")
@@ -370,6 +385,7 @@ def user_patients(request):
         c.update({'request': request})
         return render_to_response('patientdata.html', c)
 
+
 @login_required(login_url='/ldn/login/')
 def graphs(request, patientid):
     startdate = request.GET.get('start', '')
@@ -424,6 +440,51 @@ def graphs(request, patientid):
     # dc.update(alcoholtracker_data('alcoholtracker', patientid, startdate, enddate))
 
     return render_to_response('dashboard.html', dc)
+
+
+# @login_required(login_url='/ldn/login/')
+# def matplot(request, patientid):
+#     startdate = request.GET.get('start', '')
+#     enddate = request.GET.get('end', '')
+#
+#     doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
+#     sqlquery = r'SELECT user_id FROM ldnappor_development.user'
+#     if doctor.dr_licence is not None or doctor.dr_licence is not '':
+#         sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
+#     if doctor.ph_licence is not None or doctor.ph_licence is not '':
+#         sqlquery += r' or ph_licence = "{0}"'.format(doctor.ph_licence)
+#     data = fetch_data_from_db(sqlquery=sqlquery)
+#
+#     # check patient id in subscription id list from user table.
+#     dc = {}
+#     dc.update(csrf(request))
+#     if patientid not in [str(row[0]) for row in data]:
+#         doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
+#         sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) as fullname FROM ldnappor_development.user'
+#         if doctor.dr_licence is not None or doctor.dr_licence is not '':
+#             sqlquery += r' where dr_licence = "{0}"'.format(doctor.dr_licence)
+#         if doctor.ph_licence is not None or doctor.ph_licence is not '':
+#             sqlquery += r' or ph_licence = "{0}"'.format(doctor.ph_licence)
+#         data = fetch_data_from_db(sqlquery=sqlquery)
+#         patient_data = []
+#         for row in data:
+#             patient_data.append((row[0], row[1]))
+#         # patient_data = PatientData.objects.filter(user_id=request.user.id)
+#         c = {}
+#         c.update(csrf(request))
+#         c['patient_data'] = patient_data
+#         c['NA'] = "Patient Id = {} not found. Try again with a different id.".format(patientid)
+#         c.update({'request': request})
+#         return render_to_response('patientdata.html', c)
+#
+#     dc.update({'request': request})
+#     sqlquery = r'SELECT user_id, CONCAT(firstname,lastname) FROM ldnappor_development.user where user_id={0}'.format(
+#         patientid)
+#     data = fetch_data_from_db(sqlquery=sqlquery)
+#     dc.update({'patient_data': (data[0][0], data[0][1])})
+#     dc.update(matplot_weight_data('weight', patientid, startdate, enddate))
+#
+#     return HttpResponse(dc['matplot'])
 
 
 @login_required(login_url='/ldn/login/')

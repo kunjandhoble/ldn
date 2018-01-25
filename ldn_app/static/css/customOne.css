@@ -202,9 +202,9 @@ a{color:inherit;text-decoration:none}
     height: 45px;
     border: 1px solid #ddd;
     font-size: 16px;
-    /* -webkit-transition: all 0.1s linear; */
-    /* -moz-transition: all 0.1s linear; */
-    /* transition: all 0.1s linear; */
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    transition: all 0.1s linear;
 	    border-radius: 3px;
 }
 .panel-login input:hover,
@@ -236,21 +236,16 @@ a{color:inherit;text-decoration:none}
 	padding-right:30px;
 }
 .ChangeBtn{
-    background-color:#26b4e9;
+	    background-color:#26b4e9;
     outline: none;
     color: #fff;
+    font-size: 20px;
     height: auto;
     font-weight: normal;
-    text-transform: capitalize;
-    border-color: #26b4e9;
-	border-radius: 15px;
-	padding-top: 15px;
-	padding-right: 15px;
-    padding-bottom: 15px;
-    padding-left: 15px;
-    font-size: 26px;
-    line-height: 40px;
-	width:100%;
+    padding: 10px 15px;
+    text-transform: uppercase;
+	    border-radius: 15px;
+		border:none
 }
 .ChangeBtn:hover{
 	color: #fff;
@@ -345,8 +340,8 @@ label {
     background: url("../Images/if_arrow_sans_down_103299.png") no-repeat right #ddd;
     -webkit-appearance: none;
     background-position: 410px -38px;
-    border: none;
-    height: 45px;
+	       border: none;
+       height: 47px;
     border-radius: 25px;
     background-color: rgb(255, 255, 255);
     color: #000 !important;
@@ -359,8 +354,8 @@ label {
     background: url("../Images/if_arrow_sans_down_103299.png") no-repeat right #ddd;
     -webkit-appearance: none;
     background-position: 203px -38px;
-	border: none;
-    height: 45px;
+	       border: none;
+       height: 47px;
     border-radius: 3px;
     background-color: rgb(255, 255, 255);
     color: #000 !important;

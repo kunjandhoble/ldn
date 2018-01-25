@@ -6,20 +6,22 @@ import MySQLdb as mysqldb
 import json
 import simplejson
 
+
 def fetch_paypal_details():
     config = cp.ConfigParser()
-    db_credpath = os.path.join(os.path.abspath(os.path.dirname(__name__)),"db_creds")
-    db_credpath=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"db_creds")
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+db_credpath)
+    db_credpath = os.path.join(os.path.abspath(os.path.dirname(__name__)), "db_creds")
+    db_credpath = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "db_creds")
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + db_credpath)
     config.read(db_credpath)
     client_id = config.get("paypalSandboxClient", "client_id")
     client_secret = config.get("paypalSandboxClient", "client_secret")
     return (client_id, client_secret)
 
+
 def fetch_data_from_db(sqlquery):
     config = cp.ConfigParser()
-    db_credpath = os.path.join(os.path.abspath(os.path.dirname(__name__)),"db_creds")
-    db_credpath=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"db_creds")
+    db_credpath = os.path.join(os.path.abspath(os.path.dirname(__name__)), "db_creds")
+    db_credpath = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "db_creds")
     config.read(db_credpath)
     name = config.get("ldnlocal", "NAME")
     user = config.get("ldnlocal", "USER")
@@ -116,7 +118,6 @@ def cdc_data(tablename, patientid, startdate, enddate):
     return dc
 
 
-# TO DO: CHANGE JUSTLB AS PER USER
 def weight_data(tablename, patientid, startdate, enddate):
     date_query = """"""
     if startdate != '':
@@ -137,14 +138,66 @@ def weight_data(tablename, patientid, startdate, enddate):
     for row in data:
         kg.append(row[2])
         justlb.append(row[3])
-        st.append(str((row[4]/row[5])+14))
+        st.append(str((row[4] / row[5]) + 14))
         fordate.append(str(row[-2]))
     weight_len = 1 if len(justlb) > 1 else 0
-    weight_table_zipped = list(zip(fordate, kg, justlb, st, [prefWt] * len(fordate), ["KG"] * len(fordate), ["ST"] * len(fordate)))
-    dc = {'weight_kg': json.dumps(kg), 'weight_justlb': json.dumps(justlb), 'weight_st': json.dumps(st), 'weight_fordate': json.dumps(fordate), 'weight_prefWt': prefWt,
+    weight_table_zipped = list(
+        zip(fordate, kg, justlb, st, [prefWt] * len(fordate), ["KG"] * len(fordate), ["ST"] * len(fordate)))
+    dc = {'weight_kg': json.dumps(kg), 'weight_justlb': json.dumps(justlb), 'weight_st': json.dumps(st),
+          'weight_fordate': json.dumps(fordate), 'weight_prefWt': prefWt,
           'weight_table_zipped': weight_table_zipped, 'weight_len': weight_len}
     return dc
 
+
+# def matplot_weight_data(tablename, patientid, startdate, enddate):
+#     date_query = """"""
+#     if startdate != '':
+#         date_query = """ and forDate >= '{0}' """.format(startdate)
+#         if enddate != '':
+#             date_query = """ and forDate between '{0}' and '{1}' """.format(startdate, enddate)
+#     elif startdate != "":
+#         date_query = """ and forDate <= '{0}' """.format(enddate)
+#
+#     sqlquery = """select * from user_{0} where user_id in
+#                   ( SELECT user_id
+#                     FROM monthly_questionnaire where user_id <> 309 and user_id ={1} and
+#                     cdc_id is not null and oswestry_id is not null and weight_id is not null and
+#                     meds_count_id is not null and ldn_type_id is not null order by user_id
+#                   ){2} order by user_id, forDate ASC""".format(tablename, patientid, date_query)
+#     data = fetch_data_from_db(sqlquery)
+#     kg, justlb, st, fordate, prefWt = [], [], [], [], "justLb"
+#     for row in data:
+#         kg.append(row[2])
+#         justlb.append(row[3])
+#         st.append(str((row[4] / row[5]) + 14))
+#         fordate.append(str(row[-2]))
+#     weight_len = 1 if len(justlb) > 1 else 0
+#     weight_table_zipped = list(
+#         zip(fordate, kg, justlb, st, [prefWt] * len(fordate), ["KG"] * len(fordate), ["ST"] * len(fordate)))
+#     dc = {'weight_kg': json.dumps(kg), 'weight_justlb': json.dumps(justlb), 'weight_st': json.dumps(st),
+#           'weight_fordate': json.dumps(fordate), 'weight_prefWt': prefWt,
+#           'weight_table_zipped': weight_table_zipped, 'weight_len': weight_len}
+#
+#     import matplotlib.pyplot as plt, mpld3
+#     import matplotlib.dates as mdates
+#     import datetime as dt
+#     fig = plt.figure()
+#     x_date = [dt.datetime.strptime(d, '%Y-%m-%d').date() for d in fordate]
+#     # fig.add_subplot(x_date, kg)
+#     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+#     plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+#     plt.plot(x_date,kg)
+#     # plt.gcf().autofmt_xdate()
+#     st = mpld3.fig_to_html(fig=fig)
+#     st1 = mpld3.fig_to_html(fig=fig)
+#
+#     # return dc
+#     # print(st)
+#     plt.clf()
+#     # dc.update({"matplot":json.dumps(st)})
+#     dc.update({"matplot":st+st1})
+#     return dc
+#
 
 def prescriptionmeds_data(tablename, patientid, startdate, enddate):
     date_query = """"""
