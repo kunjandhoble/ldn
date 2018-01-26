@@ -67,7 +67,8 @@ def email_signup_verify(request):
         email = form['email']
         try:
             country_id = \
-            fetch_data_from_db("SELECT country_id FROM master_countries where country_name='" + country_name + "'")[0][0]
+                fetch_data_from_db("SELECT country_id FROM master_countries where country_name='" + country_name + "'")[
+                    0][0]
         except:
             messages.add_message(request, messages.INFO, "Country Name not found in the approved list.")
             c = render_login_dict(request)
@@ -611,14 +612,24 @@ def create_purchase(request):
 
 @login_required(login_url='/ldn/login/')
 def purchase(request):
+    c = {}
+    c.update(csrf(request))
     try:
-        c = {}
-        c.update(csrf(request))
+        user = User.objects.get(id=request.user.id)
+        paypal_obj = PaypalTransaction.objects.filter(user=user).last()
+        """
+        print(type(datetime.strftime(paypal_obj.subscription_end_date,"%d/%m/%Y")))
+        print(type(paypal_obj.subscription_end_date.date()))
+        print(type(datetime.strptime('1/1/2019', '%d/%m/%Y').date()))
+        print(paypal_obj.subscription_end_date.date() <= datetime.strptime('1/1/2019', '%d/%m/%Y').date())
+        """
+        if paypal_obj.transaction_status == 'COMPLETED' and paypal_obj.subscription_end_date.date() >= datetime.now().date():
+        # if paypal_obj.transaction_status == 'COMPLETED':
+            return render_to_response("patientdata.html", c)
+        else:
+            return render_to_response("paypalsuccess.html", c)
+    except:
         return render_to_response("paypalsuccess.html", c)
-
-        # return render_to_response("paypalform.html")
-    except Exception as e:
-        return str(e)
 
 
 ACCESS_TOKEN = ''
@@ -647,7 +658,6 @@ def api_access_token():
 def checkpayment(request):
     if request.is_ajax() and request.POST:
         paypal_creds = fetch_paypal_details()
-        # paypal_prod_creds = fetch_paypal_prod_details()
         my_api = paypalrestsdk.Api({
             'mode': 'sandbox',
             # 'mode': 'production',
@@ -658,7 +668,7 @@ def checkpayment(request):
         # PayerID is required to approve the payment.
         if [payment['intent'], payment['state']] == ['sale', 'created']:
             if [payment['transactions'][0]['amount']['currency'], payment['transactions'][0]['amount']['total']] != [
-                'GBP', '300.00']:
+                'GBP', '3.00']:
                 c = {}
                 c.update(csrf(request))
                 c.update({"error": "Payment Unsuccesful. Please try again and pay the subscribed amount."})
@@ -681,7 +691,15 @@ def checkpayment(request):
     else:
         c = {}
         c.update(csrf(request))
-        return render_to_response("paypalsuccess.html", c)
+        try:
+            user = User.objects.get(id=request.user.id)
+            paypal_obj = PaypalTransaction.objects.filter(user=user).last()
+            if paypal_obj.transaction_status == 'COMPLETED':
+                return render_to_response("patientdata.html", c)
+            else:
+                return render_to_response("paypalsuccess.html", c)
+        except:
+            return render_to_response("paypalsuccess.html", c)
 
 
 def handler404(request):

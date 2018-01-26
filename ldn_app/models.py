@@ -54,7 +54,7 @@ class PaypalTransaction(models.Model):
     transaction_no=models.CharField(default='none', max_length=30)
     transaction_date = models.DateTimeField(default=datetime.now())
     transaction_status = models.CharField(choices=TRANSACTION_STATUS, default='NONE', max_length=15)
-
+    subscription_end_date = models.DateTimeField(default= datetime.strptime('1/1/2019','%d/%m/%Y'))
 # @receiver(post_save, sender=User)
 # def create_user_profile(sender, instance, created, **kwargs):
 #     if created:
