@@ -167,7 +167,8 @@
 
 
                         {#>>>>>>>>>>>>>>>>>>>>>LOADER#}
-                        <div class="bg_load"></div>
+<div id="loader_div" style="display: none;">
+    <div class="bg_load"></div>
                         <div class="wrapper">
                             <div class="inner">
                                 <span></span>
@@ -179,6 +180,7 @@
                                 <span></span>
                             </div>
                         </div>
+    </div>
                         <style>
                             .bg_load {
                                 position: fixed;
@@ -370,7 +372,7 @@
                 payment: {
                     transactions: [
                         {
-                            amount: {total: '3.00', currency: 'GBP'}
+                            amount: {total: '300.00', currency: 'GBP'}
                         }
                     ]
                 }
@@ -379,10 +381,10 @@
 
         onAuthorize: function (data, actions) {
             {#            window.alert("Please click OK and wait for a while for transaction to proceed.");#}
-            $(".col-lg-12").hide()
+            $(".col-lg-12").hide();
             {#            $(".loader").append("<div id=" + "largeBox" + "></div><div id=" + "smallBox" + "></div>" + "<p style=" + "font-family: 'latoregular'; font-size: 18px; line-height: 26px;" + ">" + "<strong>WE ARE PROCESSING YOUR PAYMENT. PLEASE DO NOT REFRESH OR HIT BACK BUTTON.</strong></p>");#}
 
-            {#            $(".loader").show();#}
+                        $("#loader_div").show();
             $(".bg_load").show();
             $(".wrapper").show();
 

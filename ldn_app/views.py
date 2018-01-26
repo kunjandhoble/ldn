@@ -542,12 +542,13 @@ def dashboard(request):
             return render_to_response('patientdata.html', c)
     else:
         try:
-            user_id = PaypalTransaction.objects.get(user_id=request.user.id)
+            user_id = PaypalTransaction.objects.filter(user_id=request.user.id).last()
         except:
             return HttpResponseRedirect('/ldn/purchase/')
 
-        if user_id.transaction_status != 'COMPLETED':
-            return HttpResponseRedirect('/ldn/purchase/')
+        # if user_id.transaction_status != 'COMPLETED':
+        if not (user_id.transaction_status == 'COMPLETED' and user_id.subscription_end_date.date() >= datetime.now().date()):
+                return HttpResponseRedirect('/ldn/purchase/')
         else:
 
             doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
@@ -625,7 +626,9 @@ def purchase(request):
         """
         if paypal_obj.transaction_status == 'COMPLETED' and paypal_obj.subscription_end_date.date() >= datetime.now().date():
         # if paypal_obj.transaction_status == 'COMPLETED':
-            return render_to_response("patientdata.html", c)
+            print("sadknadklnaskld")
+            return HttpResponseRedirect('/ldn/dashboard/')
+            # return render_to_response("patientdata.html", c)
         else:
             return render_to_response("paypalsuccess.html", c)
     except:
@@ -668,7 +671,7 @@ def checkpayment(request):
         # PayerID is required to approve the payment.
         if [payment['intent'], payment['state']] == ['sale', 'created']:
             if [payment['transactions'][0]['amount']['currency'], payment['transactions'][0]['amount']['total']] != [
-                'GBP', '3.00']:
+                'GBP', '300.00']:
                 c = {}
                 c.update(csrf(request))
                 c.update({"error": "Payment Unsuccesful. Please try again and pay the subscribed amount."})
@@ -695,7 +698,7 @@ def checkpayment(request):
             user = User.objects.get(id=request.user.id)
             paypal_obj = PaypalTransaction.objects.filter(user=user).last()
             if paypal_obj.transaction_status == 'COMPLETED':
-                return render_to_response("patientdata.html", c)
+                return HttpResponseRedirect('/ldn/dashboard/')
             else:
                 return render_to_response("paypalsuccess.html", c)
         except:
