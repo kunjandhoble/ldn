@@ -100,12 +100,12 @@ def email_signup_verify(request):
         # "1" > Prescriber
         # "2" > Pharmacist
         # "3" > Researcher
-        if role_id in ["1", "2"]:
+        if role_id == "1":
             UserSignupDetails.objects.create(user_id=user_id, country_id=country_id,
                                              ph_licence=licence, dr_licence='', website=website, title=title_id,
                                              role=role_id)
             email_text = '\nPharamacist Licence :' + licence
-        elif role_id == "3":
+        elif role_id == "2":
             UserSignupDetails.objects.create(user_id=user_id, country_id=country_id, ph_licence='', dr_licence=licence,
                                              website=website, title=title_id, role=role_id)
             email_text = '\nDoctor Licence :' + licence
@@ -547,7 +547,7 @@ def dashboard(request):
             return HttpResponseRedirect('/ldn/purchase/')
 
         # if user_id.transaction_status != 'COMPLETED':
-        if not (user_id.transaction_status == 'COMPLETED' and user_id.subscription_end_date.date() >= datetime.now().date()):
+        if user_id is None or not (user_id.transaction_status == 'COMPLETED' and user_id.subscription_end_date.date() >= datetime.now().date()):
                 return HttpResponseRedirect('/ldn/purchase/')
         else:
 
