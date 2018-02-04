@@ -3,3 +3,4 @@ ldn_app/*.pyc
 ldn/*.pyc
 ldn_app/migrations/*
 templates/matplot_graph.html
+db_creds
