@@ -547,8 +547,9 @@ def dashboard(request):
             return HttpResponseRedirect('/ldn/purchase/')
 
         # if user_id.transaction_status != 'COMPLETED':
-        if user_id is None or not (user_id.transaction_status == 'COMPLETED' and user_id.subscription_end_date.date() >= datetime.now().date()):
-                return HttpResponseRedirect('/ldn/purchase/')
+        if user_id is None or not (
+                user_id.transaction_status == 'COMPLETED' and user_id.subscription_end_date.date() >= datetime.now().date()):
+            return HttpResponseRedirect('/ldn/purchase/')
         else:
 
             doctor = UserSignupDetails.objects.get(user_id=int(request.user.id))
@@ -569,48 +570,6 @@ def dashboard(request):
             return render_to_response('patientdata.html', c)
 
 
-def client_token():
-    return braintree.ClientToken.generate()
-
-
-def create_purchase(request):
-    if request.method == "GET":
-        c = {}
-        c.update(csrf(request))
-        c['client_token'] = json.dumps(client_token())
-        return render_to_response('paypalform.html', c)
-    else:
-        # print(request.POST)
-        nonce_from_the_client = request.POST.get("payment_method_nonce")
-        # print(nonce_from_the_client)
-        result = braintree.Transaction.sale({
-            "amount": "10.00",
-            "payment_method_nonce": nonce_from_the_client,
-            "options": {
-                "submit_for_settlement": True
-            }
-        })
-        settled_transaction = ''
-        if result.is_success:
-            print(result.transaction)
-            settled_transaction = result.transaction
-
-        else:
-            print(result.errors.errors.data)
-        # Use payment method nonce here...
-        tr_id = settled_transaction.id
-        print(tr_id)
-        print(json.dumps(settled_transaction))
-        result = braintree.Transaction.submit_for_settlement(tr_id)
-
-        if result.is_success:
-            settled_transaction = result.transaction
-            print(settled_transaction)
-        else:
-            print(result.errors)
-        return HttpResponseRedirect('/ldn/checkout/')
-
-
 @login_required(login_url='/ldn/login/')
 def purchase(request):
     c = {}
@@ -625,36 +584,13 @@ def purchase(request):
         print(paypal_obj.subscription_end_date.date() <= datetime.strptime('1/1/2019', '%d/%m/%Y').date())
         """
         if paypal_obj.transaction_status == 'COMPLETED' and paypal_obj.subscription_end_date.date() >= datetime.now().date():
-        # if paypal_obj.transaction_status == 'COMPLETED':
-            print("sadknadklnaskld")
+            # if paypal_obj.transaction_status == 'COMPLETED':
             return HttpResponseRedirect('/ldn/dashboard/')
             # return render_to_response("patientdata.html", c)
         else:
             return render_to_response("paypalsuccess.html", c)
     except:
         return render_to_response("paypalsuccess.html", c)
-
-
-ACCESS_TOKEN = ''
-
-
-def api_access_token():
-    headers = {
-        'Accept': 'application/json',
-        'Accept-Language': 'en_US',
-    }
-
-    data = [
-        ('grant_type', 'client_credentials'),
-    ]
-    paypal_creds = fetch_paypal_details()
-    client_id = paypal_creds[0],
-    client_secret = paypal_creds[1]
-
-    response = requests.post('https://api.sandbox.paypal.com/v1/oauth2/token', headers=headers, data=data,
-                             auth=(client_id, client_secret))
-    ACCESS_TOKEN = response.json()['access_token']
-    return ACCESS_TOKEN
 
 
 @login_required(login_url='/ldn/login/')
@@ -678,9 +614,9 @@ def checkpayment(request):
                 # return render_to_response("paypalsuccess.html", c)
                 return JsonResponse({"error": "payment failed"})
             else:
-                print("inside else")
                 if payment.execute({"payer_id": request.POST.get('payerID')}):  # return True or False
                     user = User.objects.get(id=request.user.id)
+                    # TODO: when subscription dates are assigned along with plans add date field in create
                     paypal_obj = PaypalTransaction.objects.create(user=user, subscription_type='UNLIMITED',
                                                                   amount=Decimal(
                                                                       payment['transactions'][0]['amount']['total']),
@@ -697,7 +633,7 @@ def checkpayment(request):
         try:
             user = User.objects.get(id=request.user.id)
             paypal_obj = PaypalTransaction.objects.filter(user=user).last()
-            if paypal_obj.transaction_status == 'COMPLETED':
+            if paypal_obj.transaction_status == 'COMPLETED' and paypal_obj.subscription_end_date.date() >= datetime.now().date():
                 return HttpResponseRedirect('/ldn/dashboard/')
             else:
                 return render_to_response("paypalsuccess.html", c)

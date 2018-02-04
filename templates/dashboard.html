@@ -23,11 +23,11 @@
     function selectprefmethod(prefvalue) {
         var chart = $('#weight').highcharts();
         if (prefvalue == 1) {
-            $(".JustLB").css('display',"table-cell");
-            $(".prefWT_LB").css('display',"table-cell");
-            $(".KG").css("display","none");
+            $(".JustLB").css('display', "table-cell");
+            $(".prefWT_LB").css('display', "table-cell");
+            $(".KG").css("display", "none");
             $(".prefWT_KG").css("display", "none");
-            $(".ST").css("display","none");
+            $(".ST").css("display", "none");
             $(".prefWT_ST").css("display", "none");
             chart.yAxis[0].update({
                 title: {
@@ -76,7 +76,7 @@
             chart.series[0].update({
                 name: 'ST',
                 {#            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.5]#}
-                data:(function () {
+                data: (function () {
                     // generate an array of random data
                     var data_arr = {{ weight_st|safe }};
                     var data = [];
@@ -108,7 +108,8 @@
                                     <span class="icon-bar"></span>
                                 </button>
                                 <div class="LogoN">
-                                    <a href="#" class="btn-blu mrgn-top" data-toggle="modal" data-target="#at-helping">
+                                    {#                                    <a href="#" class="btn-blu mrgn-top" data-toggle="modal" data-target="#at-helping">#}
+                                    <a href="{% url 'dashboard' %}" class="btn-blu mrgn-top">
                                         <img src={% static "Images/ldn-research-trust-logo.png" %} alt="logoImage0"/>
                                     </a>
                                 </div>
@@ -145,9 +146,9 @@
                                             <ul class="dropdown-menu">
                                                 <li>
                                                     <div class="navbar-content">
-                                                                                                                <!-- <span>{{ request.user.firstname }} {{ request.user.lastname }}</span> -->
+                                                        <!-- <span>{{ request.user.firstname }} {{ request.user.lastname }}</span> -->
                                                         <p class="text-muted small">
-                                                        {{ request.user.email }}
+                                                            {{ request.user.email }}
                                                         </p>
                                                         <div class="divider">
                                                         </div>
@@ -698,24 +699,28 @@
                                                     <thead class="cf">
                                                     <tr>
                                                         <th>Date for</th>
-                                                        <th class= "KG" style="display: none;">KG</th>
-                                                        <th class= "JustLB" style="display: table-cell;">Just LB</th>
-                                                        <th class= "ST" style="display: none;">ST</th>
-                                                        <th class= "prefWT_LB" style="display: table-cell;">prefWt</th>
-                                                        <th class= "prefWT_KG" style="display: none;">prefWt</th>
-                                                        <th class= "prefWT_ST" style="display: none;">prefWt</th>
+                                                        <th class="KG" style="display: none;">KG</th>
+                                                        <th class="JustLB" style="display: table-cell;">Just LB</th>
+                                                        <th class="ST" style="display: none;">ST</th>
+                                                        <th class="prefWT_LB" style="display: table-cell;">prefWt</th>
+                                                        <th class="prefWT_KG" style="display: none;">prefWt</th>
+                                                        <th class="prefWT_ST" style="display: none;">prefWt</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     {% for row in weight_table_zipped %}
                                                         <tr>
                                                             <td>{{ row.0 }}</td>
-                                                            <td class= "KG" style="display: none;">{{ row.1 }}</td>
-                                                            <td class= "JustLB" style="display: table-cell;">{{ row.2 }}</td>
-                                                            <td class= "ST" style="display: none;">{{ row.3 }}</td>
-                                                            <td class= "prefWT_LB" style="display: table-cell;">{{ row.4 }}</td>
-                                                            <th class= "prefWT_KG" style="display: none;">{{ row.5 }}</th>
-                                                            <th class= "prefWT_ST" style="display: none;">{{ row.6 }}</th>
+                                                            <td class="KG" style="display: none;">{{ row.1 }}</td>
+                                                            <td class="JustLB"
+                                                                style="display: table-cell;">{{ row.2 }}</td>
+                                                            <td class="ST" style="display: none;">{{ row.3 }}</td>
+                                                            <td class="prefWT_LB"
+                                                                style="display: table-cell;">{{ row.4 }}</td>
+                                                            <th class="prefWT_KG"
+                                                                style="display: none;">{{ row.5 }}</th>
+                                                            <th class="prefWT_ST"
+                                                                style="display: none;">{{ row.6 }}</th>
                                                         </tr>
                                                     {% endfor %}
                                                     </tbody>
