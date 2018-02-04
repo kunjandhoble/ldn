@@ -1,0 +1,5 @@
+ldn/settings.py
+ldn_app/*.pyc
+ldn/*.pyc
+ldn_app/migrations/*
+templates/matplot_graph.html
