@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>No Paient Data</title>
+    <link href={% static "css/bootstrap.min.css" %} rel="stylesheet">
+    <link href={% static  "css/style.css" %} type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src={% static "js/jquery-2.1.4.min.js" %}></script>
+    <script type="text/javascript" src={% static "js/bootstrap.min.js" %}></script>
+</head>
+
+<body>
+<div class="blue-bg-nav">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <header class="header-tp">
+                    <nav class="navbar navbar-default navbar-static-top">
+                        <div class="">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                        data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <div class="LogoN">
+                                    {#                                    <a href="#" class="btn-blu mrgn-top" data-toggle="modal" data-target="#at-helping">#}
+                                    <a href="{% url 'dashboard' %}" class="btn-blu mrgn-top">
+                                        <img src={% static "Images/ldn-research-trust-logo.png" %} alt="logoImage0"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-12">
+                                        <form method="POST" action="/ldn/dashboard/">{% csrf_token %}
+                                            <input type="text" class="form-control input-lg searchBoxCls"
+                                                   name="patient_id"
+                                                   placeholder="Search"/>
+                                            <span class="input-group-btn">
+												<button class="btn btn-info btn-lg" type="submit">
+													<i class="glyphicon glyphicon-search"></i>
+												</button>
+											</span>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="header-rightside">
+                                    <ul class="list-inline header-top pull-right">
+                                        <li class=""><a href="/ldn/dashboard/" class="add-project">Dashboard</a></li>
+                                        <!-- <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li> -->
+                                        <!-- <li> -->
+                                        <!-- <a href="#" class="icon-info"> -->
+                                        <!-- <i class="fa fa-bell" aria-hidden="true"></i> -->
+                                        <!-- <span class="label label-primary">3</span> -->
+                                        <!-- </a> -->
+                                        <!-- </li> -->
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span><i
+                                                    class="fa fa-fw fa-user"></i></span>Profile
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <div class="navbar-content">
+                                                        <!-- <span>{{ request.user.firstname }} {{ request.user.lastname }}</span> -->
+                                                        <p class="text-muted small">
+                                                            {{ request.user.email }}
+                                                        </p>
+                                                        <div class="divider">
+                                                        </div>
+                                                        <ul class="view btn-sm active">
+                                                            <li><a href="/ldn/changepassword/"><i
+                                                                    class="fa fa-user"></i> Change Password</a></li>
+                                                            <li><a href="/ldn/logout/" class="">
+                                                                <i class="fa fa-fw fa-power-off"></i> Logout
+                                                            </a></li>
+                                                            <li class="divider"></li>
+                                                        </ul>
+
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <!--/.nav-collapse -->
+                        </div>
+                    </nav>
+                </header>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="band">
+    <div class="bandleft"></div>
+    <div class="bandright"></div>
+</div>
+<div class="container-fluid">
+    <div class="NoPatient">
+		<h4>You don't have any patients, yet.</h4>
+		<p>To be able to view your patients' data, you must ask them to add your <strong>Licence Number</strong> to the 'My Health Professionals' section of their myLDN app.</p>
+		<p>Once your patient has added your Licence Number, they should tell you their myLDN 'My ID' so that you can associate their records.</p>
+	</div>
+</div>
+</body>
+
+</html>
+
+
+
+
+
