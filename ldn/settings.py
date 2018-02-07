@@ -24,7 +24,7 @@ SECRET_KEY = 'zb*x-+kr^pe8tarymk&^5=(cvtgs6h8l9ppk#0!f=^8h1on)^b'
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = False
 DEBUG = True
-ALLOWED_HOSTS = ['52.14.196.122','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['18.217.216.71','52.14.196.122','localhost','127.0.0.1']
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'gvoicecall31@gmail.com'
@@ -119,11 +119,11 @@ braintree.Configuration.configure(braintree.Environment.Sandbox,
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': config.get("ldn_app_local", "NAME"),
-        'USER': config.get("ldn_app_local", "USER"),
-        'PASSWORD': config.get("ldn_app_local", "PASSWORD"),
-        'HOST': config.get("ldn_app_local", "HOST"),
-        'PORT': '',
+        'NAME': config.get("ldn_dev", "NAME"),
+        'USER': config.get("ldn_dev", "USER"),
+        'PASSWORD': config.get("ldn_dev", "PASSWORD"),
+        'HOST': config.get("ldn_dev", "HOST"),
+        'PORT': config.get("ldn_dev", "PORT"),
 }
 }
 

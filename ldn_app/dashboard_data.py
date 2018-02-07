@@ -9,7 +9,6 @@ import simplejson
 
 def fetch_paypal_details():
     config = cp.ConfigParser()
-    db_credpath = os.path.join(os.path.abspath(os.path.dirname(__name__)), "db_creds")
     db_credpath = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "db_creds")
     config.read(db_credpath)
     client_id = config.get("paypalSandboxClient", "client_id")
@@ -19,14 +18,14 @@ def fetch_paypal_details():
 
 def fetch_data_from_db(sqlquery):
     config = cp.ConfigParser()
-    db_credpath = os.path.join(os.path.abspath(os.path.dirname(__name__)), "db_creds")
     db_credpath = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "db_creds")
     config.read(db_credpath)
-    name = config.get("ldnlocal", "NAME")
-    user = config.get("ldnlocal", "USER")
-    pwd = config.get("ldnlocal", "PASSWORD")
-    host = config.get("ldnlocal", "HOST")
-    db = mysqldb.connect(host=host, user=user, passwd=pwd, db=name)
+    name = config.get("ldn_dev", "NAME")
+    user = config.get("ldn_dev", "USER")
+    pwd = config.get("ldn_dev", "PASSWORD")
+    host = config.get("ldn_dev", "HOST")
+    port = int(config.get("ldn_dev", "PORT"))
+    db = mysqldb.connect(host=host, port=port, user=user, passwd=pwd, db=name)
     cursor = db.cursor()
     cursor.execute(sqlquery)
     data = cursor.fetchall()
